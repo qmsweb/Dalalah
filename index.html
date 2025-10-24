@@ -336,7 +336,7 @@
         if (mainWord === searchWord) {
           results.push({
             mainWord: mainWord,
-            foundAs: "كلمة رئيسية",
+            foundAs: "كلمة مفتاحية",
             relations: relations
           });
         }
@@ -399,7 +399,7 @@
         resultsContainer.innerHTML = "";
         
         if (entries.length === 0) {
-          resultsContainer.innerHTML = `<p style="color:#888;">لا توجد بيانات لهذه الكلمة 😔</p>`;
+          resultsContainer.innerHTML = `<p style="color:#888;">الكلمة غير موجودة في قاعدة بياناتنا.</p>`;
           return;
         }
 
