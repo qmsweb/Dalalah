@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>سرّي للغاية</title>
+  <title>مشروع علم الدلالة</title>
   <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700&display=swap" rel="stylesheet">
 
   <style>
@@ -23,6 +23,8 @@
       min-height: 100vh;
       display: flex;
       flex-direction: column;
+      max-width: 1200px;
+      margin: 0 auto;
     }
 
     header {
@@ -32,7 +34,11 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-      flex-direction: row-reverse;
+      flex-direction: row;
+    }
+
+    .header-content {
+      text-align: right;
     }
 
     header h1 {
@@ -96,6 +102,11 @@
       font-weight: 600;
       cursor: pointer;
       color: #000;
+      transition: background-color 0.3s;
+    }
+
+    button:hover {
+      background-color: #4fc3c3;
     }
 
     .results-section {
@@ -123,6 +134,15 @@
       transform: scale(1.02);
     }
 
+    .main-word {
+      font-size: 22px;
+      font-weight: bold;
+      color: #2a7e7e;
+      margin-bottom: 15px;
+      padding-bottom: 10px;
+      border-bottom: 1px dashed #4fc3c3;
+    }
+
     .label {
       display: inline-block;
       background-color: #4fc3c3;
@@ -140,11 +160,68 @@
       color: #333;
     }
 
+    .found-as {
+      display: inline-block;
+      background-color: #f9a826;
+      color: white;
+      border-radius: 8px;
+      padding: 3px 10px;
+      font-size: 14px;
+      margin-bottom: 10px;
+    }
+
     footer {
       background-color: #4fc3c3;
       color: white;
       padding: 15px;
       margin-top: auto;
+    }
+
+    /* تحسينات للشاشات الكبيرة */
+    @media (min-width: 768px) {
+      .container {
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+      }
+      
+      header {
+        padding: 20px 40px;
+        border-radius: 0 0 15px 15px;
+      }
+      
+      header h1 {
+        font-size: 28px;
+      }
+      
+      header p {
+        font-size: 16px;
+      }
+      
+      .tool-box {
+        max-width: 500px;
+        padding: 40px;
+      }
+      
+      .results-section {
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 30px;
+      }
+      
+      .result-card {
+        width: 45%;
+        max-width: 500px;
+      }
+    }
+
+    @media (min-width: 1024px) {
+      .result-card {
+        width: 30%;
+      }
+      
+      .tool-box {
+        max-width: 600px;
+      }
     }
   </style>
 </head>
@@ -152,7 +229,7 @@
 <body>
   <div class="container">
     <header>
-      <div>
+      <div class="header-content">
         <h1>مشروع علم الدلالة</h1>
         <p>نسخة أولية (تجريبية)</p>
       </div>
@@ -163,7 +240,7 @@
 
     <div class="tool-box">
       <label for="word-input">أدخل الكلمة:</label>
-      <input type="text" id="word-input" placeholder="مثلاً: سعيد، كبير، سيارة...">
+      <input type="text" id="word-input" placeholder="مثلاً: نور، ضياء، ظلام...">
 
       <label for="relation-type">اختر نوع العلاقة:</label>
       <select id="relation-type">
@@ -191,15 +268,61 @@
     const resultsContainer = document.getElementById('results-container');
 
     const data = {
+      "نور": {
+        "synonym": ["ضياء", "إشراق", "سناء"],
+        "antonym": ["ظلام", "عتمة", "ليل"]
+      },
       "سعيد": {
-        "synonym": ["فرح", "مسرور", "بهِج"],
-        "antonym": ["حزين", "كئيب", "مهموم"]
+        "synonym": ["فرح", "مسرور", "بهِج", "مبتهج", "منشرح الصدر"],
+        "antonym": ["حزين", "كئيب", "مهموم", "تعيس", "بائس"]
       },
       "كبير": {
-        "synonym": ["عظيم", "ضخم", "واسع"],
-        "antonym": ["صغير", "ضئيل"]
+        "synonym": ["عظيم", "ضخم", "واسع", "هائل", "جسيم"],
+        "antonym": ["صغير", "ضئيل", "صغير الحجم", "مصغر", "دقيق"]
+      },
+      "جميل": {
+        "synonym": ["حسن", "وسيم", "بهي", "رائع", "فاتن"],
+        "antonym": ["قبيح", "دميم", "شائه", "بشع", "غير جذاب"]
+      },
+      "سريع": {
+        "synonym": ["عاجل", "مسرع", "خاطف", "فوري", "مستعجل"],
+        "antonym": ["بطيء", "متأن", "متمهل", "هادئ", "رخو"]
       }
     };
+
+    // دالة للبحث عن الكلمة في جميع المواضع
+    function findWordEntries(searchWord) {
+      const results = [];
+      
+      for (const [mainWord, relations] of Object.entries(data)) {
+        // إذا كانت الكلمة هي الكلمة الرئيسية
+        if (mainWord === searchWord) {
+          results.push({
+            mainWord: mainWord,
+            foundAs: "كلمة رئيسية",
+            relations: relations
+          });
+        }
+        // إذا كانت الكلمة في المرادفات
+        else if (relations.synonym.includes(searchWord)) {
+          results.push({
+            mainWord: mainWord,
+            foundAs: "مرادف",
+            relations: relations
+          });
+        }
+        // إذا كانت الكلمة في الأضداد
+        else if (relations.antonym.includes(searchWord)) {
+          results.push({
+            mainWord: mainWord,
+            foundAs: "ضد",
+            relations: relations
+          });
+        }
+      }
+      
+      return results;
+    }
 
     analyzeBtn.addEventListener('click', () => {
       const word = input.value.trim();
@@ -211,31 +334,41 @@
         return;
       }
 
-      const entry = data[word];
-      if (!entry) {
+      const entries = findWordEntries(word);
+      
+      if (entries.length === 0) {
         resultsContainer.innerHTML = `<p style="color:#888;">لا توجد بيانات لهذه الكلمة 😔</p>`;
         return;
       }
 
-      if (type === "all" || type === "synonym") {
+      entries.forEach(entry => {
+        const { mainWord, foundAs, relations } = entry;
+        
         const card = document.createElement('div');
         card.className = 'result-card';
-        card.innerHTML = `
-          <div class="label">المرادفات</div>
-          <div class="words">${entry.synonym.join('، ')}</div>
+        
+        let content = `
+          <div class="main-word">${mainWord}</div>
+          <div class="found-as">تم العثور على "${word}" كـ ${foundAs}</div>
         `;
-        resultsContainer.appendChild(card);
-      }
+        
+        if (type === "all" || type === "synonym") {
+          content += `
+            <div class="label">المرادفات</div>
+            <div class="words">${relations.synonym.join('، ')}</div>
+          `;
+        }
 
-      if (type === "all" || type === "antonym") {
-        const card = document.createElement('div');
-        card.className = 'result-card';
-        card.innerHTML = `
-          <div class="label">الأضداد</div>
-          <div class="words">${entry.antonym.join('، ')}</div>
-        `;
+        if (type === "all" || type === "antonym") {
+          content += `
+            <div class="label">الأضداد</div>
+            <div class="words">${relations.antonym.join('، ')}</div>
+          `;
+        }
+        
+        card.innerHTML = content;
         resultsContainer.appendChild(card);
-      }
+      });
     });
   </script>
 </body>
