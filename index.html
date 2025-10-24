@@ -109,6 +109,11 @@
       background-color: #4fc3c3;
     }
 
+    button:disabled {
+      background-color: #cccccc;
+      cursor: not-allowed;
+    }
+
     .results-section {
       flex: 1;
       padding: 20px;
@@ -168,6 +173,20 @@
       padding: 3px 10px;
       font-size: 14px;
       margin-bottom: 10px;
+    }
+
+    .loading {
+      display: inline-block;
+      width: 20px;
+      height: 20px;
+      border: 3px solid rgba(255,255,255,.3);
+      border-radius: 50%;
+      border-top-color: #fff;
+      animation: spin 1s ease-in-out infinite;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
     }
 
     footer {
@@ -249,7 +268,10 @@
         <option value="antonym">التضاد (أضداد)</option>
       </select>
 
-      <button id="analyze-btn">بحث</button>
+      <button id="analyze-btn">
+        <span id="btn-text">بحث</span>
+        <span id="btn-loading" class="loading" style="display: none;"></span>
+      </button>
     </div>
 
     <div id="results-container" class="results-section">
@@ -263,35 +285,50 @@
 
   <script>
     const analyzeBtn = document.getElementById('analyze-btn');
+    const btnText = document.getElementById('btn-text');
+    const btnLoading = document.getElementById('btn-loading');
     const input = document.getElementById('word-input');
     const typeSelect = document.getElementById('relation-type');
     const resultsContainer = document.getElementById('results-container');
 
-    const data = {
-      "نور": {
-        "synonym": ["ضياء", "إشراق", "سناء"],
-        "antonym": ["ظلام", "عتمة", "ليل"]
-      },
-      "سعيد": {
-        "synonym": ["فرح", "مسرور", "بهِج", "مبتهج", "منشرح الصدر"],
-        "antonym": ["حزين", "كئيب", "مهموم", "تعيس", "بائس"]
-      },
-      "كبير": {
-        "synonym": ["عظيم", "ضخم", "واسع", "هائل", "جسيم"],
-        "antonym": ["صغير", "ضئيل", "صغير الحجم", "مصغر", "دقيق"]
-      },
-      "جميل": {
-        "synonym": ["حسن", "وسيم", "بهي", "رائع", "فاتن"],
-        "antonym": ["قبيح", "دميم", "شائه", "بشع", "غير جذاب"]
-      },
-      "سريع": {
-        "synonym": ["عاجل", "مسرع", "خاطف", "فوري", "مستعجل"],
-        "antonym": ["بطيء", "متأن", "متمهل", "هادئ", "رخو"]
+    // دالة لجلب البيانات من ملف JSON
+    async function fetchSemanticData() {
+      try {
+        const response = await fetch('/data/semanticData.json');
+        if (!response.ok) {
+          throw new Error('فشل في جلب البيانات');
+        }
+        return await response.json();
+      } catch (error) {
+        console.error('خطأ في جلب البيانات:', error);
+        // في حالة فشل جلب البيانات، نستخدم بيانات افتراضية كبديل
+        return {
+          "نور": {
+            "synonym": ["ضياء", "إشراق", "سناء"],
+            "antonym": ["ظلام", "عتمة", "ليل"]
+          },
+          "سعيد": {
+            "synonym": ["فرح", "مسرور", "بهِج", "مبتهج", "منشرح الصدر"],
+            "antonym": ["حزين", "كئيب", "مهموم", "تعيس", "بائس"]
+          },
+          "كبير": {
+            "synonym": ["عظيم", "ضخم", "واسع", "هائل", "جسيم"],
+            "antonym": ["صغير", "ضئيل", "صغير الحجم", "مصغر", "دقيق"]
+          },
+          "جميل": {
+            "synonym": ["حسن", "وسيم", "بهي", "رائع", "فاتن"],
+            "antonym": ["قبيح", "دميم", "شائه", "بشع", "غير جذاب"]
+          },
+          "سريع": {
+            "synonym": ["عاجل", "مسرع", "خاطف", "فوري", "مستعجل"],
+            "antonym": ["بطيء", "متأن", "متمهل", "هادئ", "رخو"]
+          }
+        };
       }
-    };
+    }
 
     // دالة للبحث عن الكلمة في جميع المواضع
-    function findWordEntries(searchWord) {
+    function findWordEntries(data, searchWord) {
       const results = [];
       
       for (const [mainWord, relations] of Object.entries(data)) {
@@ -324,51 +361,83 @@
       return results;
     }
 
-    analyzeBtn.addEventListener('click', () => {
+    // دالة لتفعيل/تعطيل زر البحث
+    function toggleButtonState(loading) {
+      if (loading) {
+        analyzeBtn.disabled = true;
+        btnText.style.display = 'none';
+        btnLoading.style.display = 'inline-block';
+      } else {
+        analyzeBtn.disabled = false;
+        btnText.style.display = 'inline-block';
+        btnLoading.style.display = 'none';
+      }
+    }
+
+    // معالج حدث البحث
+    analyzeBtn.addEventListener('click', async () => {
       const word = input.value.trim();
       const type = typeSelect.value;
-      resultsContainer.innerHTML = "";
-
+      
       if (!word) {
         resultsContainer.innerHTML = `<p style="color:#888;">يرجى إدخال كلمة للبحث 🔍</p>`;
         return;
       }
 
-      const entries = findWordEntries(word);
-      
-      if (entries.length === 0) {
-        resultsContainer.innerHTML = `<p style="color:#888;">لا توجد بيانات لهذه الكلمة 😔</p>`;
-        return;
+      // تفعيل حالة التحميل
+      toggleButtonState(true);
+      resultsContainer.innerHTML = `<p style="color:#888;">جاري البحث...</p>`;
+
+      try {
+        // جلب البيانات من ملف JSON
+        const semanticData = await fetchSemanticData();
+        
+        // البحث في البيانات
+        const entries = findWordEntries(semanticData, word);
+        
+        // عرض النتائج
+        resultsContainer.innerHTML = "";
+        
+        if (entries.length === 0) {
+          resultsContainer.innerHTML = `<p style="color:#888;">لا توجد بيانات لهذه الكلمة 😔</p>`;
+          return;
+        }
+
+        entries.forEach(entry => {
+          const { mainWord, foundAs, relations } = entry;
+          
+          const card = document.createElement('div');
+          card.className = 'result-card';
+          
+          let content = `
+            <div class="main-word">${mainWord}</div>
+            <div class="found-as">تم العثور على "${word}" كـ ${foundAs}</div>
+          `;
+          
+          if (type === "all" || type === "synonym") {
+            content += `
+              <div class="label">المرادفات</div>
+              <div class="words">${relations.synonym.join('، ')}</div>
+            `;
+          }
+
+          if (type === "all" || type === "antonym") {
+            content += `
+              <div class="label">الأضداد</div>
+              <div class="words">${relations.antonym.join('، ')}</div>
+            `;
+          }
+          
+          card.innerHTML = content;
+          resultsContainer.appendChild(card);
+        });
+      } catch (error) {
+        console.error('خطأ في البحث:', error);
+        resultsContainer.innerHTML = `<p style="color:#ff6b6b;">حدث خطأ أثناء البحث. يرجى المحاولة مرة أخرى.</p>`;
+      } finally {
+        // إلغاء حالة التحميل
+        toggleButtonState(false);
       }
-
-      entries.forEach(entry => {
-        const { mainWord, foundAs, relations } = entry;
-        
-        const card = document.createElement('div');
-        card.className = 'result-card';
-        
-        let content = `
-          <div class="main-word">${mainWord}</div>
-          <div class="found-as">تم العثور على "${word}" كـ ${foundAs}</div>
-        `;
-        
-        if (type === "all" || type === "synonym") {
-          content += `
-            <div class="label">المرادفات</div>
-            <div class="words">${relations.synonym.join('، ')}</div>
-          `;
-        }
-
-        if (type === "all" || type === "antonym") {
-          content += `
-            <div class="label">الأضداد</div>
-            <div class="words">${relations.antonym.join('، ')}</div>
-          `;
-        }
-        
-        card.innerHTML = content;
-        resultsContainer.appendChild(card);
-      });
     });
   </script>
 </body>
