@@ -7,7 +7,90 @@
 
   <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700&display=swap" rel="stylesheet">
 
+  <style>
+    body {
+      font-family: 'Cairo', sans-serif;
+      background: #f8f9fa;
+      margin: 0;
+      padding: 0;
+      color: #333;
+      text-align: center;
+    }
+    .container {
+      max-width: 700px;
+      margin: 40px auto;
+      padding: 20px;
+      background: white;
+      border-radius: 15px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    }
+    header h1 {
+      color: #1a73e8;
+      margin-bottom: 5px;
+    }
+    header p {
+      color: #666;
+      font-size: 0.9em;
+    }
+    .tool-box {
+      margin: 25px 0;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      text-align: right;
+    }
+    input, select, button {
+      font-family: 'Cairo', sans-serif;
+      padding: 10px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      outline: none;
+      font-size: 1em;
+    }
+    button {
+      background: #1a73e8;
+      color: white;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+    button:hover {
+      background: #155cc2;
+    }
+    .results-section {
+      margin-top: 20px;
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 15px;
+    }
+    .result-card {
+      background: #f1f3f4;
+      padding: 15px;
+      border-radius: 10px;
+      text-align: right;
+    }
+    .card-title {
+      color: #1a73e8;
+      margin-bottom: 8px;
+    }
+    .word-list {
+      list-style: none;
+      padding: 0;
+    }
+    .word-list li {
+      background: white;
+      margin: 5px 0;
+      padding: 8px 10px;
+      border-radius: 8px;
+      border: 1px solid #ddd;
+    }
+    footer {
+      margin-top: 30px;
+      font-size: 0.9em;
+      color: #777;
+    }
+  </style>
 </head>
+
 <body>
   <div class="container">
     <header>
@@ -32,94 +115,10 @@
     <div id="results-container" class="results-section"></div>
 
     <footer>
-      <p>نسخة تجريبية وليست للنشر، فقط مجر استعراض للفكرة :)</p>
+      <p>نسخة تجريبية وليست للنشر — مجرد استعراض للفكرة 😊</p>
     </footer>
   </div>
 
-  <script>
-    const semanticData = {
-      "سعيد": {
-        synonym: ["فرح", "مسرور", "مبتهج"],
-        antonym: ["حزين", "كئيب", "بائس"]
-      },
-      "كبير": {
-        synonym: ["عظيم", "ضخم", "واسع"],
-        antonym: ["صغير", "ضئيل", "حقير"]
-      },
-      "بيت": {
-        synonym: ["منزل", "دار", "مسكن"],
-        antonym: ["شارع", "خارج"]
-      },
-      "طالب": {
-        synonym: ["دارس", "تلميذ", "متعلم"],
-        antonym: ["أستاذ", "معلم"]
-      },
-      "سيارة": {
-        synonym: ["مركبة", "عربة"],
-        antonym: ["دراجة", "مشي"]
-      },
-      "نور": {
-        synonym: ["ضياء", "إشراق", "سناء"],
-        antonym: ["ظلام", "عتمة", "ليل"]
-      }
-    };
-
-    const wordInput = document.getElementById("word-input");
-    const relationType = document.getElementById("relation-type");
-    const analyzeBtn = document.getElementById("analyze-btn");
-    const resultsContainer = document.getElementById("results-container");
-
-    function analyzeWord() {
-      const word = wordInput.value.trim();
-      const selectedRelation = relationType.value;
-      resultsContainer.innerHTML = "";
-
-      if (!semanticData[word]) {
-        resultsContainer.innerHTML = `
-          <div class="result-card" style="grid-column:1 / -1">
-            <h2 class="card-title">النتيجة</h2>
-            <p>الكلمة "${word}" غير موجودة في قاعدة البيانات.</p>
-          </div>`;
-        return;
-      }
-
-      if (selectedRelation === "all") {
-        displayRelation("synonym", semanticData[word].synonym);
-        displayRelation("antonym", semanticData[word].antonym);
-      } else {
-        displayRelation(selectedRelation, semanticData[word][selectedRelation]);
-      }
-    }
-
-    function displayRelation(type, words) {
-      let title = type === "synonym" ? "الترادف (مرادفات)" : "التضاد (أضداد)";
-      let desc = type === "synonym"
-        ? "كلمات مختلفة تدل على نفس المعنى"
-        : "كلمات تعبر عن معانٍ متقابلة";
-
-      const card = document.createElement("div");
-      card.className = "result-card";
-
-      let listHTML = words.map(w => `<li>${w}</li>`).join("");
-
-      card.innerHTML = `
-        <h2 class="card-title">${title}</h2>
-        <p>${desc}</p>
-        <ul class="word-list">${listHTML}</ul>
-      `;
-
-      resultsContainer.appendChild(card);
-    }
-
-    analyzeBtn.addEventListener("click", analyzeWord);
-    wordInput.addEventListener("keypress", e => {
-      if (e.key === "Enter") analyzeWord();
-    });
-
-    window.addEventListener("load", () => {
-      wordInput.value = "سعيد";
-      analyzeWord();
-    });
-  </script>
+  <script src="js/main.js"></script>
 </body>
 </html>
