@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>الكلمات الدخيلة على العربية</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    * {
+      box-sizing: border-box;
+      font-family: 'Cairo', sans-serif;
+    }
+
+    body {
+      margin: 0;
+      background-color: #fff;
+      color: #000;
+      text-align: center;
+    }
+
+    .container {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    header {
+      background-color: #4fc3c3;
+      color: white;
+      padding: 15px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-direction: row;
+    }
+
+    .header-content {
+      text-align: right;
+    }
+
+    header h1 {
+      font-size: 22px;
+      margin: 0;
+    }
+
+    header p {
+      margin: 0;
+      font-size: 14px;
+    }
+
+    .menu-icon {
+      width: 25px;
+      height: 20px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      cursor: pointer;
+    }
+
+    .menu-icon span {
+      display: block;
+      height: 3px;
+      background: white;
+      border-radius: 2px;
+    }
+
+    .tool-box {
+      background-color: #73d8d8;
+      border-radius: 20px;
+      padding: 25px;
+      width: 80%;
+      max-width: 350px;
+      margin: 40px auto;
+    }
+
+    .tool-box label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 600;
+    }
+
+    input, select {
+      width: 100%;
+      padding: 10px;
+      border-radius: 10px;
+      border: none;
+      font-size: 16px;
+      text-align: center;
+      margin-bottom: 15px;
+    }
+
+    button {
+      width: 100%;
+      padding: 10px;
+      background-color: #6ef3f3;
+      border: none;
+      border-radius: 10px;
+      font-size: 18px;
+      font-weight: 600;
+      cursor: pointer;
+      color: #000;
+      transition: background-color 0.3s;
+    }
+
+    button:hover {
+      background-color: #4fc3c3;
+    }
+
+    button:disabled {
+      background-color: #cccccc;
+      cursor: not-allowed;
+    }
+
+    .results-section {
+      flex: 1;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 25px;
+    }
+
+    .result-card {
+      width: 85%;
+      max-width: 450px;
+      background-color: #eafafa;
+      border: 2px solid #4fc3c3;
+      border-radius: 15px;
+      padding: 20px;
+      text-align: right;
+      box-shadow: 0 3px 8px rgba(0,0,0,0.1);
+      transition: transform 0.2s ease;
+    }
+
+    .result-card:hover {
+      transform: scale(1.02);
+    }
+
+    .arabic-word {
+      font-size: 22px;
+      font-weight: bold;
+      color: #2a7e7e;
+      margin-bottom: 15px;
+      padding-bottom: 10px;
+      border-bottom: 1px dashed #4fc3c3;
+    }
+
+    .origin-label {
+      display: inline-block;
+      background-color: #4fc3c3;
+      color: white;
+      border-radius: 10px;
+      padding: 5px 15px;
+      font-size: 18px;
+      margin-bottom: 10px;
+    }
+
+    .meaning-label {
+      display: inline-block;
+      background-color: #f9a826;
+      color: white;
+      border-radius: 10px;
+      padding: 5px 15px;
+      font-size: 18px;
+      margin-bottom: 10px;
+    }
+
+    .origin, .meaning {
+      margin: 5px 0 0 0;
+      font-size: 18px;
+      line-height: 1.6;
+      color: #333;
+    }
+
+    .loading {
+      display: inline-block;
+      width: 20px;
+      height: 20px;
+      border: 3px solid rgba(255,255,255,.3);
+      border-radius: 50%;
+      border-top-color: #fff;
+      animation: spin 1s ease-in-out infinite;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    footer {
+      background-color: #4fc3c3;
+      color: white;
+      padding: 15px;
+      margin-top: auto;
+    }
+
+    /* تحسينات للشاشات الكبيرة */
+    @media (min-width: 768px) {
+      .container {
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+      }
+      
+      header {
+        padding: 20px 40px;
+        border-radius: 0 0 15px 15px;
+      }
+      
+      header h1 {
+        font-size: 28px;
+      }
+      
+      header p {
+        font-size: 16px;
+      }
+      
+      .tool-box {
+        max-width: 500px;
+        padding: 40px;
+      }
+      
+      .results-section {
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 30px;
+      }
+      
+      .result-card {
+        width: 45%;
+        max-width: 500px;
+      }
+    }
+
+    @media (min-width: 1024px) {
+      .result-card {
+        width: 30%;
+      }
+      
+      .tool-box {
+        max-width: 600px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <header>
+      <div class="header-content">
+        <h1>الكلمات الدخيلة على العربية</h1>
+        <p>كلمات من أصول غير عربية مستخدمة في اللغة العربية</p>
+      </div>
+      <div class="menu-icon">
+        <span></span><span></span><span></span>
+      </div>
+    </header>
+
+    <div class="tool-box">
+      <label for="word-input">ابحث عن كلمة:</label>
+      <input type="text" id="word-input" placeholder="اكتب الكلمة العربية...">
+
+      <label for="origin-type">اختر الأصل:</label>
+      <select id="origin-type">
+        <option value="all">جميع الأصول</option>
+        <option value="إنجليزي">إنجليزي</option>
+        <option value="فرنسي">فرنسي</option>
+        <option value="فارسي">فارسي</option>
+        <option value="تركي">تركي</option>
+        <option value="إيطالي">إيطالي</option>
+        <option value="إسباني">إسباني</option>
+        <option value="يوناني">يوناني</option>
+        <option value="ألماني">ألماني</option>
+        <option value="لاتيني">لاتيني</option>
+        <option value="هندي">هندي</option>
+      </select>
+
+      <button id="search-btn">
+        <span id="btn-text">بحث</span>
+        <span id="btn-loading" class="loading" style="display: none;"></span>
+      </button>
+    </div>
+
+    <div id="results-container" class="results-section">
+      <!-- سيتم عرض النتائج هنا -->
+    </div>
+
+    <footer>
+      <p>مشروع الكلمات الدخيلة على العربية - الإصدار التجريبي 1.0</p>
+    </footer>
+  </div>
+
+  <script>
+    // بيانات الكلمات الدخيلة
+    const borrowedWords = [
+      { arabic: "تلفاز", origin: "فرنسي", original: "Télévision", meaning: "جهاز لنقل الصورة والصوت" },
+      { arabic: "راديو", origin: "إنجليزي", original: "Radio", meaning: "جهاز بث إذاعي" },
+      { arabic: "تلفون", origin: "إنجليزي", original: "Telephone", meaning: "وسيلة اتصال صوتي" },
+      { arabic: "كومبيوتر", origin: "إنجليزي", original: "Computer", meaning: "الحاسوب" },
+      { arabic: "إنترنت", origin: "إنجليزي", original: "Internet", meaning: "شبكة عالمية للمعلومات" },
+      { arabic: "بنطلون", origin: "فرنسي", original: "Pantalon", meaning: "سروال" },
+      { arabic: "قميص", origin: "يوناني", original: "Kamis", meaning: "ثوب علوي" },
+      { arabic: "دولاب", origin: "تركي", original: "Dolap", meaning: "خزانة" },
+      { arabic: "دفتر", origin: "فارسي", original: "Daftar", meaning: "كراسة للكتابة" },
+      { arabic: "إبريق", origin: "فارسي", original: "Ābrīz", meaning: "إناء للماء" },
+      { arabic: "فنجان", origin: "فارسي", original: "Fingān", meaning: "كأس صغير للقهوة" },
+      { arabic: "بازار", origin: "فارسي", original: "Bāzār", meaning: "سوق" },
+      { arabic: "سندوتش", origin: "إنجليزي", original: "Sandwich", meaning: "خبز محشو" },
+      { arabic: "شوكولاتة", origin: "إسباني", original: "Chocolate", meaning: "حلوى الكاكاو" },
+      { arabic: "تذكرة", origin: "تركي", original: "Tezkere", meaning: "ورقة دخول أو سفر" },
+      { arabic: "دولي", origin: "تركي", original: "Döly", meaning: "مرتبط بالبلد (دولي)" },
+      { arabic: "بسترمة", origin: "تركي", original: "Pastırma", meaning: "لحم مجفف متبّل" },
+      { arabic: "بوسطة", origin: "إيطالي", original: "Posta", meaning: "البريد" },
+      { arabic: "بلكونة", origin: "إيطالي", original: "Balcone", meaning: "شرفة" },
+      { arabic: "جرس", origin: "فارسي", original: "Jaras", meaning: "أداة صوتية للإنذار" },
+      { arabic: "أستاذ", origin: "فارسي", original: "Ustād", meaning: "معلم" },
+      { arabic: "صابون", origin: "فارسي", original: "Sābun", meaning: "مادة تنظيف" },
+      { arabic: "طاولة", origin: "إيطالي", original: "Tavola", meaning: "منضدة" },
+      { arabic: "دكان", origin: "فارسي", original: "Dukkān", meaning: "متجر صغير" },
+      { arabic: "كراج", origin: "فرنسي", original: "Garage", meaning: "مكان لركن السيارات" },
+      { arabic: "أتوبيس", origin: "إنجليزي", original: "Autobus", meaning: "حافلة نقل" },
+      { arabic: "جيب", origin: "إنجليزي", original: "Jeep", meaning: "سيارة صغيرة" },
+      { arabic: "تيليفون", origin: "إنجليزي", original: "Telephone", meaning: "هاتف" },
+      { arabic: "سينما", origin: "فرنسي", original: "Cinéma", meaning: "دار عرض الأفلام" },
+      { arabic: "رادار", origin: "إنجليزي", original: "Radar", meaning: "جهاز كشف الأجسام" },
+      { arabic: "كمبيوتر", origin: "إنجليزي", original: "Computer", meaning: "الحاسوب" },
+      { arabic: "بنزين", origin: "ألماني", original: "Benzin", meaning: "وقود السيارات" },
+      { arabic: "ماكينة", origin: "إيطالي", original: "Macchina", meaning: "آلة" },
+      { arabic: "ماركة", origin: "إيطالي", original: "Marca", meaning: "علامة تجارية" },
+      { arabic: "بطيخ", origin: "تركي", original: "Patlıcan", meaning: "فاكهة (تحول المعنى)" },
+      { arabic: "أسانسير", origin: "فرنسي", original: "Ascenseur", meaning: "مصعد" },
+      { arabic: "شطرنج", origin: "فارسي", original: "Shatranj", meaning: "لعبة الطاولة" },
+      { arabic: "سكر", origin: "هندي", original: "Shakkar", meaning: "مادة التحلية" },
+      { arabic: "قنديل", origin: "يوناني", original: "Kandíli", meaning: "مصباح قديم" },
+      { arabic: "قهوة", origin: "تركي", original: "Kahve", meaning: "مشروب القهوة" },
+      { arabic: "مهرجان", origin: "فارسي", original: "Mehregān", meaning: "احتفال أو سوق كبير" },
+      { arabic: "كيروسين", origin: "إنجليزي", original: "Kerosene", meaning: "وقود" },
+      { arabic: "برميل", origin: "لاتيني", original: "Barrel", meaning: "وعاء كبير" },
+      { arabic: "دفتر شيكات", origin: "فارسي/إنجليزي", original: "", meaning: "كراسة شيكات" },
+      { arabic: "طماطم", origin: "إسباني", original: "Tomate", meaning: "خضار (بندورة)" },
+      { arabic: "باذنجان", origin: "فارسي", original: "Bādingān", meaning: "خضار" },
+      { arabic: "فلفل", origin: "هندي", original: "Pilipili", meaning: "بهار" },
+      { arabic: "قنطار", origin: "لاتيني", original: "Centenarium", meaning: "وحدة وزن" },
+      { arabic: "كحول", origin: "عربي قديم/لاتيني", original: "", meaning: "مشروب روحي (صار أعجميًا بتركيبه)" },
+      { arabic: "مروحة", origin: "تركي", original: "Merwāḥa", meaning: "أداة لتبريد الهواء" }
+    ];
+
+    const searchBtn = document.getElementById('search-btn');
+    const btnText = document.getElementById('btn-text');
+    const btnLoading = document.getElementById('btn-loading');
+    const input = document.getElementById('word-input');
+    const originSelect = document.getElementById('origin-type');
+    const resultsContainer = document.getElementById('results-container');
+
+    // دالة لتفعيل/تعطيل زر البحث
+    function toggleButtonState(loading) {
+      if (loading) {
+        searchBtn.disabled = true;
+        btnText.style.display = 'none';
+        btnLoading.style.display = 'inline-block';
+      } else {
+        searchBtn.disabled = false;
+        btnText.style.display = 'inline-block';
+        btnLoading.style.display = 'none';
+      }
+    }
+
+    // دالة لعرض الكلمات
+    function displayWords(words) {
+      resultsContainer.innerHTML = "";
+      
+      if (words.length === 0) {
+        resultsContainer.innerHTML = `<p style="color:#888;">لم يتم العثور على نتائج تطابق البحث.</p>`;
+        return;
+      }
+
+      words.forEach(word => {
+        const card = document.createElement('div');
+        card.className = 'result-card';
+        
+        let content = `
+          <div class="arabic-word">${word.arabic}</div>
+          <div class="origin-label">الأصل: ${word.origin}</div>
+          ${word.original ? `<div class="origin">الكلمة الأصلية: ${word.original}</div>` : ''}
+          <div class="meaning-label">المعنى أو الاستخدام</div>
+          <div class="meaning">${word.meaning}</div>
+        `;
+        
+        card.innerHTML = content;
+        resultsContainer.appendChild(card);
+      });
+    }
+
+    // دالة للبحث عن الكلمات
+    function searchWords() {
+      const searchTerm = input.value.trim().toLowerCase();
+      const selectedOrigin = originSelect.value;
+      
+      // تفعيل حالة التحميل
+      toggleButtonState(true);
+      
+      // محاكاة وقت التحميل لتحسين تجربة المستخدم
+      setTimeout(() => {
+        let filteredWords = borrowedWords;
+        
+        // تصفية حسب البحث النصي
+        if (searchTerm) {
+          filteredWords = filteredWords.filter(word => 
+            word.arabic.toLowerCase().includes(searchTerm) || 
+            word.meaning.toLowerCase().includes(searchTerm)
+          );
+        }
+        
+        // تصفية حسب الأصل
+        if (selectedOrigin !== "all") {
+          filteredWords = filteredWords.filter(word => word.origin === selectedOrigin);
+        }
+        
+        // عرض النتائج
+        displayWords(filteredWords);
+        
+        // إلغاء حالة التحميل
+        toggleButtonState(false);
+      }, 500);
+    }
+
+    // معالج حدث البحث
+    searchBtn.addEventListener('click', searchWords);
+
+    // البحث أثناء الكتابة
+    input.addEventListener('input', searchWords);
+
+    // البحث عند تغيير نوع الأصل
+    originSelect.addEventListener('change', searchWords);
+
+    // عرض جميع الكلمات عند تحميل الصفحة
+    window.addEventListener('load', () => {
+      displayWords(borrowedWords);
+    });
+  </script>
+</body>
+</html>
