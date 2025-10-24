@@ -8,85 +8,133 @@
   <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700&display=swap" rel="stylesheet">
 
   <style>
-    body {
+    * {
+      box-sizing: border-box;
       font-family: 'Cairo', sans-serif;
-      background: #f8f9fa;
+    }
+
+    body {
       margin: 0;
-      padding: 0;
-      color: #333;
+      background-color: #fff;
+      color: #000;
       text-align: center;
     }
+
     .container {
-      max-width: 700px;
-      margin: 40px auto;
-      padding: 20px;
-      background: white;
-      border-radius: 15px;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-    }
-    header h1 {
-      color: #1a73e8;
-      margin-bottom: 5px;
-    }
-    header p {
-      color: #666;
-      font-size: 0.9em;
-    }
-    .tool-box {
-      margin: 25px 0;
+      min-height: 100vh;
       display: flex;
       flex-direction: column;
-      gap: 10px;
-      text-align: right;
     }
-    input, select, button {
-      font-family: 'Cairo', sans-serif;
-      padding: 10px;
-      border-radius: 8px;
-      border: 1px solid #ccc;
-      outline: none;
-      font-size: 1em;
-    }
-    button {
-      background: #1a73e8;
+
+    /* الشريط العلوي */
+    header {
+      background-color: #4fc3c3;
       color: white;
+      padding: 15px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-direction: row-reverse;
+    }
+
+    header h1 {
+      font-size: 22px;
+      margin: 0;
+    }
+
+    header p {
+      margin: 0;
+      font-size: 14px;
+    }
+
+    .menu-icon {
+      width: 25px;
+      height: 20px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
       cursor: pointer;
-      transition: 0.3s;
     }
-    button:hover {
-      background: #155cc2;
+
+    .menu-icon span {
+      display: block;
+      height: 3px;
+      background: white;
+      border-radius: 2px;
     }
-    .results-section {
-      margin-top: 20px;
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 15px;
+
+    /* صندوق الإدخال */
+    .tool-box {
+      background-color: #73d8d8;
+      border-radius: 20px;
+      padding: 25px;
+      width: 80%;
+      max-width: 350px;
+      margin: 40px auto;
     }
-    .result-card {
-      background: #f1f3f4;
-      padding: 15px;
+
+    .tool-box label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 600;
+    }
+
+    input, select {
+      width: 100%;
+      padding: 10px;
       border-radius: 10px;
+      border: none;
+      font-size: 16px;
+      text-align: center;
+      margin-bottom: 15px;
+    }
+
+    button {
+      width: 100%;
+      padding: 10px;
+      background-color: #6ef3f3;
+      border: none;
+      border-radius: 10px;
+      font-size: 18px;
+      font-weight: 600;
+      cursor: pointer;
+      color: #000;
+    }
+
+    /* النتائج */
+    .results-section {
+      flex: 1;
+      padding: 0 20px;
+    }
+
+    .result {
+      width: 80%;
+      max-width: 400px;
+      margin: 20px auto;
       text-align: right;
     }
-    .card-title {
-      color: #1a73e8;
-      margin-bottom: 8px;
+
+    .label {
+      display: inline-block;
+      background-color: #73d8d8;
+      color: white;
+      border-radius: 10px;
+      padding: 5px 15px;
+      font-size: 18px;
+      margin-top: 10px;
     }
-    .word-list {
-      list-style: none;
-      padding: 0;
+
+    .words {
+      margin: 8px 0 20px 0;
+      font-size: 18px;
+      line-height: 1.6;
     }
-    .word-list li {
-      background: white;
-      margin: 5px 0;
-      padding: 8px 10px;
-      border-radius: 8px;
-      border: 1px solid #ddd;
-    }
+
     footer {
-      margin-top: 30px;
-      font-size: 0.9em;
-      color: #777;
+      background-color: #4fc3c3;
+      color: white;
+      padding: 15px;
+      margin-top: auto;
     }
   </style>
 </head>
@@ -94,8 +142,15 @@
 <body>
   <div class="container">
     <header>
-      <h1>مشروع علم الدلالة</h1>
-      <p>نسخة أولية (تجريبية)</p>
+      <div>
+        <h1>مشروع علم الدلالة</h1>
+        <p>نسخة أولية (تجريبية)</p>
+      </div>
+      <div class="menu-icon">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
     </header>
 
     <div class="tool-box">
@@ -109,13 +164,15 @@
         <option value="antonym">التضاد (أضداد)</option>
       </select>
 
-      <button id="analyze-btn">حلل الكلمة</button>
+      <button id="analyze-btn">بحث</button>
     </div>
 
-    <div id="results-container" class="results-section"></div>
+    <div id="results-container" class="results-section">
+      <!-- سيتم عرض النتائج هنا -->
+    </div>
 
     <footer>
-      <p>نسخة تجريبية وليست للنشر — مجرد استعراض للفكرة 😊</p>
+      <p>الإصدار التجريبي 1.0</p>
     </footer>
   </div>
 
