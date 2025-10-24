@@ -175,6 +175,36 @@
       margin-bottom: 10px;
     }
 
+    .phonetics-section {
+      margin-top: 15px;
+      padding-top: 15px;
+      border-top: 1px dashed #4fc3c3;
+    }
+
+    .phonetics-section .label {
+      background-color: #a855f7;
+    }
+
+    .phonetics-details {
+      text-align: right;
+      margin-top: 10px;
+    }
+
+    .phonetic-item {
+      margin-bottom: 8px;
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .phonetic-term {
+      font-weight: bold;
+      color: #6b21a8;
+    }
+
+    .phonetic-def {
+      color: #333;
+    }
+
     .loading {
       display: inline-block;
       width: 20px;
@@ -291,16 +321,16 @@
     const typeSelect = document.getElementById('relation-type');
     const resultsContainer = document.getElementById('results-container');
 
-    // دالة لجلب البيانات من ملف JSON
+    // دالة لجلب البيانات الدلالية من ملف JSON
     async function fetchSemanticData() {
       try {
-        const response = await fetch('/data/semanticData.json');
+        const response = await fetch('data/semanticData.json');
         if (!response.ok) {
-          throw new Error('فشل في جلب البيانات');
+          throw new Error('فشل في جلب البيانات الدلالية');
         }
         return await response.json();
       } catch (error) {
-        console.error('خطأ في جلب البيانات:', error);
+        console.error('خطأ في جلب البيانات الدلالية:', error);
         // في حالة فشل جلب البيانات، نستخدم بيانات افتراضية كبديل
         return {
           "نور": {
@@ -314,14 +344,45 @@
           "كبير": {
             "synonym": ["عظيم", "ضخم", "واسع", "هائل", "جسيم"],
             "antonym": ["صغير", "ضئيل", "صغير الحجم", "مصغر", "دقيق"]
+          }
+        };
+      }
+    }
+
+    // دالة لجلب بيانات الصوامت من الرابط الخارجي
+    async function fetchPhoneticData() {
+      try {
+        const response = await fetch('https://raw.githubusercontent.com/qmsweb/aswat/main/script.js');
+        if (!response.ok) {
+          throw new Error('فشل في جلب بيانات الصوامت');
+        }
+        const scriptText = await response.text();
+        
+        // استخراج كائن aswat من النص
+        const aswatMatch = scriptText.match(/var aswat = ({[\s\S]*?});/);
+        if (aswatMatch && aswatMatch[1]) {
+          return JSON.parse(aswatMatch[1]);
+        } else {
+          throw new Error('لم يتم العثور على بيانات الصوامت في النص');
+        }
+      } catch (error) {
+        console.error('خطأ في جلب بيانات الصوامت:', error);
+        // في حالة فشل جلب البيانات، نستخدم بيانات افتراضية كبديل
+        return {
+          'ن': {
+            'طريقة النطق': 'صوت لثوي أنفي',
+            'مكان النطق': 'طرف اللسان مع اللثة',
+            'الصفات': 'جهر، استفال، انفتاح'
           },
-          "جميل": {
-            "synonym": ["حسن", "وسيم", "بهي", "رائع", "فاتن"],
-            "antonym": ["قبيح", "دميم", "شائه", "بشع", "غير جذاب"]
+          'و': {
+            'طريقة النطق': 'صوت شفوي احتكاكي',
+            'مكان النطق': 'الشفتان',
+            'الصفات': 'جهر، استفال، انفتاح'
           },
-          "سريع": {
-            "synonym": ["عاجل", "مسرع", "خاطف", "فوري", "مستعجل"],
-            "antonym": ["بطيء", "متأن", "متمهل", "هادئ", "رخو"]
+          'ر': {
+            'طريقة النطق': 'صوت لثوي ارتطامي',
+            'مكان النطق': 'طرف اللسان مع اللثة',
+            'الصفات': 'جهر، استفال، انفتاح'
           }
         };
       }
@@ -374,6 +435,38 @@
       }
     }
 
+    // دالة لإنشاء قسم الصوامت
+    function createPhoneticsSection(word, phoneticData) {
+      if (!word || word.length === 0) return '';
+      
+      const firstChar = word.charAt(0);
+      const phonetics = phoneticData[firstChar];
+      
+      if (!phonetics) return '';
+      
+      let phoneticsHTML = `
+        <div class="phonetics-section">
+          <div class="label">الصوامت (الحرف الأول: ${firstChar})</div>
+          <div class="phonetics-details">
+      `;
+      
+      for (const [key, value] of Object.entries(phonetics)) {
+        phoneticsHTML += `
+          <div class="phonetic-item">
+            <span class="phonetic-term">${key}:</span>
+            <span class="phonetic-def">${value}</span>
+          </div>
+        `;
+      }
+      
+      phoneticsHTML += `
+          </div>
+        </div>
+      `;
+      
+      return phoneticsHTML;
+    }
+
     // معالج حدث البحث
     analyzeBtn.addEventListener('click', async () => {
       const word = input.value.trim();
@@ -389,17 +482,20 @@
       resultsContainer.innerHTML = `<p style="color:#888;">جاري البحث...</p>`;
 
       try {
-        // جلب البيانات من ملف JSON
-        const semanticData = await fetchSemanticData();
+        // جلب البيانات من الملفات الخارجية
+        const [semanticData, phoneticData] = await Promise.all([
+          fetchSemanticData(),
+          fetchPhoneticData()
+        ]);
         
-        // البحث في البيانات
+        // البحث في البيانات الدلالية
         const entries = findWordEntries(semanticData, word);
         
         // عرض النتائج
         resultsContainer.innerHTML = "";
         
         if (entries.length === 0) {
-          resultsContainer.innerHTML = `<p style="color:#888;">الكلمة غير موجودة في قاعدة بياناتنا.</p>`;
+          resultsContainer.innerHTML = `<p style="color:#888;">الكلمة "${word}" غير موجودة في قاعدة بياناتنا.</p>`;
           return;
         }
 
@@ -427,6 +523,9 @@
               <div class="words">${relations.antonym.join('، ')}</div>
             `;
           }
+          
+          // إضافة قسم الصوامت
+          content += createPhoneticsSection(word, phoneticData);
           
           card.innerHTML = content;
           resultsContainer.appendChild(card);
