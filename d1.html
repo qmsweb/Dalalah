@@ -44,11 +44,13 @@
     header h1 {
       font-size: 22px;
       margin: 0;
+      font-weight: 700; /* جعل العنوان عريض */
     }
 
     header p {
       margin: 0;
       font-size: 14px;
+      font-weight: 600; /* جعل النص عريض */
     }
 
     .menu-icon {
@@ -79,7 +81,7 @@
     .tool-box label {
       display: block;
       margin-bottom: 8px;
-      font-weight: 600;
+      font-weight: 700; /* جعل التسميات عريضة */
     }
 
     input, select {
@@ -99,7 +101,7 @@
       border: none;
       border-radius: 10px;
       font-size: 18px;
-      font-weight: 600;
+      font-weight: 700; /* جعل نص الزر عريض */
       cursor: pointer;
       color: #000;
       transition: background-color 0.3s;
@@ -141,7 +143,7 @@
 
     .main-word {
       font-size: 22px;
-      font-weight: bold;
+      font-weight: 700; /* جعل الكلمة الرئيسية عريضة */
       color: #2a7e7e;
       margin-bottom: 15px;
       padding-bottom: 10px;
@@ -149,13 +151,15 @@
     }
 
     .label {
-      display: inline-block;
+      display: inline-flex;
+      align-items: center;
       background-color: #4fc3c3;
       color: white;
       border-radius: 10px;
       padding: 5px 15px;
       font-size: 18px;
       margin-bottom: 10px;
+      font-weight: 700; /* جعل التسميات عريضة */
     }
 
     .words {
@@ -173,6 +177,7 @@
       padding: 3px 10px;
       font-size: 14px;
       margin-bottom: 10px;
+      font-weight: 600; /* جعل النص عريض */
     }
 
     .phonetics-section {
@@ -183,6 +188,15 @@
 
     .phonetics-section .label {
       background-color: #a855f7;
+    }
+
+    .phonetics-icon {
+      width: 20px;
+      height: 20px;
+      margin-left: 8px;
+      background-color: #000;
+      border-radius: 4px;
+      padding: 2px;
     }
 
     .phonetics-details {
@@ -197,7 +211,7 @@
     }
 
     .phonetic-term {
-      font-weight: bold;
+      font-weight: 700; /* جعل المصطلح عريض */
       color: #6b21a8;
     }
 
@@ -224,6 +238,10 @@
       color: white;
       padding: 15px;
       margin-top: auto;
+    }
+
+    footer p {
+      font-weight: 600; /* جعل نص التذييل عريض */
     }
 
     /* تحسينات للشاشات الكبيرة */
@@ -435,7 +453,10 @@
       
       let phoneticsHTML = `
         <div class="phonetics-section">
-          <div class="label">الصوامت (الحرف الأول: ${firstChar})</div>
+          <div class="label">
+            الصوامت (الحرف الأول: ${firstChar})
+            <img src="https://sawamet.jassim.one/icons/favicon.png" alt="أيقونة الصوامت" class="phonetics-icon">
+          </div>
           <div class="phonetics-details">
       `;
       
