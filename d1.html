@@ -44,13 +44,13 @@
     header h1 {
       font-size: 22px;
       margin: 0;
-      font-weight: 700; /* جعل العنوان عريض */
+      font-weight: 700;
     }
 
     header p {
       margin: 0;
       font-size: 14px;
-      font-weight: 600; /* جعل النص عريض */
+      font-weight: 600;
     }
 
     .menu-icon {
@@ -81,7 +81,7 @@
     .tool-box label {
       display: block;
       margin-bottom: 8px;
-      font-weight: 700; /* جعل التسميات عريضة */
+      font-weight: 700;
     }
 
     input, select {
@@ -101,7 +101,7 @@
       border: none;
       border-radius: 10px;
       font-size: 18px;
-      font-weight: 700; /* جعل نص الزر عريض */
+      font-weight: 700;
       cursor: pointer;
       color: #000;
       transition: background-color 0.3s;
@@ -125,23 +125,65 @@
       gap: 25px;
     }
 
-    .result-card {
+    .result-item {
       width: 85%;
-      max-width: 450px;
+      max-width: 800px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    @media (min-width: 768px) {
+      .result-item {
+        flex-direction: row;
+        align-items: stretch;
+      }
+    }
+
+    .result-image {
+      flex: 1;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .image-container {
+      width: 100%;
+      max-width: 250px;
+      aspect-ratio: 1/1;
+      border-radius: 15px;
+      overflow: hidden;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      background-color: #f0f0f0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .result-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .result-card {
+      flex: 2;
       background-color: #eafafa;
       border: 2px solid #4fc3c3;
       border-radius: 15px;
       padding: 20px;
       text-align: right;
       box-shadow: 0 3px 8px rgba(0,0,0,0.1);
+      transition: transform 0.2s ease;
     }
 
     .result-card:hover {
+      transform: scale(1.02);
     }
 
     .main-word {
       font-size: 22px;
-      font-weight: 700; /* جعل الكلمة الرئيسية عريضة */
+      font-weight: 700;
       color: #2a7e7e;
       margin-bottom: 15px;
       padding-bottom: 10px;
@@ -157,7 +199,7 @@
       padding: 5px 15px;
       font-size: 18px;
       margin-bottom: 10px;
-      font-weight: 700; /* جعل التسميات عريضة */
+      font-weight: 700;
     }
 
     .words {
@@ -175,7 +217,7 @@
       padding: 3px 10px;
       font-size: 14px;
       margin-bottom: 10px;
-      font-weight: 600; /* جعل النص عريض */
+      font-weight: 600;
     }
 
     .phonetics-section {
@@ -209,7 +251,7 @@
     }
 
     .phonetic-term {
-      font-weight: 700; /* جعل المصطلح عريض */
+      font-weight: 700;
       color: #6b21a8;
     }
 
@@ -239,7 +281,7 @@
     }
 
     footer p {
-      font-weight: 600; /* جعل نص التذييل عريض */
+      font-weight: 600;
     }
 
     /* تحسينات للشاشات الكبيرة */
@@ -267,21 +309,19 @@
       }
       
       .results-section {
-        flex-direction: row;
-        flex-wrap: wrap;
+        flex-direction: column;
         justify-content: center;
         gap: 30px;
       }
       
-      .result-card {
-        width: 45%;
-        max-width: 500px;
+      .result-item {
+        width: 90%;
       }
     }
 
     @media (min-width: 1024px) {
-      .result-card {
-        width: 30%;
+      .result-item {
+        width: 85%;
       }
       
       .tool-box {
@@ -351,15 +391,18 @@
         return {
           "نور": {
             "synonym": ["ضياء", "إشراق", "سناء"],
-            "antonym": ["ظلام", "عتمة", "ليل"]
+            "antonym": ["ظلام", "عتمة", "ليل"],
+            "image": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=774&q=80"
           },
           "سعيد": {
             "synonym": ["فرح", "مسرور", "بهِج", "مبتهج", "منشرح الصدر"],
-            "antonym": ["حزين", "كئيب", "مهموم", "تعيس", "بائس"]
+            "antonym": ["حزين", "كئيب", "مهموم", "تعيس", "بائس"],
+            "image": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=764&q=80"
           },
           "كبير": {
             "synonym": ["عظيم", "ضخم", "واسع", "هائل", "جسيم"],
-            "antonym": ["صغير", "ضئيل", "صغير الحجم", "مصغر", "دقيق"]
+            "antonym": ["صغير", "ضئيل", "صغير الحجم", "مصغر", "دقيق"],
+            "image": "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1740&q=80"
           }
         };
       }
@@ -510,6 +553,25 @@
         entries.forEach(entry => {
           const { mainWord, foundAs, relations } = entry;
           
+          // إنشاء عنصر النتيجة الجديد
+          const resultItem = document.createElement('div');
+          resultItem.className = 'result-item';
+          
+          // إنشاء قسم الصورة
+          const imageDiv = document.createElement('div');
+          imageDiv.className = 'result-image';
+          
+          const imageContainer = document.createElement('div');
+          imageContainer.className = 'image-container';
+          
+          const image = document.createElement('img');
+          image.src = relations.image || 'https://images.unsplash.com/photo-1611224923853-80b023f02d71?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1738&q=80';
+          image.alt = `صورة توضيحية لكلمة ${mainWord}`;
+          
+          imageContainer.appendChild(image);
+          imageDiv.appendChild(imageContainer);
+          
+          // إنشاء بطاقة النتيجة
           const card = document.createElement('div');
           card.className = 'result-card';
           
@@ -536,7 +598,13 @@
           content += createPhoneticsSection(word, phoneticData);
           
           card.innerHTML = content;
-          resultsContainer.appendChild(card);
+          
+          // إضافة الصورة والبطاقة إلى العنصر الرئيسي
+          resultItem.appendChild(imageDiv);
+          resultItem.appendChild(card);
+          
+          // إضافة العنصر إلى الحاوية
+          resultsContainer.appendChild(resultItem);
         });
       } catch (error) {
         console.error('خطأ في البحث:', error);
