@@ -3,8 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>عداد تنازلي — بسيط ومتوافق</title>
-  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600&display=swap" rel="stylesheet">
+  <title>قريبًا</title>
   <style>
     :root{
       --bg: #f5f7fb;
@@ -62,12 +61,6 @@
       text-align:center;
       opacity:0.85;
     }
-    .btn{
-      display:inline-block;
-      margin-top:12px;
-      padding:10px 14px;border-radius:8px;text-decoration:none;font-weight:600;
-      background:var(--accent);color:#fff
-    }
 
     @media (max-width:880px){
       .wrap{grid-template-columns:1fr;}
@@ -84,40 +77,10 @@
 <body>
   <div class="wrap" role="main">
     <div class="content">
-      <h1>الحدث القادم</h1>
-      <p>موعد الحدث: <strong>18 ديسمبر 2025 — 09:00 (Asia/Muscat)</strong></p>
-      <p>هذا قالب صفحة بسيطة تحتوي على عداد تنازلي متوافق مع كل الشاشات. إن لم يعرض العداد أدناه، فمثّل عنصر الاحتياط المعلوماتية.</p>
-      <a class="btn" href="#timer">اذهب إلى العداد</a>
+      <h1>قريبًا</h1>
+      <p>موعد الحدث: <strong>18 ديسمبر 2025 — 09:00 (توقيت سلطنة عُمان)</strong></p>
     </div>
 
-    <div id="timer" class="timer-area">
-      <!-- وسم العداد الذي وفرته -->
-      <a href="https://logwork.com/countdown-timer" class="countdown-timer" data-timezone="Asia/Muscat" data-date="2025-12-18 09:00"> </a>
-    </div>
-  </div>
 
-  <!-- سكربت العداد (مرفوع من طرف مزود خارجي) -->
-  <script src="https://cdn.logwork.com/widget/countdown.js" async defer></script>
-
-  <!-- كود صغير بديل لعرض رسالة إذا لم يتم تحميل السكربت خلال 2 ثانية -->
-  <script>
-    (function(){
-      var anchor = document.querySelector('.countdown-timer');
-      var fallbackShown = false;
-      function showFallback(){
-        if(fallbackShown) return;
-        fallbackShown = true;
-        var parent = anchor.parentElement;
-        parent.innerHTML = '<div class="fallback">\n          <div style="font-size:20px;font-weight:600">العد التنازلي</div>\n          <div style="margin-top:8px">18 ديسمبر 2025 — 09:00 (Asia/Muscat)</div>\n          <div style="margin-top:10px;color:rgba(0,0,0,0.6)">يُرجى التأكد من اتصالك بالإنترنت أو السماح بتحميل السكربت من cdn.logwork.com</div>\n        </div>';
-      }
-      // بعد 2 ثانية عرض بديل إذا السكربت لم ينشئ محتوى
-      setTimeout(function(){
-        // إذا العنصر لا يحتوي على شيء مرئي، نعرض البديل
-        if(anchor && anchor.innerHTML.trim().length === 0){
-          showFallback();
-        }
-      },2000);
-    })();
-  </script>
 </body>
 </html>
