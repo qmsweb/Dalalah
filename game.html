@@ -1,0 +1,632 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>الكلمات المتقاطعة الدلالية</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <style>
+    * {
+      box-sizing: border-box;
+      font-family: 'Cairo', sans-serif;
+    }
+
+    body {
+      margin: 0;
+      background-color: #f5f9f9;
+      color: #000;
+      text-align: center;
+    }
+
+    .container {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+
+    header {
+      margin-bottom: 30px;
+    }
+
+    h1 {
+      color: #2a7e7e;
+      font-size: 32px;
+      margin-bottom: 10px;
+    }
+
+    .description {
+      color: #555;
+      font-size: 18px;
+      max-width: 800px;
+      margin: 0 auto 20px;
+      line-height: 1.6;
+    }
+
+    .game-container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 30px;
+      justify-content: center;
+      margin-bottom: 30px;
+    }
+
+    .crossword-section {
+      flex: 1;
+      min-width: 300px;
+      max-width: 500px;
+    }
+
+    .crossword-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      grid-gap: 5px;
+      margin: 20px auto;
+      max-width: 350px;
+    }
+
+    .crossword-cell {
+      width: 100%;
+      aspect-ratio: 1;
+      border: 2px solid #4fc3c3;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background-color: #fff;
+      font-size: 22px;
+      font-weight: 700;
+    }
+
+    .crossword-cell input {
+      width: 100%;
+      height: 100%;
+      border: none;
+      background: transparent;
+      text-align: center;
+      font-size: 22px;
+      font-weight: 700;
+      color: #2a7e7e;
+      padding: 0;
+    }
+
+    .crossword-cell input:focus {
+      outline: none;
+      background-color: #eafafa;
+    }
+
+    .hints-section {
+      text-align: right;
+      background-color: #eafafa;
+      border-radius: 15px;
+      padding: 20px;
+      margin-top: 20px;
+    }
+
+    .hint {
+      margin-bottom: 15px;
+      padding-bottom: 10px;
+      border-bottom: 1px dashed #4fc3c3;
+    }
+
+    .hint-title {
+      font-weight: 700;
+      color: #2a7e7e;
+      margin-bottom: 5px;
+    }
+
+    .hint-text {
+      color: #333;
+    }
+
+    .results-section {
+      flex: 1;
+      min-width: 300px;
+      max-width: 500px;
+      background-color: #fff;
+      border-radius: 20px;
+      padding: 25px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    }
+
+    .game-controls {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+      margin-bottom: 20px;
+    }
+
+    button {
+      padding: 12px 20px;
+      background-color: #6ef3f3;
+      border: none;
+      border-radius: 10px;
+      font-size: 18px;
+      font-weight: 700;
+      cursor: pointer;
+      color: #000;
+      transition: background-color 0.3s;
+    }
+
+    button:hover {
+      background-color: #4fc3c3;
+    }
+
+    button:disabled {
+      background-color: #cccccc;
+      cursor: not-allowed;
+    }
+
+    .check-btn {
+      background-color: #73d8d8;
+    }
+
+    .next-btn {
+      background-color: #f9a826;
+      color: white;
+    }
+
+    .result-card {
+      width: 100%;
+      background-color: #eafafa;
+      border: 2px solid #4fc3c3;
+      border-radius: 15px;
+      padding: 20px;
+      text-align: right;
+      margin-top: 20px;
+      display: none;
+    }
+
+    .main-word {
+      font-size: 22px;
+      font-weight: 700;
+      color: #2a7e7e;
+      margin-bottom: 15px;
+      padding-bottom: 10px;
+      border-bottom: 1px dashed #4fc3c3;
+    }
+
+    .label {
+      display: inline-flex;
+      align-items: center;
+      background-color: #4fc3c3;
+      color: white;
+      border-radius: 10px;
+      padding: 5px 15px;
+      font-size: 18px;
+      margin-bottom: 10px;
+      font-weight: 700;
+    }
+
+    .words {
+      margin: 5px 0 0 0;
+      font-size: 18px;
+      line-height: 1.6;
+      color: #333;
+    }
+
+    .phonetics-section {
+      margin-top: 15px;
+      padding-top: 15px;
+      border-top: 1px dashed #4fc3c3;
+    }
+
+    .phonetics-section .label {
+      background-color: #a855f7;
+    }
+
+    .phonetics-icon {
+      width: 30px;
+      height: 30px;
+      margin-left: 8px;
+      border-radius: 4px;
+      filter: brightness(0) invert(1);
+      padding: 2px;
+    }
+
+    .phonetics-details {
+      text-align: right;
+      margin-top: 10px;
+    }
+
+    .phonetic-item {
+      margin-bottom: 8px;
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .phonetic-term {
+      font-weight: 700;
+      color: #6b21a8;
+    }
+
+    .phonetic-def {
+      color: #333;
+    }
+
+    .message {
+      margin-top: 15px;
+      padding: 10px;
+      border-radius: 8px;
+      font-weight: 600;
+    }
+
+    .success {
+      background-color: #d4edda;
+      color: #155724;
+      border: 1px solid #c3e6cb;
+    }
+
+    .error {
+      background-color: #f8d7da;
+      color: #721c24;
+      border: 1px solid #f5c6cb;
+    }
+
+    .loading {
+      display: inline-block;
+      width: 20px;
+      height: 20px;
+      border: 3px solid rgba(255,255,255,.3);
+      border-radius: 50%;
+      border-top-color: #fff;
+      animation: spin 1s ease-in-out infinite;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    @media (min-width: 768px) {
+      .game-container {
+        flex-direction: row;
+      }
+      
+      .crossword-section, .results-section {
+        flex: 1;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <header>
+      <h1>الكلمات المتقاطعة الدلالية</h1>
+      <p class="description">تخمين الكلمات وتركيبها ثم اكتشاف مرادفاتها وأضدادها. استمتع بتعلم اللغة العربية بطريقة تفاعلية!</p>
+    </header>
+
+    <div class="game-container">
+      <div class="crossword-section">
+        <h2>الشبكة</h2>
+        <div class="crossword-grid" id="crossword-grid">
+          <!-- سيتم إنشاء الشبكة ديناميكياً -->
+        </div>
+
+        <div class="hints-section">
+          <h3>التعريفات</h3>
+          <div class="hint">
+            <div class="hint-title">التعريف الأول:</div>
+            <div class="hint-text" id="hint-1">يضيء المكان ويبدد الظلام</div>
+          </div>
+          <div class="hint">
+            <div class="hint-title">التعريف الثاني:</div>
+            <div class="hint-text" id="hint-2">الحالة المضادة للحزن والهم</div>
+          </div>
+          <div class="hint">
+            <div class="hint-title">التعريف الثالث:</div>
+            <div class="hint-text" id="hint-3">ما يتصف بالضخامة والعظمة</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="results-section">
+        <h2>التحليل الدلالي</h2>
+        
+        <div class="game-controls">
+          <button id="check-btn" class="check-btn">
+            <span id="btn-text">تحقق من الإجابة</span>
+            <span id="btn-loading" class="loading" style="display: none;"></span>
+          </button>
+          <button id="next-btn" class="next-btn" style="display: none;">الكلمة التالية</button>
+          <button id="hint-btn">طلب تلميح</button>
+        </div>
+
+        <div id="message" class="message"></div>
+
+        <div id="result-card" class="result-card">
+          <div class="main-word" id="result-word">كلمة</div>
+          
+          <div class="semantic-section">
+            <div class="label">المرادفات</div>
+            <div class="words" id="synonyms-list"></div>
+            
+            <div class="label">الأضداد</div>
+            <div class="words" id="antonyms-list"></div>
+          </div>
+          
+          <div class="phonetics-section">
+            <div class="label">الصوامت (الحرف الأول)
+              <img src="https://sawamet.jassim.one/icons/favicon.png" alt="أيقونة الصوامت" class="phonetics-icon">
+            </div>
+            <div class="phonetics-details" id="phonetics-details"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // البيانات الدلالية
+    const semanticData = {
+      "نور": { 
+        "synonym": ["ضياء", "إشراق", "سناء", "بريق", "لمعان"], 
+        "antonym": ["ظلام", "عتمة", "ليل", "دجى", "غسق"],
+        "hint": "يضيء المكان ويبدد الظلام"
+      },
+      "سعيد": { 
+        "synonym": ["فرح", "مسرور", "بهِج", "مبتهج", "منشرح الصدر"], 
+        "antonym": ["حزين", "كئيب", "مهموم", "تعيس", "بائس"],
+        "hint": "الحالة المضادة للحزن والهم"
+      },
+      "كبير": { 
+        "synonym": ["عظيم", "ضخم", "واسع", "هائل", "جسيم"], 
+        "antonym": ["صغير", "ضئيل", "صغير الحجم", "مصغر", "دقيق"],
+        "hint": "ما يتصف بالضخامة والعظمة"
+      },
+      "جميل": { 
+        "synonym": ["حسن", "فاتن", "بهي", "رائع", "جذاب"], 
+        "antonym": ["قبيح", "دميم", "شائه", "بشع", "غير جذاب"],
+        "hint": "ما يسر الناظرين ويبعث على الإعجاب"
+      },
+      "سريع": { 
+        "synonym": ["عاجل", "مسرع", "خاطف", "فوري", "مستعجل"], 
+        "antonym": ["بطيء", "متأن", "متباطئ", "هادئ", "متمهل"],
+        "hint": "ما يتميز بالسرعة في الحركة أو الأداء"
+      }
+    };
+
+    // بيانات الصوامت
+    const phoneticData = {
+      "ن": { "مخرج": "طرف اللسان مع ما يحاذيه من لثة الأسنان العليا", "صفة": "صفير" },
+      "س": { "مخرج": "طرف اللسان مع ما يحاذيه من الأسنان العليا", "صفة": "همس" },
+      "ع": { "مخرج": "أوسط اللسان مع ما يحاذيه من الحنك الأعلى", "صفة": "استعلاء" },
+      "د": { "مخرج": "طرف اللسان مع ما يحاذيه من لثة الثنايا العليا", "صفة": "جهر" },
+      "ك": { "مخرج": "أقصى اللسان مع ما يحاذيه من الحنك الأعلى", "صفة": "استعلاء" },
+      "ب": { "مخرج": "الشفتان معاً", "صفة": "جهر" },
+      "ر": { "مخرج": "طرف اللسان مع ما يحاذيه من لثة الثنايا العليا", "صفة": "ترقيق" },
+      "ج": { "مخرج": "وسط اللسان مع ما يحاذيه من الحنك الأعلى", "صفة": "جهر" },
+      "م": { "مخرج": "الشفتان معاً", "صفة": "غنة" },
+      "ل": { "مخرج": "طرف اللسان مع ما يحاذيه من لثة الثنايا العليا", "صفة": "ذلق" },
+      "ظ": { "مخرج": "طرف اللسان مع أطراف الثنايا العليا", "صفة": "استعلاء وإطباق" },
+      "ض": { "مخرج": "أحد حافتي اللسان مع ما يحاذيه من الأضراس العليا", "صفة": "استعلاء وإطباق" }
+    };
+
+    // عناصر DOM
+    const crosswordGrid = document.getElementById('crossword-grid');
+    const checkBtn = document.getElementById('check-btn');
+    const nextBtn = document.getElementById('next-btn');
+    const hintBtn = document.getElementById('hint-btn');
+    const btnText = document.getElementById('btn-text');
+    const btnLoading = document.getElementById('btn-loading');
+    const messageEl = document.getElementById('message');
+    const resultCard = document.getElementById('result-card');
+    const resultWord = document.getElementById('result-word');
+    const synonymsList = document.getElementById('synonyms-list');
+    const antonymsList = document.getElementById('antonyms-list');
+    const phoneticsDetails = document.getElementById('phonetics-details');
+    const hint1 = document.getElementById('hint-1');
+    const hint2 = document.getElementById('hint-2');
+    const hint3 = document.getElementById('hint-3');
+
+    // المتغيرات العامة
+    let currentWordIndex = 0;
+    let currentWord = '';
+    let words = Object.keys(semanticData);
+    let revealedLetters = 0;
+
+    // تهيئة اللعبة
+    function initGame() {
+      currentWord = words[currentWordIndex];
+      createCrosswordGrid(currentWord);
+      updateHints();
+      resetUI();
+    }
+
+    // إنشاء شبكة الكلمات المتقاطعة
+    function createCrosswordGrid(word) {
+      crosswordGrid.innerHTML = '';
+      const wordLength = word.length;
+      
+      // إنشاء خانات الشبكة
+      for (let i = 0; i < 5; i++) {
+        const cell = document.createElement('div');
+        cell.className = 'crossword-cell';
+        
+        if (i < wordLength) {
+          const input = document.createElement('input');
+          input.type = 'text';
+          input.maxLength = 1;
+          input.dataset.index = i;
+          input.addEventListener('input', handleInput);
+          input.addEventListener('keydown', handleKeyDown);
+          cell.appendChild(input);
+        }
+        
+        crosswordGrid.appendChild(cell);
+      }
+      
+      // إضافة بعض الحروف المعروفة عشوائياً
+      revealRandomLetters(word);
+    }
+
+    // التعامل مع إدخال المستخدم
+    function handleInput(e) {
+      const input = e.target;
+      const value = input.value;
+      const index = parseInt(input.dataset.index);
+      
+      // الانتقال إلى الحقل التالي تلقائياً
+      if (value && index < currentWord.length - 1) {
+        const nextInput = crosswordGrid.children[index + 1].querySelector('input');
+        if (nextInput) nextInput.focus();
+      }
+    }
+
+    // التعامل مع الضغط على المفاتيح
+    function handleKeyDown(e) {
+      const input = e.target;
+      const index = parseInt(input.dataset.index);
+      
+      if (e.key === 'Backspace' && !input.value && index > 0) {
+        const prevInput = crosswordGrid.children[index - 1].querySelector('input');
+        if (prevInput) prevInput.focus();
+      }
+    }
+
+    // إظهار بعض الحروف عشوائياً
+    function revealRandomLetters(word) {
+      revealedLetters = 0;
+      const lettersToReveal = Math.min(2, word.length); // إظهار حرفين عشوائياً
+      
+      for (let i = 0; i < lettersToReveal; i++) {
+        const randomIndex = Math.floor(Math.random() * word.length);
+        const cell = crosswordGrid.children[randomIndex];
+        const input = cell.querySelector('input');
+        
+        if (input && !input.value) {
+          input.value = word[randomIndex];
+          input.disabled = true;
+          input.style.backgroundColor = '#eafafa';
+          revealedLetters++;
+        }
+      }
+    }
+
+    // تحديث التلميحات
+    function updateHints() {
+      const hints = [
+        semanticData[words[currentWordIndex]].hint,
+        semanticData[words[(currentWordIndex + 1) % words.length]].hint,
+        semanticData[words[(currentWordIndex + 2) % words.length]].hint
+      ];
+      
+      hint1.textContent = hints[0];
+      hint2.textContent = hints[1];
+      hint3.textContent = hints[2];
+    }
+
+    // التحقق من الإجابة
+    function checkAnswer() {
+      const userAnswer = getUserAnswer();
+      
+      if (userAnswer === currentWord) {
+        showMessage('إجابة صحيحة! أحسنت!', 'success');
+        showSemanticData(currentWord);
+        nextBtn.style.display = 'block';
+        checkBtn.disabled = true;
+      } else {
+        showMessage('الإجابة غير صحيحة، حاول مرة أخرى!', 'error');
+        // إظهار حرف إضافي كمساعدة
+        revealHelpLetter();
+      }
+    }
+
+    // الحصول على إجابة المستخدم
+    function getUserAnswer() {
+      let answer = '';
+      for (let i = 0; i < currentWord.length; i++) {
+        const cell = crosswordGrid.children[i];
+        const input = cell.querySelector('input');
+        answer += input.value || '';
+      }
+      return answer;
+    }
+
+    // إظهار رسالة
+    function showMessage(text, type) {
+      messageEl.textContent = text;
+      messageEl.className = `message ${type}`;
+      messageEl.style.display = 'block';
+    }
+
+    // إخفاء الرسالة
+    function hideMessage() {
+      messageEl.style.display = 'none';
+    }
+
+    // إظهار البيانات الدلالية
+    function showSemanticData(word) {
+      const data = semanticData[word];
+      
+      resultWord.textContent = word;
+      synonymsList.textContent = data.synonym.join('، ');
+      antonymsList.textContent = data.antonym.join('، ');
+      
+      // عرض بيانات الصوامت
+      const firstChar = word.charAt(0);
+      const phonetics = phoneticData[firstChar];
+      if (phonetics) {
+        let html = '';
+        for (const [key, value] of Object.entries(phonetics)) {
+          html += `<div class="phonetic-item"><span class="phonetic-term">${key}:</span><span class="phonetic-def">${value}</span></div>`;
+        }
+        phoneticsDetails.innerHTML = html;
+      } else {
+        phoneticsDetails.innerHTML = '<p>لا توجد بيانات صوتية متاحة لهذا الحرف</p>';
+      }
+      
+      resultCard.style.display = 'block';
+    }
+
+    // الانتقال إلى الكلمة التالية
+    function nextWord() {
+      currentWordIndex = (currentWordIndex + 1) % words.length;
+      currentWord = words[currentWordIndex];
+      createCrosswordGrid(currentWord);
+      updateHints();
+      resetUI();
+    }
+
+    // إعادة تعيين واجهة المستخدم
+    function resetUI() {
+      hideMessage();
+      resultCard.style.display = 'none';
+      nextBtn.style.display = 'none';
+      checkBtn.disabled = false;
+    }
+
+    // إظهار حرف مساعد إضافي
+    function revealHelpLetter() {
+      if (revealedLetters < currentWord.length) {
+        for (let i = 0; i < currentWord.length; i++) {
+          const cell = crosswordGrid.children[i];
+          const input = cell.querySelector('input');
+          
+          if (input && !input.value && !input.disabled) {
+            input.value = currentWord[i];
+            input.disabled = true;
+            input.style.backgroundColor = '#eafafa';
+            revealedLetters++;
+            break;
+          }
+        }
+      }
+    }
+
+    // إضافة مستمعي الأحداث
+    checkBtn.addEventListener('click', checkAnswer);
+    nextBtn.addEventListener('click', nextWord);
+    hintBtn.addEventListener('click', () => {
+      revealHelpLetter();
+      showMessage('تم إظهار حرف إضافي!', 'success');
+      setTimeout(hideMessage, 2000);
+    });
+
+    // بدء اللعبة
+    initGame();
+  </script>
+</body>
+</html>
