@@ -19,6 +19,48 @@
       text-align: center;
     }
 
+    /* 🔹 التوب بار */
+    header {
+      background-color: #73d8d8;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 25px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+
+    header img {
+      height: 45px;
+      border-radius: 10px;
+    }
+
+    header h1 {
+      font-size: 20px;
+      color: #004f4f;
+      margin: 0;
+      font-weight: 700;
+    }
+
+    /* 🔹 الفوتر */
+    footer {
+      background-color: #eafafa;
+      border-top: 2px solid #4fc3c3;
+      padding: 20px;
+      text-align: center;
+      margin-top: auto;
+    }
+
+    footer a {
+      color: #007b7b;
+      text-decoration: none;
+      margin: 0 10px;
+      font-weight: 600;
+    }
+
+    footer a:hover {
+      text-decoration: underline;
+    }
+
     .container {
       min-height: 100vh;
       display: flex;
@@ -222,6 +264,12 @@
 </head>
 
 <body>
+  <!-- ✅ التوب بار -->
+  <header>
+    <img src="images/logo.PNG" alt="شعار المشروع">
+    <h1>مشروع علم الدلالة</h1>
+  </header>
+
   <div class="container">
     <div class="tool-box">
       <label for="word-input">أدخل الكلمة:</label>
@@ -242,6 +290,13 @@
 
     <div id="results-container" class="results-section"></div>
   </div>
+
+  <!-- ✅ الفوتر -->
+  <footer>
+    <a href="#">الرئيسية</a>
+    <a href="#">عن المشروع</a>
+    <a href="#">تواصل معنا</a>
+  </footer>
 
   <script>
     const analyzeBtn = document.getElementById('analyze-btn');
