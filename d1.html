@@ -3,9 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>بَيْن</title>
+  <title>مشروع علم الدلالة</title>
   <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
   <style>
     * {
@@ -18,50 +17,14 @@
       background-color: #fff;
       color: #000;
       text-align: center;
-      display: flex;
-      flex-direction: column;
-      min-height: 100vh;
-    }
-
-    /* التوب بار المعدّل */
-    .top-bar {
-      background-color: #333;
-      padding: 15px 20px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
-      direction: rtl;
-    }
-
-    .logo {
-      height: 45px;
-    }
-
-    .nav-links {
-      display: flex;
-      gap: 25px;
-    }
-
-    .nav-links a {
-      color: #fff;
-      text-decoration: none;
-      font-weight: 600;
-      transition: color 0.3s;
-    }
-
-    .nav-links a:hover {
-      color: #6ef3f3;
     }
 
     .container {
-      flex: 1;
+      min-height: 100vh;
       display: flex;
       flex-direction: column;
       max-width: 1200px;
       margin: 0 auto;
-      width: 100%;
-      padding: 20px;
     }
 
     .tool-box {
@@ -73,7 +36,7 @@
       margin: 40px auto;
     }
 
-    label {
+    .tool-box label {
       display: block;
       margin-bottom: 8px;
       font-weight: 700;
@@ -170,123 +133,238 @@
       font-weight: 600;
     }
 
-    footer {
-      background-color: #333;
-      color: #fff;
-      padding: 25px 20px;
-      margin-top: auto;
+    .phonetics-section {
+      margin-top: 15px;
+      padding-top: 15px;
+      border-top: 1px dashed #4fc3c3;
     }
 
-    .footer-content {
-      max-width: 1000px;
-      margin: 0 auto;
+    .phonetics-section .label {
+      background-color: #a855f7;
+    }
+
+    .phonetics-icon {
+      width: 30px;
+      height: 30px;
+      margin-left: 8px;
+      border-radius: 4px;
+      filter: brightness(0) invert(1);
+      padding: 2px;
+    }
+
+    .phonetics-details {
+      text-align: right;
+      margin-top: 10px;
+    }
+
+    .phonetic-item {
+      margin-bottom: 8px;
       display: flex;
       justify-content: space-between;
-      flex-wrap: wrap;
-      gap: 20px;
     }
 
-    .footer-section {
-      flex: 1;
-      min-width: 200px;
-      text-align: right;
+    .phonetic-term {
+      font-weight: 700;
+      color: #6b21a8;
     }
 
-    .footer-section h3 {
-      color: #6ef3f3;
-      margin-bottom: 15px;
-      font-size: 18px;
-      border-bottom: 2px solid #6ef3f3;
-      padding-bottom: 5px;
+    .phonetic-def {
+      color: #333;
+    }
+
+    .loading {
       display: inline-block;
+      width: 20px;
+      height: 20px;
+      border: 3px solid rgba(255,255,255,.3);
+      border-radius: 50%;
+      border-top-color: #fff;
+      animation: spin 1s ease-in-out infinite;
     }
 
-    .footer-links {
-      list-style: none;
-      padding: 0;
+    @keyframes spin {
+      to { transform: rotate(360deg); }
     }
 
-    .footer-links li {
-      margin-bottom: 10px;
+    @media (min-width: 768px) {
+      .container {
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+      }
+      
+      .tool-box {
+        max-width: 500px;
+        padding: 40px;
+      }
+      
+      .results-section {
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 30px;
+      }
+      
+      .result-card {
+        width: 45%;
+        max-width: 500px;
+      }
     }
 
-    .footer-links a {
-      color: #ddd;
-      text-decoration: none;
-      transition: color 0.3s;
-    }
-
-    .footer-links a:hover {
-      color: #6ef3f3;
-    }
-
-    .footer-bottom {
-      text-align: center;
-      margin-top: 20px;
-      padding-top: 10px;
-      border-top: 1px solid #555;
-      color: #aaa;
-      font-size: 14px;
-    }
-
-    @media (max-width: 768px) {
-      .nav-links { display: none; }
-      .footer-content { flex-direction: column; text-align: center; }
+    @media (min-width: 1024px) {
+      .result-card {
+        width: 30%;
+      }
+      
+      .tool-box {
+        max-width: 600px;
+      }
     }
   </style>
 </head>
 
 <body>
-  <!-- التوب بار المعدّل -->
-  <div class="top-bar">
-    <img src="images/logo.PNG" alt="شعار الموقع" class="logo">
-    <div class="nav-links">
-      <a href="#"><i class="fas fa-home"></i> الرئيسية</a>
-      <a href="#"><i class="fas fa-book"></i> عن المشروع</a>
-    </div>
-  </div>
-
   <div class="container">
     <div class="tool-box">
       <label for="word-input">أدخل الكلمة:</label>
       <input type="text" id="word-input" placeholder="مثلاً: نور، ضياء، ظلام...">
+
       <label for="relation-type">اختر نوع العلاقة:</label>
       <select id="relation-type">
         <option value="all">جميع العلاقات</option>
         <option value="synonym">الترادف (مرادفات)</option>
         <option value="antonym">التضاد (أضداد)</option>
       </select>
-      <button id="analyze-btn"><span id="btn-text">بحث</span></button>
+
+      <button id="analyze-btn">
+        <span id="btn-text">بحث</span>
+        <span id="btn-loading" class="loading" style="display: none;"></span>
+      </button>
     </div>
 
     <div id="results-container" class="results-section"></div>
   </div>
 
-  <!-- فوتر مبسط -->
-  <footer>
-    <div class="footer-content">
-      <div class="footer-section">
-        <h3>روابط سريعة</h3>
-        <ul class="footer-links">
-          <li><a href="/about"><i class="fas fa-book"></i> عن المشروع</a></li>
-          <li><a href="/tools"><i class="fas fa-globe"></i> أدوات أخرى</a></li>
-        </ul>
-      </div>
-
-      <div class="footer-section">
-        <h3>تواصل معنا</h3>
-        <ul class="footer-links">
-          <li><a href="#"><i class="fas fa-envelope"></i> البريد الإلكتروني</a></li>
-        </ul>
-      </div>
-    </div>
-    <div class="footer-bottom">
-      <p>© 2025 جميع الحقوق محفوظة لـ بَيْن أداة الترادف والتضاد</p>
-    </div>
-  </footer>
-
   <script>
-    // نفس السكربت السابق (لم يُعدّل)
+    const analyzeBtn = document.getElementById('analyze-btn');
+    const btnText = document.getElementById('btn-text');
+    const btnLoading = document.getElementById('btn-loading');
+    const input = document.getElementById('word-input');
+    const typeSelect = document.getElementById('relation-type');
+    const resultsContainer = document.getElementById('results-container');
+
+    async function fetchSemanticData() {
+      try {
+        const response = await fetch('data/semanticData.json');
+        if (!response.ok) throw new Error('فشل في جلب البيانات الدلالية');
+        return await response.json();
+      } catch {
+        return {
+          "نور": { "synonym": ["ضياء", "إشراق", "سناء"], "antonym": ["ظلام", "عتمة", "ليل"] },
+          "سعيد": { "synonym": ["فرح", "مسرور", "بهِج", "مبتهج", "منشرح الصدر"], "antonym": ["حزين", "كئيب", "مهموم", "تعيس", "بائس"] },
+          "كبير": { "synonym": ["عظيم", "ضخم", "واسع", "هائل", "جسيم"], "antonym": ["صغير", "ضئيل", "صغير الحجم", "مصغر", "دقيق"] }
+        };
+      }
+    }
+
+    async function fetchPhoneticData() {
+      try {
+        const response = await fetch('https://1812.jassim.one/data/sawamet.json');
+        if (!response.ok) throw new Error('فشل في جلب بيانات الصوامت');
+        return await response.json();
+      } catch {
+        return {
+          "ن": { "مخرج": "طرف اللسان مع ما يحاذيه من لثة الأسنان العليا", "صفة": "صفير" },
+          "ض": { "مخرج": "أحد حافتي اللسان مع ما يحاذيه من الأضراس العليا", "صفة": "استعلاء وإطباق" },
+          "ظ": { "مخرج": "طرف اللسان مع أطراف الثنايا العليا", "صفة": "استعلاء وإطباق" }
+        };
+      }
+    }
+
+    function findWordEntries(data, searchWord) {
+      const results = [];
+      for (const [mainWord, relations] of Object.entries(data)) {
+        if (mainWord === searchWord) {
+          results.push({ mainWord, foundAs: "كلمة مفتاحية", relations });
+        } else if (relations.synonym.includes(searchWord)) {
+          results.push({ mainWord, foundAs: "مرادف", relations });
+        } else if (relations.antonym.includes(searchWord)) {
+          results.push({ mainWord, foundAs: "ضد", relations });
+        }
+      }
+      return results;
+    }
+
+    function toggleButtonState(loading) {
+      analyzeBtn.disabled = loading;
+      btnText.style.display = loading ? 'none' : 'inline-block';
+      btnLoading.style.display = loading ? 'inline-block' : 'none';
+    }
+
+    function createPhoneticsSection(word, phoneticData) {
+      if (!word) return '';
+      const firstChar = word.charAt(0);
+      const phonetics = phoneticData[firstChar];
+      if (!phonetics) return '';
+      let html = `
+        <div class="phonetics-section">
+          <div class="label">الصوامت (الحرف الأول: ${firstChar})
+            <img src="https://sawamet.jassim.one/icons/favicon.png" alt="أيقونة الصوامت" class="phonetics-icon">
+          </div>
+          <div class="phonetics-details">
+      `;
+      for (const [key, value] of Object.entries(phonetics)) {
+        html += `<div class="phonetic-item"><span class="phonetic-term">${key}:</span><span class="phonetic-def">${value}</span></div>`;
+      }
+      html += `</div></div>`;
+      return html;
+    }
+
+    analyzeBtn.addEventListener('click', async () => {
+      const word = input.value.trim();
+      const type = typeSelect.value;
+      if (!word) {
+        resultsContainer.innerHTML = `<p style="color:#888;">يرجى إدخال كلمة للبحث 🔍</p>`;
+        return;
+      }
+
+      toggleButtonState(true);
+      resultsContainer.innerHTML = `<p style="color:#888;">جاري البحث...</p>`;
+
+      try {
+        const [semanticData, phoneticData] = await Promise.all([
+          fetchSemanticData(),
+          fetchPhoneticData()
+        ]);
+
+        const entries = findWordEntries(semanticData, word);
+        resultsContainer.innerHTML = "";
+
+        if (entries.length === 0) {
+          resultsContainer.innerHTML = `<p style="color:#888;">الكلمة "${word}" غير موجودة في قاعدة البيانات.</p>`;
+          return;
+        }
+
+        entries.forEach(entry => {
+          const { mainWord, foundAs, relations } = entry;
+          const card = document.createElement('div');
+          card.className = 'result-card';
+          let content = `
+            <div class="main-word">${mainWord}</div>
+            <div class="found-as">تم العثور على "${word}" كـ ${foundAs}</div>
+          `;
+          if (type === "all" || type === "synonym")
+            content += `<div class="label">المرادفات</div><div class="words">${relations.synonym.join('، ')}</div>`;
+          if (type === "all" || type === "antonym")
+            content += `<div class="label">الأضداد</div><div class="words">${relations.antonym.join('، ')}</div>`;
+          content += createPhoneticsSection(word, phoneticData);
+          card.innerHTML = content;
+          resultsContainer.appendChild(card);
+        });
+      } catch {
+        resultsContainer.innerHTML = `<p style="color:#ff6b6b;">حدث خطأ أثناء البحث. يرجى المحاولة لاحقًا.</p>`;
+      } finally {
+        toggleButtonState(false);
+      }
+    });
   </script>
 </body>
 </html>
