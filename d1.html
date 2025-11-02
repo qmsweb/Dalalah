@@ -19,6 +19,20 @@
       text-align: center;
     }
 
+    /* التوب بار الجديد */
+    .top-bar {
+      background-color: #333; /* لون أسود فاتح */
+      padding: 10px 20px;
+      display: flex;
+      justify-content: flex-end; /* محاذاة المحتوى لليمين */
+      align-items: center;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+
+    .logo {
+      height: 40px; /* ارتفاع مناسب للشعار */
+    }
+
     .container {
       min-height: 100vh;
       display: flex;
@@ -222,6 +236,11 @@
 </head>
 
 <body>
+  <!-- التوب بار المضاف -->
+  <div class="top-bar">
+    <img src="images/logo.PNG" alt="شعار الموقع" class="logo">
+  </div>
+
   <div class="container">
     <div class="tool-box">
       <label for="word-input">أدخل الكلمة:</label>
