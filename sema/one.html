@@ -1,0 +1,339 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>خريطة الحقول الدلالية — حقل الثورة</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --bg:#fafafa; --panel:#ffffff; --muted:#666; --accent:#0b6cff;
+      font-family: 'Cairo', sans-serif;
+    }
+    *{box-sizing:border-box}
+    body{margin:0;background:var(--bg);color:#111;font-family:inherit;line-height:1.4}
+    header{display:flex;align-items:center;justify-content:space-between;padding:14px 18px;background:linear-gradient(90deg,#fff,#f4f7ff);border-bottom:1px solid #eee}
+    header h1{margin:0;font-weight:600;font-size:18px}
+    .controls{display:flex;gap:8px;align-items:center}
+    .controls button{background:#fff;border:1px solid #ddd;padding:8px 10px;border-radius:8px;cursor:pointer;box-shadow:0 1px 0 rgba(0,0,0,0.03)}
+    .controls button:hover{transform:translateY(-1px)}
+    main{display:flex;gap:10px;padding:14px;align-items:flex-start}
+    #panel{width:300px;background:var(--panel);padding:14px;border-radius:10px;border:1px solid #eee;box-shadow:0 6px 20px rgba(38,50,56,0.04)}
+    #panel h2{margin-top:0}
+    #panel p{color:var(--muted)}
+    #viz-wrap{flex:1;min-height:560px;background:linear-gradient(180deg,#fff,#fbfdff);padding:10px;border-radius:10px;border:1px solid #eee;overflow:hidden}
+    footer{padding:12px 18px;color:var(--muted);font-size:13px}
+    svg text{pointer-events:none;font-weight:600}
+    @media (max-width:900px){ main{flex-direction:column} #panel{width:100%} #viz-wrap{width:100%} }
+    /* بسيط لعرض روابط JSON المدمج */
+    pre{white-space:pre-wrap;word-break:break-word;font-size:12px}
+  </style>
+</head>
+<body>
+  <header>
+    <h1>خريطة الحقل الدلالي — <span class="field-name">حقل الثورة</span> ⚡</h1>
+    <div class="controls">
+      <button id="download-json">⬇️ تحميل JSON</button>
+      <button id="export-svg">🖼️ تصدير SVG</button>
+      <button id="export-png">🖼️ تصدير PNG</button>
+    </div>
+  </header>
+
+  <main>
+    <aside id="panel">
+      <h2>تفاصيل العقدة</h2>
+      <div id="node-info"><p>اضغط على عقدة لعرض التفاصيل هنا.</p></div>
+      <hr/>
+      <h3>إعدادات العرض</h3>
+      <label>حجم العقدة: <input id="node-size" type="range" min="6" max="28" value="12"></label><br/>
+      <label>قوة التباعد: <input id="charge" type="range" min="-300" max="0" value="-120"></label>
+      <hr/>
+      <p style="color:var(--muted)">ملاحظة: إذا لم تقم برفع ملف <code>data/semantic_fields.json</code> سيعمل المثال المضمّن.</p>
+    </aside>
+
+    <section id="viz-wrap">
+      <svg id="viz" preserveAspectRatio="xMidYMid meet"></svg>
+    </section>
+  </main>
+
+  <footer>
+    <small>مصدر البيانات: ملف JSON محلي أو النسخة المضمّنة داخل الصفحة.</small>
+  </footer>
+
+  <!-- نسخة JSON مضمّنة كنسخة احتياطية -->
+  <script id="embedded-data" type="application/json">
+  {
+    "fields": [
+      {
+        "id":"revolution",
+        "title":"حقل الثورة",
+        "description":"مفاهيم وكلمات مرتبطة بمفهوم الثورة بمستويات متعددة (أحداث، فاعلين، نتائج، مشاعر، طرق).",
+        "nodes":[
+          {"id":"ثورة","label":"ثورة","type":"core","size":18,"definition":"حركة جماهيرية تهدف إلى تغيير نظام سياسي أو اجتماعي.","examples":["ثورة سلمية ناجحة","انطلقت الثورة في الصباح"]},
+          {"id":"احتجاج","label":"احتجاج","type":"event","size":12,"definition":"تعبير جماعي عن رفض أو مطالبة.","examples":["نظموا احتجاجًا أمام البرلمان"]},
+          {"id":"انتفاضة","label":"انتفاضة","type":"event","size":12,"definition":"اندلاع شعبي عادة بمشاركة واسعة.","examples":["شهدت المدينة انتفاضة عارمة"]},
+          {"id":"إصلاح","label":"إصلاح","type":"result","size":12,"definition":"تغيير تدريجي في السياسات أو القوانين.","examples":["النتيجة كانت وعدًا بالإصلاح"]},
+          {"id":"إضراب","label":"إضراب","type":"method","size":12,"definition":"امتناع منظم عن العمل للاحتجاج.","examples":["أعلن العمال إضرابًا عامًا"]},
+          {"id":"قمع","label":"قمع","type":"actor","size":12,"definition":"إجراءات سلطوية لكبح الحركة.","examples":["تعرض المتظاهرون لقمع شديد"]},
+          {"id":"سلمية","label":"سلمية","type":"method","size":11,"definition":"نهج من دون عنف.","examples":["المظاهرات كانت سلمية"]},
+          {"id":"عنف","label":"عنف","type":"emotion","size":11,"definition":"تصاعد استخدام القوة، غالبًا نتيجة تصعيد.","examples":["تحولت الاحتجاجات إلى عنف"]},
+          {"id":"تغيير","label":"تغيير","type":"result","size":12,"definition":"تحول في بنى الحكم أو القيم.","examples":["طالبوا بتغيير النظام"]},
+          {"id":"شعب","label":"الشعب","type":"actor","size":13,"definition":"الطبقة أو الجماهير المشاركة.","examples":["الشعب وقف موحدًا"]},
+          {"id":"قائد","label":"قائد","type":"actor","size":11,"definition":"شخص يقود أو يوجّه الحركة.","examples":["ظهر قائد جديد للحراك"]},
+          {"id":"شبكات_اجتماعية","label":"شبكات اجتماعية","type":"method","size":11,"definition":"منصات تساعد في التنظيم","examples":["نُظمت الدعوات عبر الشبكات الاجتماعية"]},
+          {"id":"مقاومة","label":"مقاومة","type":"emotion","size":11,"definition":"رفض واستبسال ضد الظلم","examples":["أبدى المدنيون مقاومةً مستمرة"]}
+        ],
+        "links":[
+          {"source":"ثورة","target":"شعب","weight":2},
+          {"source":"ثورة","target":"قائد","weight":1},
+          {"source":"شعب","target":"احتجاج","weight":2},
+          {"source":"احتجاج","target":"إضراب","weight":1},
+          {"source":"احتجاج","target":"انتفاضة","weight":2},
+          {"source":"انتفاضة","target":"قمع","weight":2},
+          {"source":"قمع","target":"عنف","weight":2},
+          {"source":"سلمية","target":"احتجاج","weight":1},
+          {"source":"شبكات_اجتماعية","target":"احتجاج","weight":1},
+          {"source":"مقاومة","target":"شعب","weight":1},
+          {"source":"تغيير","target":"إصلاح","weight":1},
+          {"source":"ثورة","target":"تغيير","weight":2},
+          {"source":"قائد","target":"شبكات_اجتماعية","weight":1}
+        ]
+      }
+    ]
+  }
+  </script>
+
+  <!-- d3 -->
+  <script src="https://cdn.jsdelivr.net/npm/d3@7/dist/d3.min.js"></script>
+
+  <script>
+  (function(){
+    // إعدادات أولية
+    const svg = d3.select('#viz');
+    let width = Math.max(800, window.innerWidth * 0.65);
+    let height = Math.max(600, window.innerHeight * 0.75);
+    svg.attr('width', width).attr('height', height);
+
+    const colorScale = d3.scaleOrdinal()
+      .domain(['core','event','actor','method','emotion','result'])
+      .range(['#0b6cff','#ff6b6b','#4ecdc4','#ffd166','#9b5de5','#f77f00']);
+
+    const info = d3.select('#node-info');
+    const downloadJsonBtn = document.getElementById('download-json');
+    const exportSvgBtn = document.getElementById('export-svg');
+    const exportPngBtn = document.getElementById('export-png');
+
+    let simulation = d3.forceSimulation()
+      .force('link', d3.forceLink().id(d => d.id).distance(120).strength(0.8))
+      .force('charge', d3.forceManyBody().strength(-120))
+      .force('center', d3.forceCenter(width / 2, height / 2))
+      .force('collide', d3.forceCollide().radius(d => (d.size || 12) + 6));
+
+    // حاول جلب JSON خارجي ثم الوقوع على المضمّن إذا فشل
+    function loadData() {
+      return fetch('./data/semantic_fields.json')
+        .then(r => {
+          if (!r.ok) throw new Error('HTTP ' + r.status);
+          return r.json();
+        })
+        .catch(err => {
+          console.warn('فشل تحميل data/semantic_fields.json — سيتم استخدام البيانات المضمّنة. ('+err.message+')');
+          const embedded = document.getElementById('embedded-data').textContent.trim();
+          try { return JSON.parse(embedded); }
+          catch(e){ throw new Error('تعذر تحميل أي بيانات JSON'); }
+        });
+    }
+
+    loadData().then(json => {
+      console.log('JSON loaded', json);
+      const field = (json.fields || []).find(f => f.id === 'revolution') || json.fields[0];
+      if (!field) throw new Error('لا توجد حقول في بيانات JSON');
+      d3.select('.field-name').text(field.title || 'حقل');
+      renderGraph(field);
+      hookButtons(field);
+    }).catch(err => {
+      console.error(err);
+      info.html('<p style="color:crimson">خطأ في تحميل البيانات: ' + (err.message || '') + '</p>');
+    });
+
+    // رسم الشبكة
+    function renderGraph(field) {
+      svg.selectAll('*').remove();
+      // تحديث أبعاد
+      width = Math.max(800, window.innerWidth * 0.65);
+      height = Math.max(600, window.innerHeight * 0.75);
+      svg.attr('width', width).attr('height', height);
+      simulation.force('center', d3.forceCenter(width / 2, height / 2));
+
+      const defs = svg.append('defs');
+      defs.append('filter').attr('id','shadow').append('feDropShadow').attr('dx',0).attr('dy',1).attr('stdDeviation',2).attr('flood-opacity',0.25);
+
+      const g = svg.append('g');
+
+      const link = g.append('g').attr('class','links').selectAll('line')
+        .data(field.links)
+        .enter()
+        .append('line')
+        .attr('stroke','#aaa')
+        .attr('stroke-width', d => Math.max(1, d.weight || 1));
+
+      const node = g.append('g').attr('class','nodes').selectAll('g')
+        .data(field.nodes)
+        .enter()
+        .append('g')
+        .call(d3.drag()
+          .on('start', (event, d) => {
+            if (!event.active) simulation.alphaTarget(0.3).restart();
+            d.fx = d.x; d.fy = d.y;
+          })
+          .on('drag', (event, d) => { d.fx = event.x; d.fy = event.y; })
+          .on('end', (event, d) => {
+            if (!event.active) simulation.alphaTarget(0);
+            d.fx = null; d.fy = null;
+          })
+        );
+
+      node.append('circle')
+        .attr('r', d => d.size || 12)
+        .attr('fill', d => colorScale(d.type || 'core'))
+        .attr('stroke', '#222')
+        .attr('stroke-width', 0.8)
+        .attr('filter', 'url(#shadow)')
+        .on('click', (event, d) => showInfo(d));
+
+      node.append('text')
+        .attr('dy', 4)
+        .attr('text-anchor', 'middle')
+        .attr('font-family', 'Cairo, sans-serif')
+        .attr('font-size', '12px')
+        .text(d => d.label);
+
+      node.on('mouseover', function() { d3.select(this).select('circle').attr('stroke-width', 2.4); })
+          .on('mouseout', function() { d3.select(this).select('circle').attr('stroke-width', 0.8); });
+
+      svg.call(d3.zoom().scaleExtent([0.3,3]).on('zoom', (event) => { g.attr('transform', event.transform); }));
+
+      simulation.nodes(field.nodes).on('tick', ticked);
+      simulation.force('link').links(field.links);
+
+      function ticked() {
+        link.attr('x1', d => d.source.x)
+            .attr('y1', d => d.source.y)
+            .attr('x2', d => d.target.x)
+            .attr('y2', d => d.target.y);
+        node.attr('transform', d => `translate(${d.x},${d.y})`);
+      }
+
+      // تحكمات واجهة
+      document.getElementById('node-size').addEventListener('input', (e) => {
+        const val = +e.target.value;
+        node.selectAll('circle').attr('r', d => (d.size ? d.size * val/12 : val));
+        simulation.force('collide', d3.forceCollide().radius(d => (d.size || val) + 6));
+        simulation.alpha(0.5).restart();
+      });
+
+      document.getElementById('charge').addEventListener('input', (e) => {
+        const val = +e.target.value;
+        simulation.force('charge', d3.forceManyBody().strength(val));
+        simulation.alpha(0.5).restart();
+      });
+
+      // عرض أولي لعقدة core إن وُجدت
+      const core = field.nodes.find(n => n.type === 'core');
+      if (core) showInfo(core);
+    }
+
+    function showInfo(d) {
+      info.html('');
+      info.append('h3').text(d.label);
+      if (d.type) info.append('p').html(`<strong>النوع:</strong> ${d.type}`);
+      if (d.definition) info.append('p').html(`<strong>التعريف:</strong> ${d.definition}`);
+      if (d.examples && d.examples.length) {
+        const ex = info.append('div').attr('class','examples');
+        ex.append('strong').text('أمثلة:');
+        const ul = ex.append('ul');
+        d.examples.forEach(s => ul.append('li').text(s));
+      }
+      if (d.notes) info.append('p').html(`<em>${d.notes}</em>`);
+    }
+
+    // أزرار التصدير والتحميل
+    function hookButtons(field) {
+      downloadJsonBtn.addEventListener('click', () => {
+        const blob = new Blob([JSON.stringify(field, null, 2)], {type:'application/json;charset=utf-8'});
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = (field.id || 'semantic_field') + '.json';
+        document.body.appendChild(a);
+        a.click(); a.remove(); URL.revokeObjectURL(url);
+      });
+
+      exportSvgBtn.addEventListener('click', () => {
+        downloadSVG(svg.node(), (field.id || 'field') + '.svg');
+      });
+
+      exportPngBtn.addEventListener('click', () => {
+        exportToPNG(svg.node(), (field.id || 'field') + '.png');
+      });
+    }
+
+    // تحميل SVG
+    function downloadSVG(svgNode, filename) {
+      const serializer = new XMLSerializer();
+      let source = serializer.serializeToString(svgNode);
+      if(!source.match(/^<svg[^>]+xmlns="http:\/\/www\.w3\.org\/2000\/svg"/)){
+        source = source.replace(/^<svg/, '<svg xmlns="http://www.w3.org/2000/svg"');
+      }
+      source = '<?xml version="1.0" standalone="no"?>\r\n' + source;
+      const blob = new Blob([source], {type: 'image/svg+xml;charset=utf-8'});
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url; a.download = filename; document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(url);
+    }
+
+    // تحويل SVG إلى PNG
+    function exportToPNG(svgNode, filename) {
+      const serializer = new XMLSerializer();
+      let source = serializer.serializeToString(svgNode);
+      const css = "@import url('https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700&display=swap'); svg{font-family:Cairo, sans-serif}";
+      if(!source.match(/^<svg[^>]+xmlns="http:\/\/www\.w3\.org\/2000\/svg"/)){
+        source = source.replace(/^<svg/, '<svg xmlns="http://www.w3.org/2000/svg"');
+      }
+      source = '<?xml version="1.0" standalone="no"?>\n' +
+               `<style type="text/css"><![CDATA[${css}]]></style>\n` +
+               source;
+      const img = new Image();
+      const svg64 = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(source);
+      img.onload = function() {
+        // الحصول على أبعاد فعلية للـ SVG
+        const svgRect = svgNode.getBoundingClientRect();
+        const canvas = document.createElement('canvas');
+        canvas.width = Math.max(1, Math.round(svgRect.width));
+        canvas.height = Math.max(1, Math.round(svgRect.height));
+        const ctx = canvas.getContext('2d');
+        ctx.fillStyle = '#ffffff'; ctx.fillRect(0,0,canvas.width,canvas.height);
+        ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+        canvas.toBlob(function(blob) {
+          const url = URL.createObjectURL(blob);
+          const a = document.createElement('a');
+          a.href = url; a.download = filename; document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(url);
+        }, 'image/png');
+      };
+      img.onerror = function(e){ alert('خطأ في تصدير الصورة — راجع الكونسول'); console.error(e); };
+      img.src = svg64;
+    }
+
+    // استجابة لتغيير حجم النافذة
+    window.addEventListener('resize', () => {
+      width = Math.max(800, window.innerWidth * 0.65);
+      height = Math.max(600, window.innerHeight * 0.75);
+      svg.attr('width', width).attr('height', height);
+      simulation.force('center', d3.forceCenter(width/2, height/2));
+      simulation.alpha(0.3).restart();
+    });
+
+  })();
+  </script>
+</body>
+</html>
