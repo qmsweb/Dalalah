@@ -1,85 +1,203 @@
-<!DOCTYPE html>
-<html lang="ar">
+<!doctype html>
+<html lang="ar" dir="rtl">
 <head>
-    <meta charset="UTF-8">
-    <title>Tree Viewer</title>
-    <style>
-        body {
-            font-family: sans-serif;
-            margin: 0;
-            padding: 0;
-            background: #f2f2f2;
-        }
-
-        #treeContainer {
-            width: 100%;
-            height: 100vh;
-            background: #fff;
-            padding: 10px;
-        }
-
-        ul {
-            list-style: none;
-            padding-left: 20px;
-        }
-
-        li {
-            margin: 6px 0;
-            padding: 4px 10px;
-            border: 1px solid #ccc;
-            border-radius: 6px;
-            display: inline-block;
-            background: #fafafa;
-        }
-    </style>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>خريطة الحقول الدلالية — حقل الثورة</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --bg:#fafafa; --panel:#ffffff; --muted:#666; --accent:#0b6cff;
+      font-family: 'Cairo', sans-serif;
+    }
+    *{box-sizing:border-box}
+    body{margin:0;background:var(--bg);color:#111;font-family:inherit;line-height:1.4}
+    header{display:flex;align-items:center;justify-content:space-between;padding:14px 18px;background:linear-gradient(90deg,#fff,#f4f7ff);border-bottom:1px solid #eee}
+    header h1{margin:0;font-weight:600;font-size:18px}
+    .controls{display:flex;gap:8px;align-items:center}
+    .controls button{background:#fff;border:1px solid #ddd;padding:8px 10px;border-radius:8px;cursor:pointer;box-shadow:0 1px 0 rgba(0,0,0,0.03)}
+    .controls button:hover{transform:translateY(-1px)}
+    main{display:flex;gap:10px;padding:14px;align-items:flex-start}
+    #viz-wrap{flex:1;min-height:560px;background:linear-gradient(180deg,#fff,#fbfdff);padding:10px;border-radius:10px;border:1px solid #eee;overflow:hidden}
+    footer{padding:12px 18px;color:var(--muted);font-size:13px}
+    svg text{pointer-events:none;font-weight:600}
+    @media (max-width:900px){ main{flex-direction:column} #viz-wrap{width:100%} }
+    pre{white-space:pre-wrap;word-break:break-word;font-size:12px}
+  </style>
 </head>
 <body>
+  <header>
+    <h1>خريطة الحقل الدلالي — <span class="field-name">حقل الثورة</span> ⚡</h1>
+    <div class="controls">
+      <button id="export-png">🖼️ تصدير PNG</button>
+    </div>
+  </header>
 
-    <!-- تم حذف كل العناصر الإضافية -->
-    <div id="treeContainer"></div>
+  <main>
+    <section id="viz-wrap">
+      <svg id="viz" preserveAspectRatio="xMidYMid meet"></svg>
+    </section>
+  </main>
 
-    <script>
-        // مثال شجرة بسيطة
-        const sampleData = {
-            name: "Root",
-            children: [
-                { name: "Child A" },
-                {
-                    name: "Child B",
-                    children: [
-                        { name: "Grandchild B1" },
-                        { name: "Grandchild B2" }
-                    ]
-                }
-            ]
-        };
+  <footer>
+    <small>مصدر البيانات: ملف JSON محلي أو النسخة المضمّنة داخل الصفحة.</small>
+  </footer>
 
-        function renderTree(data, container) {
-            container.innerHTML = "";
+  <script id="embedded-data" type="application/json">
+  {
+    "fields": [
+      {
+        "id":"revolution",
+        "title":"حقل الثورة",
+        "nodes":[
+          {"id":"ثورة","label":"ثورة","type":"core","size":18},
+          {"id":"احتجاج","label":"احتجاج","type":"event","size":12},
+          {"id":"انتفاضة","label":"انتفاضة","type":"event","size":12},
+          {"id":"إصلاح","label":"إصلاح","type":"result","size":12},
+          {"id":"إضراب","label":"إضراب","type":"method","size":12},
+          {"id":"قمع","label":"قمع","type":"actor","size":12},
+          {"id":"سلمية","label":"سلمية","type":"method","size":11},
+          {"id":"عنف","label":"عنف","type":"emotion","size":11},
+          {"id":"تغيير","label":"تغيير","type":"result","size":12},
+          {"id":"شعب","label":"الشعب","type":"actor","size":13},
+          {"id":"قائد","label":"قائد","type":"actor","size":11},
+          {"id":"شبكات_اجتماعية","label":"شبكات اجتماعية","type":"method","size":11},
+          {"id":"مقاومة","label":"مقاومة","type":"emotion","size":11}
+        ],
+        "links":[
+          {"source":"ثورة","target":"شعب","weight":2},
+          {"source":"ثورة","target":"قائد","weight":1},
+          {"source":"شعب","target":"احتجاج","weight":2},
+          {"source":"احتجاج","target":"إضراب","weight":1},
+          {"source":"احتجاج","target":"انتفاضة","weight":2},
+          {"source":"انتفاضة","target":"قمع","weight":2},
+          {"source":"قمع","target":"عنف","weight":2},
+          {"source":"سلمية","target":"احتجاج","weight":1},
+          {"source":"شبكات_اجتماعية","target":"احتجاج","weight":1},
+          {"source":"مقاومة","target":"شعب","weight":1},
+          {"source":"تغيير","target":"إصلاح","weight":1},
+          {"source":"ثورة","target":"تغيير","weight":2},
+          {"source":"قائد","target":"شبكات_اجتماعية","weight":1}
+        ]
+      }
+    ]
+  }
+  </script>
 
-            const ul = document.createElement("ul");
+  <script src="https://cdn.jsdelivr.net/npm/d3@7/dist/d3.min.js"></script>
 
-            function build(node, parent) {
-                const li = document.createElement("li");
-                li.textContent = node.name;
-                parent.appendChild(li);
+  <script>
+  (function(){
+    const svg = d3.select('#viz');
+    let width = Math.max(800, window.innerWidth * 0.65);
+    let height = Math.max(600, window.innerHeight * 0.75);
+    svg.attr('width', width).attr('height', height);
 
-                if (node.children) {
-                    const nested = document.createElement("ul");
-                    parent.appendChild(nested);
-                    node.children.forEach(child => build(child, nested));
-                }
-            }
+    const colorScale = d3.scaleOrdinal()
+      .domain(['core','event','actor','method','emotion','result'])
+      .range(['#0b6cff','#ff6b6b','#4ecdc4','#ffd166','#9b5de5','#f77f00']);
 
-            build(data, ul);
-            container.appendChild(ul);
-        }
+    const exportPngBtn = document.getElementById('export-png');
 
-        window.onload = () => {
-            const container = document.getElementById("treeContainer");
-            renderTree(sampleData, container);
-        };
-    </script>
+    let simulation = d3.forceSimulation()
+      .force('link', d3.forceLink().id(d => d.id).distance(120).strength(0.8))
+      .force('charge', d3.forceManyBody().strength(-120))
+      .force('center', d3.forceCenter(width / 2, height / 2))
+      .force('collide', d3.forceCollide().radius(d => (d.size || 12) + 6));
 
+    function loadData() {
+      return fetch('./data/semantic_fields.json')
+        .then(r => { if (!r.ok) throw new Error(); return r.json(); })
+        .catch(() => JSON.parse(document.getElementById('embedded-data').textContent.trim()));
+    }
+
+    loadData().then(json => {
+      const field = (json.fields || [])[0];
+      d3.select('.field-name').text(field.title || 'حقل');
+      renderGraph(field);
+      hookButtons(field);
+    });
+
+    function renderGraph(field) {
+      svg.selectAll('*').remove();
+
+      const g = svg.append('g');
+
+      const link = g.append('g').selectAll('line')
+        .data(field.links).enter().append('line')
+        .attr('stroke','#aaa')
+        .attr('stroke-width', d => Math.max(1, d.weight || 1));
+
+      const node = g.append('g').selectAll('g')
+        .data(field.nodes).enter().append('g')
+        .call(d3.drag()
+          .on('start', (e,d)=>{if(!e.active) simulation.alphaTarget(0.3).restart(); d.fx=d.x; d.fy=d.y;})
+          .on('drag', (e,d)=>{d.fx=e.x; d.fy=e.y;})
+          .on('end', (e,d)=>{if(!e.active) simulation.alphaTarget(0); d.fx=null; d.fy=null;})
+        );
+
+      node.append('circle')
+        .attr('r', d => d.size || 12)
+        .attr('fill', d => colorScale(d.type))
+        .attr('stroke','#222')
+        .attr('stroke-width',0.8);
+
+      node.append('text')
+        .attr('dy',4).attr('text-anchor','middle')
+        .attr('font-size','12px')
+        .text(d => d.label);
+
+      svg.call(d3.zoom().scaleExtent([0.3,3]).on('zoom', e=>g.attr('transform',e.transform)));
+
+      simulation.nodes(field.nodes).on('tick', ()=>{
+        link.attr('x1', d=>d.source.x)
+            .attr('y1', d=>d.source.y)
+            .attr('x2', d=>d.target.x)
+            .attr('y2', d=>d.target.y);
+        node.attr('transform', d=>`translate(${d.x},${d.y})`);
+      });
+
+      simulation.force('link').links(field.links);
+    }
+
+    function hookButtons(field) {
+      exportPngBtn.addEventListener('click', () => {
+        exportToPNG(svg.node(), (field.id || 'field') + '.png');
+      });
+    }
+
+    function exportToPNG(svgNode, filename) {
+      const serializer = new XMLSerializer();
+      let source = serializer.serializeToString(svgNode);
+      const img = new Image();
+      const svg64 = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(source);
+      img.onload = function() {
+        const rect = svgNode.getBoundingClientRect();
+        const canvas = document.createElement('canvas');
+        canvas.width = rect.width; canvas.height = rect.height;
+        const ctx = canvas.getContext('2d');
+        ctx.fillStyle = '#fff';
+        ctx.fillRect(0,0,canvas.width,canvas.height);
+        ctx.drawImage(img,0,0,canvas.width,canvas.height);
+        canvas.toBlob(function(blob){
+          const url = URL.createObjectURL(blob);
+          const a = document.createElement('a');
+          a.href=url; a.download=filename;
+          document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(url);
+        });
+      };
+      img.src = svg64;
+    }
+
+    window.addEventListener('resize', () => {
+      width = Math.max(800, window.innerWidth * 0.65);
+      height = Math.max(600, window.innerHeight * 0.75);
+      svg.attr('width', width).attr('height', height);
+      simulation.force('center', d3.forceCenter(width/2,height/2));
+      simulation.alpha(0.3).restart();
+    });
+
+  })();
+  </script>
 </body>
 </html>
