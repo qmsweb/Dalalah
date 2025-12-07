@@ -1,0 +1,4 @@
+fetch('./data/hqool/1.json')
+  .then(r => r.json())
+  .then(d => console.log("JSON loaded:", d))
+  .catch(err => console.error("Failed to load JSON:", err));
