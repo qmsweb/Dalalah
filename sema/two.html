@@ -10,37 +10,242 @@
       --bg:#fafafa; --panel:#ffffff; --muted:#666; --accent:#0b6cff;
       font-family: 'Cairo', sans-serif;
     }
-    *{box-sizing:border-box}
-    body{margin:0;background:var(--bg);color:#111;font-family:inherit;line-height:1.4}
-    header{display:flex;align-items:center;justify-content:space-between;padding:14px 18px;background:linear-gradient(90deg,#fff,#f4f7ff);border-bottom:1px solid #eee}
-    header h1{margin:0;font-weight:600;font-size:18px}
-    .controls{display:flex;gap:8px;align-items:center}
-    .controls button{background:#fff;border:1px solid #ddd;padding:8px 10px;border-radius:8px;cursor:pointer;box-shadow:0 1px 0 rgba(0,0,0,0.03)}
-    .controls button:hover{transform:translateY(-1px)}
-    main{display:flex;gap:10px;padding:14px;align-items:flex-start}
-    #viz-wrap{flex:1;min-height:560px;background:linear-gradient(180deg,#fff,#fbfdff);padding:10px;border-radius:10px;border:1px solid #eee;overflow:hidden}
-    footer{padding:12px 18px;color:var(--muted);font-size:13px}
-    svg text{pointer-events:none;font-weight:600}
-    @media (max-width:900px){ main{flex-direction:column} #viz-wrap{width:100%} }
-    pre{white-space:pre-wrap;word-break:break-word;font-size:12px}
+    
+    * {
+      box-sizing: border-box;
+      font-family: 'Cairo', sans-serif;
+    }
+    
+    body {
+      margin: 0;
+      background-color: #fff;
+      color: #111;
+      font-family: 'Cairo', sans-serif;
+      line-height: 1.4;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+    
+    /* 🔹 التوب بار الجديد */
+    header {
+      background-color: #0e6666;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 25px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+    }
+    
+    header img {
+      height: 45px;
+      border-radius: 10px;
+    }
+    
+    header h1 {
+      font-size: 20px;
+      color: #004f4f;
+      margin: 0;
+      font-weight: 700;
+    }
+    
+    /* 🔹 الفوتر الجديد */
+    footer {
+      background-color: #eafafa;
+      border-top: 2px solid #4fc3c3;
+      padding: 20px;
+      text-align: center;
+      margin-top: auto;
+    }
+    
+    footer a {
+      color: #007b7b;
+      text-decoration: none;
+      margin: 0 10px;
+      font-weight: 600;
+    }
+    
+    footer a:hover {
+      text-decoration: underline;
+    }
+    
+    /* محتوى الصفحة الرئيسي */
+    .container {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      max-width: 1400px;
+      margin: 0 auto;
+      width: 100%;
+      padding: 0 15px;
+    }
+    
+    /* رأس الصفحة داخل المحتوى */
+    .page-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 14px 0;
+      background: linear-gradient(90deg, #fff, #f4f7ff);
+      border-bottom: 1px solid #eee;
+      margin-top: 15px;
+      border-radius: 10px 10px 0 0;
+    }
+    
+    .page-header h1 {
+      margin: 0;
+      font-weight: 600;
+      font-size: 18px;
+      color: #0e6666;
+    }
+    
+    .controls {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+    }
+    
+    .controls button {
+      background: #fff;
+      border: 1px solid #ddd;
+      padding: 8px 10px;
+      border-radius: 8px;
+      cursor: pointer;
+      box-shadow: 0 1px 0 rgba(0,0,0,0.03);
+      font-family: 'Cairo', sans-serif;
+      font-weight: 600;
+      color: #0e6666;
+      transition: all 0.3s;
+    }
+    
+    .controls button:hover {
+      transform: translateY(-1px);
+      background-color: #4fc3c3;
+      color: white;
+    }
+    
+    main {
+      flex: 1;
+      display: flex;
+      gap: 10px;
+      padding: 14px 0;
+      align-items: flex-start;
+    }
+    
+    #viz-wrap {
+      flex: 1;
+      min-height: 560px;
+      background: linear-gradient(180deg, #fff, #fbfdff);
+      padding: 15px;
+      border-radius: 0 0 10px 10px;
+      border: 1px solid #eee;
+      overflow: hidden;
+      box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+    }
+    
+    svg text {
+      pointer-events: none;
+      font-weight: 600;
+    }
+    
+    @media (max-width: 900px) {
+      main {
+        flex-direction: column;
+      }
+      #viz-wrap {
+        width: 100%;
+      }
+    }
+    
+    pre {
+      white-space: pre-wrap;
+      word-break: break-word;
+      font-size: 12px;
+    }
+    
+    /* معلومات إضافية */
+    .info-section {
+      background-color: #f0f9f9;
+      border-radius: 10px;
+      padding: 15px;
+      margin-top: 20px;
+      border: 1px solid #c1e6e6;
+      color: #005757;
+    }
+    
+    .info-section h3 {
+      margin-top: 0;
+      color: #0e6666;
+      font-size: 16px;
+    }
+    
+    .info-section p {
+      margin: 10px 0;
+      font-size: 14px;
+    }
+    
+    /* رابط العودة */
+    .back-link {
+      display: inline-block;
+      margin-top: 10px;
+      color: #007b7b;
+      text-decoration: none;
+      font-weight: 600;
+    }
+    
+    .back-link:hover {
+      text-decoration: underline;
+    }
   </style>
 </head>
 <body>
+  <!-- ✅ التوب بار الجديد -->
   <header>
-    <h1>خريطة الحقل الدلالي — <span class="field-name">...</span> ⚡</h1>
-    <div class="controls">
-      <button id="export-png">🖼️ تصدير PNG</button>
-    </div>
+    <img src="images/logo.PNG" alt="شعار بين">
+    <h1>بَيْن - منصة التحليل الدلالي</h1>
   </header>
 
-  <main>
-    <section id="viz-wrap">
-      <svg id="viz" preserveAspectRatio="xMidYMid meet"></svg>
-    </section>
-  </main>
+  <div class="container">
+    <!-- رأس الصفحة الداخلي -->
+    <div class="page-header">
+      <h1>خريطة الحقل الدلالي — <span class="field-name">...</span> ⚡</h1>
+      <div class="controls">
+        <button id="export-png">🖼️ تصدير PNG</button>
+        <button id="refresh-btn">🔄 تحديث</button>
+      </div>
+    </div>
 
+    <!-- المحتوى الرئيسي -->
+    <main>
+      <section id="viz-wrap">
+        <svg id="viz" preserveAspectRatio="xMidYMid meet"></svg>
+      </section>
+    </main>
+    
+    <!-- معلومات إضافية -->
+    <div class="info-section">
+      <h3>💡 معلومات عن الحقل الدلالي</h3>
+      <p>الحقل الدلالي هو مجموعة من الكلمات المرتبطة دلاليًا في مجال معين. كل عقدة تمثل مفهومًا، وكل رابط يمثل العلاقة بين مفهومين.</p>
+      <p>الألوان تمثل أنواع العقد:
+        <span style="color:#0b6cff;">● مركزي</span>, 
+        <span style="color:#ff6b6b;">● حدث</span>, 
+        <span style="color:#4ecdc4;">● فاعل</span>, 
+        <span style="color:#ffd166;">● طريقة</span>, 
+        <span style="color:#9b5de5;">● عاطفة</span>, 
+        <span style="color:#f77f00;">● نتيجة</span>
+      </p>
+      <a href="builder.html" class="back-link">← إنشاء حقل دلالي جديد</a>
+    </div>
+  </div>
+
+  <!-- ✅ الفوتر الجديد -->
   <footer>
-    <small>مصدر البيانات: ملفات JSON في /data/hqool/</small>
+    <a href="index.html">الرئيسية</a>
+    <a href="about.html">عن المشروع</a>
+    <a href="builder.html">منشئ الحقول الدلالية</a>
   </footer>
 
   <script src="https://cdn.jsdelivr.net/npm/d3@7/dist/d3.min.js"></script>
@@ -48,8 +253,8 @@
   <script>
 (function(){
   const svg = d3.select('#viz');
-  let width = Math.max(800, window.innerWidth * 0.65);
-  let height = Math.max(600, window.innerHeight * 0.75);
+  let width = Math.max(800, window.innerWidth * 0.8);
+  let height = Math.max(600, window.innerHeight * 0.7);
   svg.attr('width', width).attr('height', height);
 
   const colorScale = d3.scaleOrdinal()
@@ -57,6 +262,7 @@
     .range(['#0b6cff','#ff6b6b','#4ecdc4','#ffd166','#9b5de5','#f77f00']);
 
   const exportPngBtn = document.getElementById('export-png');
+  const refreshBtn = document.getElementById('refresh-btn');
 
   let simulation = d3.forceSimulation()
     .force('link', d3.forceLink().id(d => d.id).distance(120).strength(0.8))
@@ -64,7 +270,7 @@
     .force('center', d3.forceCenter(width / 2, height / 2))
     .force('collide', d3.forceCollide().radius(d => (d.size || 12) + 6));
 
-  function loadData() {
+  async function loadData() {
     const params = new URLSearchParams(window.location.search);
     const id = params.get("i") || "1";
     
@@ -103,8 +309,37 @@
         }
       }
       
-      // إذا وصلنا هنا، فشلنا في تحميل البيانات
-      reject(new Error('لم يتم العثور على ملف البيانات. تأكد من وجود مجلد data/hqool مع ملفات JSON.'));
+      // إذا فشل التحميل، نجرب تحميل مثال
+      try {
+        console.log("محاولة تحميل مثال افتراضي...");
+        const exampleData = {
+          fields: [{
+            id: "1",
+            title: "حقل الثورة - مثال",
+            description: "مثال توضيحي للحقل الدلالي",
+            nodes: [
+              { id: "1", label: "ثورة", type: "core", size: 20 },
+              { id: "2", label: "حرية", type: "result", size: 16 },
+              { id: "3", label: "تغيير", type: "result", size: 14 },
+              { id: "4", label: "احتجاج", type: "event", size: 12 },
+              { id: "5", label: "الشعب", type: "actor", size: 16 },
+              { id: "6", label: "غضب", type: "emotion", size: 10 },
+              { id: "7", label: "تظاهر", type: "method", size: 12 }
+            ],
+            links: [
+              { source: "1", target: "2", weight: 3 },
+              { source: "1", target: "3", weight: 2 },
+              { source: "1", target: "4", weight: 4 },
+              { source: "4", target: "5", weight: 3 },
+              { source: "5", target: "6", weight: 3 },
+              { source: "4", target: "7", weight: 2 }
+            ]
+          }]
+        };
+        resolve(exampleData);
+      } catch (error) {
+        reject(new Error('لم يتم العثور على ملف البيانات. تأكد من وجود مجلد data/hqool مع ملفات JSON.'));
+      }
     });
   }
 
@@ -132,6 +367,7 @@
       // تحديث عنوان الصفحة
       const fieldName = field.title || 'حقل غير معنون';
       d3.select('.field-name').text(fieldName);
+      document.title = `خريطة الحقول الدلالية — ${fieldName}`;
       
       // عرض الرسوم البيانية
       if (!field.nodes || !field.links || !Array.isArray(field.nodes) || !Array.isArray(field.links)) {
@@ -148,32 +384,38 @@
       // عرض رسالة خطأ في SVG
       svg.selectAll('*').remove();
       
-      svg.append('text')
-        .attr('x', width / 2)
-        .attr('y', height / 2 - 30)
+      const errorGroup = svg.append('g')
+        .attr('transform', `translate(${width/2}, ${height/2})`);
+      
+      errorGroup.append('circle')
+        .attr('r', 60)
+        .attr('fill', '#ffeaea')
+        .attr('stroke', '#ff6b6b')
+        .attr('stroke-width', 2);
+      
+      errorGroup.append('text')
+        .attr('y', -20)
         .attr('text-anchor', 'middle')
         .attr('dominant-baseline', 'middle')
         .attr('fill', '#ff6b6b')
-        .attr('font-size', '18px')
+        .attr('font-size', '20px')
         .text('❌ خطأ في تحميل البيانات');
       
-      svg.append('text')
-        .attr('x', width / 2)
-        .attr('y', height / 2)
+      errorGroup.append('text')
+        .attr('y', 10)
         .attr('text-anchor', 'middle')
         .attr('dominant-baseline', 'middle')
         .attr('fill', '#666')
         .attr('font-size', '14px')
         .text(error.message || 'تعذر تحميل ملف البيانات');
       
-      svg.append('text')
-        .attr('x', width / 2)
-        .attr('y', height / 2 + 30)
+      errorGroup.append('text')
+        .attr('y', 40)
         .attr('text-anchor', 'middle')
         .attr('dominant-baseline', 'middle')
         .attr('fill', '#888')
         .attr('font-size', '12px')
-        .text('تأكد من وجود ملف data/hqool/1.json (أو i=رقم_آخر في الرابط)');
+        .text('يمكنك إنشاء حقل دلالي جديد باستخدام منشئ الحقول');
     });
 
   function renderGraph(field) {
@@ -184,7 +426,8 @@
     const link = g.append('g').selectAll('line')
       .data(field.links).enter().append('line')
       .attr('stroke','#aaa')
-      .attr('stroke-width', d => Math.max(1, d.weight || 1));
+      .attr('stroke-width', d => Math.max(1, d.weight || 1))
+      .attr('stroke-opacity', 0.7);
 
     // رسم العقد
     const node = g.append('g').selectAll('g')
@@ -210,29 +453,35 @@
     node.append('circle')
       .attr('r', d => d.size || 12)
       .attr('fill', d => colorScale(d.type))
-      .attr('stroke','#222')
-      .attr('stroke-width',0.8);
+      .attr('stroke','#fff')
+      .attr('stroke-width', 2)
+      .attr('stroke-opacity', 0.9);
 
     // إضافة النصوص
     node.append('text')
-      .attr('dy',4)
-      .attr('text-anchor','middle')
-      .attr('font-size','12px')
+      .attr('dy', 4)
+      .attr('text-anchor', 'middle')
+      .attr('font-size', d => Math.max(10, Math.min(14, (d.size || 12) / 1.5)))
+      .attr('fill', '#222')
+      .attr('font-weight', '600')
       .text(d => d.label);
 
     // تفعيل التكبير والتحريك
-    svg.call(d3.zoom().scaleExtent([0.3,3]).on('zoom', e=>g.attr('transform',e.transform)));
+    svg.call(d3.zoom()
+      .scaleExtent([0.3, 3])
+      .on('zoom', e => g.attr('transform', e.transform))
+    );
 
     // إعداد المحاكاة
     simulation.nodes(field.nodes);
     simulation.force('link').links(field.links);
     
-    simulation.on('tick', ()=>{
-      link.attr('x1', d=>d.source.x)
-          .attr('y1', d=>d.source.y)
-          .attr('x2', d=>d.target.x)
-          .attr('y2', d=>d.target.y);
-      node.attr('transform', d=>`translate(${d.x},${d.y})`);
+    simulation.on('tick', () => {
+      link.attr('x1', d => d.source.x)
+          .attr('y1', d => d.source.y)
+          .attr('x2', d => d.target.x)
+          .attr('y2', d => d.target.y);
+      node.attr('transform', d => `translate(${d.x}, ${d.y})`);
     });
 
     // إعادة تشغيل المحاكاة
@@ -242,6 +491,10 @@
   function hookButtons(field) {
     exportPngBtn.addEventListener('click', () => {
       exportToPNG(svg.node(), (field.id || 'field') + '.png');
+    });
+    
+    refreshBtn.addEventListener('click', () => {
+      location.reload();
     });
   }
 
@@ -266,11 +519,11 @@
     
     const img = new Image();
     const svg64 = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(source);
+    
     img.onload = function() {
-      const rect = svgNode.getBoundingClientRect();
       const canvas = document.createElement('canvas');
-      canvas.width = rect.width;
-      canvas.height = rect.height;
+      canvas.width = svgNode.getBoundingClientRect().width;
+      canvas.height = svgNode.getBoundingClientRect().height;
       const ctx = canvas.getContext('2d');
       
       // تعبئة الخلفية باللون الأبيض
@@ -297,8 +550,8 @@
   }
 
   window.addEventListener('resize', () => {
-    width = Math.max(800, window.innerWidth * 0.65);
-    height = Math.max(600, window.innerHeight * 0.75);
+    width = Math.max(800, window.innerWidth * 0.8);
+    height = Math.max(600, window.innerHeight * 0.7);
     svg.attr('width', width).attr('height', height);
     simulation.force('center', d3.forceCenter(width/2, height/2));
     simulation.alpha(0.3).restart();
