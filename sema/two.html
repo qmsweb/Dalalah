@@ -45,7 +45,7 @@
 
   <script src="https://cdn.jsdelivr.net/npm/d3@7/dist/d3.min.js"></script>
 
-  <script>
+ <script>
 (function(){
   const svg = d3.select('#viz');
   let width = Math.max(800, window.innerWidth * 0.65);
@@ -64,80 +64,171 @@
     .force('center', d3.forceCenter(width / 2, height / 2))
     .force('collide', d3.forceCollide().radius(d => (d.size || 12) + 6));
 
-  function loadData() {
+  async function loadData() {
     const params = new URLSearchParams(window.location.search);
     const id = params.get("i") || "1";
 
-    // المسار النسبي الصحيح للـ GitHub Pages
-    const jsonPath = `data/hqool/${id}.json`;
+    // محاولة مسارات متعددة للتوافق مع بيئات مختلفة
+    const possiblePaths = [
+      `data/hqool/${id}.json`,                // للمسار النسبي
+      `/data/hqool/${id}.json`,               // للمسار المطلق من الجذر
+      `./data/hqool/${id}.json`,              // للمسار الحالي
+      `../data/hqool/${id}.json`              // للمجلد الأعلى
+    ];
 
-    return fetch(jsonPath)
-      .then(r => {
-        if (!r.ok) throw new Error("JSON not found");
-        return r.json();
-      })
-      .catch(err => {
-        console.error("Error loading JSON:", err);
-        return { fields: [] };
-      });
-  }
+    let data = null;
+    let error = null;
 
-  loadData().then(json => {
-    const field = (json.fields || [])[0];
-    d3.select('.field-name').text(field?.title || 'حقل');
-
-    if (!field || !field.nodes || !field.links) {
-      svg.append('text')
-         .attr('x', width/2)
-         .attr('y', height/2)
-         .attr('text-anchor','middle')
-         .text('⚠️ لا توجد بيانات للرسم');
-      return;
+    // محاولة تحميل البيانات من المسارات الممكنة
+    for (const path of possiblePaths) {
+      try {
+        console.log(`محاولة تحميل البيانات من: ${path}`);
+        const response = await fetch(path);
+        
+        if (response.ok) {
+          data = await response.json();
+          console.log('تم تحميل البيانات بنجاح:', data);
+          break;
+        }
+      } catch (err) {
+        error = err;
+        console.warn(`فشل التحميل من ${path}:`, err);
+      }
     }
 
-    renderGraph(field);
-    hookButtons(field);
-  });
+    if (!data) {
+      // إذا فشل التحميل من جميع المسارات، عرض رسالة خطأ
+      console.error('تعذر تحميل البيانات من أي مسار:', error);
+      throw new Error('تعذر تحميل البيانات');
+    }
+
+    return data;
+  }
+
+  // تحميل البيانات وعرضها
+  loadData()
+    .then(json => {
+      const field = (json.fields || [])[0];
+      const fieldName = field?.title || 'حقل';
+      d3.select('.field-name').text(fieldName);
+      document.title = `خريطة الحقول الدلالية — ${fieldName}`;
+
+      if (!field || !field.nodes || !field.links) {
+        svg.append('text')
+           .attr('x', width/2)
+           .attr('y', height/2)
+           .attr('text-anchor','middle')
+           .attr('dominant-baseline','middle')
+           .attr('fill', '#666')
+           .text('⚠️ لا توجد بيانات للرسم');
+        return;
+      }
+
+      renderGraph(field);
+      hookButtons(field);
+    })
+    .catch(error => {
+      console.error('خطأ في تحميل البيانات:', error);
+      svg.append('text')
+         .attr('x', width/2)
+         .attr('y', height/2 - 20)
+         .attr('text-anchor','middle')
+         .attr('dominant-baseline','middle')
+         .attr('fill', '#ff6b6b')
+         .text('❌ تعذر تحميل البيانات');
+      
+      svg.append('text')
+         .attr('x', width/2)
+         .attr('y', height/2 + 20)
+         .attr('text-anchor','middle')
+         .attr('dominant-baseline','middle')
+         .attr('fill', '#666')
+         .attr('font-size', '12px')
+         .text('تأكد من وجود ملفات JSON في مجلد /data/hqool/');
+    });
 
   function renderGraph(field) {
+    console.log('رسم الرسم البياني:', field.nodes?.length, 'عقد،', field.links?.length, 'روابط');
+    
     svg.selectAll('*').remove();
     const g = svg.append('g');
 
-    const link = g.append('g').selectAll('line')
-      .data(field.links).enter().append('line')
-      .attr('stroke','#aaa')
-      .attr('stroke-width', d => Math.max(1, d.weight || 1));
+    // رسم الروابط
+    const link = g.append('g')
+      .selectAll('line')
+      .data(field.links)
+      .enter()
+      .append('line')
+      .attr('stroke', '#aaa')
+      .attr('stroke-width', d => Math.max(1, d.weight || 1))
+      .attr('stroke-opacity', 0.6);
 
-    const node = g.append('g').selectAll('g')
-      .data(field.nodes).enter().append('g')
+    // رسم العقد
+    const node = g.append('g')
+      .selectAll('g')
+      .data(field.nodes)
+      .enter()
+      .append('g')
       .call(d3.drag()
-        .on('start', (e,d)=>{if(!e.active) simulation.alphaTarget(0.3).restart(); d.fx=d.x; d.fy=d.y;})
-        .on('drag', (e,d)=>{d.fx=e.x; d.fy=e.y;})
-        .on('end', (e,d)=>{if(!e.active) simulation.alphaTarget(0); d.fx=null; d.fy=null;})
+        .on('start', (e, d) => {
+          if (!e.active) simulation.alphaTarget(0.3).restart();
+          d.fx = d.x;
+          d.fy = d.y;
+        })
+        .on('drag', (e, d) => {
+          d.fx = e.x;
+          d.fy = e.y;
+        })
+        .on('end', (e, d) => {
+          if (!e.active) simulation.alphaTarget(0);
+          d.fx = null;
+          d.fy = null;
+        })
       );
 
+    // إضافة الدوائر
     node.append('circle')
       .attr('r', d => d.size || 12)
       .attr('fill', d => colorScale(d.type))
-      .attr('stroke','#222')
-      .attr('stroke-width',0.8);
+      .attr('stroke', '#fff')
+      .attr('stroke-width', 2)
+      .attr('stroke-opacity', 0.8);
 
+    // إضافة النصوص
     node.append('text')
-      .attr('dy',4).attr('text-anchor','middle')
-      .attr('font-size','12px')
+      .attr('dy', 4)
+      .attr('text-anchor', 'middle')
+      .attr('font-size', '11px')
+      .attr('font-weight', '600')
+      .attr('fill', '#222')
+      .attr('paint-order', 'stroke')
+      .attr('stroke', '#fff')
+      .attr('stroke-width', '3px')
+      .attr('stroke-linecap', 'round')
+      .attr('stroke-linejoin', 'round')
       .text(d => d.label);
 
-    svg.call(d3.zoom().scaleExtent([0.3,3]).on('zoom', e=>g.attr('transform',e.transform)));
+    // تفعيل التكبير والتصغير
+    svg.call(d3.zoom()
+      .scaleExtent([0.3, 3])
+      .on('zoom', e => g.attr('transform', e.transform))
+    );
 
-    simulation.nodes(field.nodes).on('tick', ()=>{
-      link.attr('x1', d=>d.source.x)
-          .attr('y1', d=>d.source.y)
-          .attr('x2', d=>d.target.x)
-          .attr('y2', d=>d.target.y);
-      node.attr('transform', d=>`translate(${d.x},${d.y})`);
+    // تحديث المحاكاة
+    simulation.nodes(field.nodes);
+    simulation.force('link').links(field.links);
+    
+    simulation.on('tick', () => {
+      link.attr('x1', d => d.source.x)
+          .attr('y1', d => d.source.y)
+          .attr('x2', d => d.target.x)
+          .attr('y2', d => d.target.y);
+      
+      node.attr('transform', d => `translate(${d.x},${d.y})`);
     });
 
-    simulation.force('link').links(field.links);
+    // إعادة تشغيل المحاكاة
+    simulation.alpha(1).restart();
   }
 
   function hookButtons(field) {
@@ -148,37 +239,48 @@
 
   function exportToPNG(svgNode, filename) {
     const serializer = new XMLSerializer();
-    let source = serializer.serializeToString(svgNode);
+    const source = serializer.serializeToString(svgNode);
+    
+    // إنشاء صورة من SVG
     const img = new Image();
-    const svg64 = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(source);
+    const svg64 = btoa(unescape(encodeURIComponent(source)));
+    const b64Start = 'data:image/svg+xml;base64,';
+    
     img.onload = function() {
-      const rect = svgNode.getBoundingClientRect();
       const canvas = document.createElement('canvas');
-      canvas.width = rect.width; canvas.height = rect.height;
+      canvas.width = svgNode.getBoundingClientRect().width;
+      canvas.height = svgNode.getBoundingClientRect().height;
+      
       const ctx = canvas.getContext('2d');
       ctx.fillStyle = '#fff';
-      ctx.fillRect(0,0,canvas.width,canvas.height);
-      ctx.drawImage(img,0,0,canvas.width,canvas.height);
-      canvas.toBlob(function(blob){
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      ctx.drawImage(img, 0, 0);
+      
+      // تحويل إلى PNG وتنزيل
+      canvas.toBlob(function(blob) {
         const url = URL.createObjectURL(blob);
         const a = document.createElement('a');
-        a.href=url; a.download=filename;
-        document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(url);
-      });
+        a.href = url;
+        a.download = filename;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+      }, 'image/png');
     };
-    img.src = svg64;
+    
+    img.src = b64Start + svg64;
   }
 
   window.addEventListener('resize', () => {
     width = Math.max(800, window.innerWidth * 0.65);
     height = Math.max(600, window.innerHeight * 0.75);
     svg.attr('width', width).attr('height', height);
-    simulation.force('center', d3.forceCenter(width/2,height/2));
+    simulation.force('center', d3.forceCenter(width/2, height/2));
     simulation.alpha(0.3).restart();
   });
 
 })();
 </script>
-
 </body>
 </html>
