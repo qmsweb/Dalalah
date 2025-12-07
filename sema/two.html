@@ -46,128 +46,139 @@
   <script src="https://cdn.jsdelivr.net/npm/d3@7/dist/d3.min.js"></script>
 
   <script>
-  (function(){
-    const svg = d3.select('#viz');
-    let width = Math.max(800, window.innerWidth * 0.65);
-    let height = Math.max(600, window.innerHeight * 0.75);
+(function(){
+  const svg = d3.select('#viz');
+  let width = Math.max(800, window.innerWidth * 0.65);
+  let height = Math.max(600, window.innerHeight * 0.75);
+  svg.attr('width', width).attr('height', height);
+
+  const colorScale = d3.scaleOrdinal()
+    .domain(['core','event','actor','method','emotion','result'])
+    .range(['#0b6cff','#ff6b6b','#4ecdc4','#ffd166','#9b5de5','#f77f00']);
+
+  const exportPngBtn = document.getElementById('export-png');
+
+  let simulation = d3.forceSimulation()
+    .force('link', d3.forceLink().id(d => d.id).distance(120).strength(0.8))
+    .force('charge', d3.forceManyBody().strength(-120))
+    .force('center', d3.forceCenter(width / 2, height / 2))
+    .force('collide', d3.forceCollide().radius(d => (d.size || 12) + 6));
+
+  function loadData() {
+    const params = new URLSearchParams(window.location.search);
+    const id = params.get("i") || "1";
+
+    // المسار النسبي الصحيح للـ GitHub Pages
+    const jsonPath = `data/hqool/${id}.json`;
+
+    return fetch(jsonPath)
+      .then(r => {
+        if (!r.ok) throw new Error("JSON not found");
+        return r.json();
+      })
+      .catch(err => {
+        console.error("Error loading JSON:", err);
+        return { fields: [] };
+      });
+  }
+
+  loadData().then(json => {
+    const field = (json.fields || [])[0];
+    d3.select('.field-name').text(field?.title || 'حقل');
+
+    if (!field || !field.nodes || !field.links) {
+      svg.append('text')
+         .attr('x', width/2)
+         .attr('y', height/2)
+         .attr('text-anchor','middle')
+         .text('⚠️ لا توجد بيانات للرسم');
+      return;
+    }
+
+    renderGraph(field);
+    hookButtons(field);
+  });
+
+  function renderGraph(field) {
+    svg.selectAll('*').remove();
+    const g = svg.append('g');
+
+    const link = g.append('g').selectAll('line')
+      .data(field.links).enter().append('line')
+      .attr('stroke','#aaa')
+      .attr('stroke-width', d => Math.max(1, d.weight || 1));
+
+    const node = g.append('g').selectAll('g')
+      .data(field.nodes).enter().append('g')
+      .call(d3.drag()
+        .on('start', (e,d)=>{if(!e.active) simulation.alphaTarget(0.3).restart(); d.fx=d.x; d.fy=d.y;})
+        .on('drag', (e,d)=>{d.fx=e.x; d.fy=e.y;})
+        .on('end', (e,d)=>{if(!e.active) simulation.alphaTarget(0); d.fx=null; d.fy=null;})
+      );
+
+    node.append('circle')
+      .attr('r', d => d.size || 12)
+      .attr('fill', d => colorScale(d.type))
+      .attr('stroke','#222')
+      .attr('stroke-width',0.8);
+
+    node.append('text')
+      .attr('dy',4).attr('text-anchor','middle')
+      .attr('font-size','12px')
+      .text(d => d.label);
+
+    svg.call(d3.zoom().scaleExtent([0.3,3]).on('zoom', e=>g.attr('transform',e.transform)));
+
+    simulation.nodes(field.nodes).on('tick', ()=>{
+      link.attr('x1', d=>d.source.x)
+          .attr('y1', d=>d.source.y)
+          .attr('x2', d=>d.target.x)
+          .attr('y2', d=>d.target.y);
+      node.attr('transform', d=>`translate(${d.x},${d.y})`);
+    });
+
+    simulation.force('link').links(field.links);
+  }
+
+  function hookButtons(field) {
+    exportPngBtn.addEventListener('click', () => {
+      exportToPNG(svg.node(), (field.id || 'field') + '.png');
+    });
+  }
+
+  function exportToPNG(svgNode, filename) {
+    const serializer = new XMLSerializer();
+    let source = serializer.serializeToString(svgNode);
+    const img = new Image();
+    const svg64 = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(source);
+    img.onload = function() {
+      const rect = svgNode.getBoundingClientRect();
+      const canvas = document.createElement('canvas');
+      canvas.width = rect.width; canvas.height = rect.height;
+      const ctx = canvas.getContext('2d');
+      ctx.fillStyle = '#fff';
+      ctx.fillRect(0,0,canvas.width,canvas.height);
+      ctx.drawImage(img,0,0,canvas.width,canvas.height);
+      canvas.toBlob(function(blob){
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href=url; a.download=filename;
+        document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(url);
+      });
+    };
+    img.src = svg64;
+  }
+
+  window.addEventListener('resize', () => {
+    width = Math.max(800, window.innerWidth * 0.65);
+    height = Math.max(600, window.innerHeight * 0.75);
     svg.attr('width', width).attr('height', height);
+    simulation.force('center', d3.forceCenter(width/2,height/2));
+    simulation.alpha(0.3).restart();
+  });
 
-    const colorScale = d3.scaleOrdinal()
-      .domain(['core','event','actor','method','emotion','result'])
-      .range(['#0b6cff','#ff6b6b','#4ecdc4','#ffd166','#9b5de5','#f77f00']);
+})();
+</script>
 
-    const exportPngBtn = document.getElementById('export-png');
-
-    let simulation = d3.forceSimulation()
-      .force('link', d3.forceLink().id(d => d.id).distance(120).strength(0.8))
-      .force('charge', d3.forceManyBody().strength(-120))
-      .force('center', d3.forceCenter(width / 2, height / 2))
-      .force('collide', d3.forceCollide().radius(d => (d.size || 12) + 6));
-
-    function loadData() {
-
-      const params = new URLSearchParams(window.location.search);
-      const id = params.get("i") || "1";
-
-      // 🔥 مهم لـ GitHub Pages — اجعل المسار مطلقًا وليس نسبيًا
-      return fetch(`/data/hqool/${id}.json`)
-        .then(r => {
-          if (!r.ok) throw new Error("JSON not found");
-          return r.json();
-        })
-        .catch(err => {
-          console.error("Error loading JSON:", err);
-          return { fields: [] };
-        });
-    }
-
-    loadData().then(json => {
-      const field = (json.fields || [])[0];
-      d3.select('.field-name').text(field?.title || 'حقل');
-      renderGraph(field);
-      hookButtons(field);
-    });
-
-    function renderGraph(field) {
-      svg.selectAll('*').remove();
-
-      const g = svg.append('g');
-
-      const link = g.append('g').selectAll('line')
-        .data(field.links).enter().append('line')
-        .attr('stroke','#aaa')
-        .attr('stroke-width', d => Math.max(1, d.weight || 1));
-
-      const node = g.append('g').selectAll('g')
-        .data(field.nodes).enter().append('g')
-        .call(d3.drag()
-          .on('start', (e,d)=>{if(!e.active) simulation.alphaTarget(0.3).restart(); d.fx=d.x; d.fy=d.y;})
-          .on('drag', (e,d)=>{d.fx=e.x; d.fy=e.y;})
-          .on('end', (e,d)=>{if(!e.active) simulation.alphaTarget(0); d.fx=null; d.fy=null;})
-        );
-
-      node.append('circle')
-        .attr('r', d => d.size || 12)
-        .attr('fill', d => colorScale(d.type))
-        .attr('stroke','#222')
-        .attr('stroke-width',0.8);
-
-      node.append('text')
-        .attr('dy',4).attr('text-anchor','middle')
-        .attr('font-size','12px')
-        .text(d => d.label);
-
-      svg.call(d3.zoom().scaleExtent([0.3,3]).on('zoom', e=>g.attr('transform',e.transform)));
-
-      simulation.nodes(field.nodes).on('tick', ()=>{
-        link.attr('x1', d=>d.source.x)
-            .attr('y1', d=>d.source.y)
-            .attr('x2', d=>d.target.x)
-            .attr('y2', d=>d.target.y);
-        node.attr('transform', d=>`translate(${d.x},${d.y})`);
-      });
-
-      simulation.force('link').links(field.links);
-    }
-
-    function hookButtons(field) {
-      exportPngBtn.addEventListener('click', () => {
-        exportToPNG(svg.node(), (field.id || 'field') + '.png');
-      });
-    }
-
-    function exportToPNG(svgNode, filename) {
-      const serializer = new XMLSerializer();
-      let source = serializer.serializeToString(svgNode);
-      const img = new Image();
-      const svg64 = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(source);
-      img.onload = function() {
-        const rect = svgNode.getBoundingClientRect();
-        const canvas = document.createElement('canvas');
-        canvas.width = rect.width; canvas.height = rect.height;
-        const ctx = canvas.getContext('2d');
-        ctx.fillStyle = '#fff';
-        ctx.fillRect(0,0,canvas.width,canvas.height);
-        ctx.drawImage(img,0,0,canvas.width,canvas.height);
-        canvas.toBlob(function(blob){
-          const url = URL.createObjectURL(blob);
-          const a = document.createElement('a');
-          a.href=url; a.download=filename;
-          document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(url);
-        });
-      };
-      img.src = svg64;
-    }
-
-    window.addEventListener('resize', () => {
-      width = Math.max(800, window.innerWidth * 0.65);
-      height = Math.max(600, window.innerHeight * 0.75);
-      svg.attr('width', width).attr('height', height);
-      simulation.force('center', d3.forceCenter(width/2,height/2));
-      simulation.alpha(0.3).restart();
-    });
-
-  })();
-  </script>
 </body>
 </html>
