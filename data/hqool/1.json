@@ -1,0 +1,15 @@
+{
+  "id": 1,
+  "title": "حقل دلالي: الصدق",
+  "nodes": [
+    { "id": "c1", "label": "الصدق", "type": "core", "size": 22 },
+    { "id": "a1", "label": "الصراحة", "type": "actor", "size": 16 },
+    { "id": "e1", "label": "ثقة", "type": "emotion", "size": 14 },
+    { "id": "r1", "label": "احترام", "type": "result", "size": 14 }
+  ],
+  "links": [
+    { "source": "c1", "target": "a1", "weight": 2 },
+    { "source": "c1", "target": "e1", "weight": 2 },
+    { "source": "c1", "target": "r1", "weight": 2 }
+  ]
+}
