@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>خريطة الحقول الدلالية — حقل الثورة</title>
+  <title>خريطة الحقول الدلالية</title>
   <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700&display=swap" rel="stylesheet">
   <style>
     :root{
@@ -22,12 +22,11 @@
     footer{padding:12px 18px;color:var(--muted);font-size:13px}
     svg text{pointer-events:none;font-weight:600}
     @media (max-width:900px){ main{flex-direction:column} #viz-wrap{width:100%} }
-    pre{white-space:pre-wrap;word-break:break-word;font-size:12px}
   </style>
 </head>
 <body>
   <header>
-    <h1>خريطة الحقل الدلالي — <span class="field-name">حقل الثورة</span> ⚡</h1>
+    <h1>خريطة الحقل الدلالي — <span class="field-name">...</span> ⚡</h1>
     <div class="controls">
       <button id="export-png">🖼️ تصدير PNG</button>
     </div>
@@ -40,49 +39,8 @@
   </main>
 
   <footer>
-    <small>مصدر البيانات: ملف JSON محلي أو النسخة المضمّنة داخل الصفحة.</small>
+    <small>مصدر البيانات: ملفات JSON من المسار /data/hqool/</small>
   </footer>
-
-  <script id="embedded-data" type="application/json">
-  {
-    "fields": [
-      {
-        "id":"revolution",
-        "title":"حقل الثورة",
-        "nodes":[
-          {"id":"ثورة","label":"ثورة","type":"core","size":18},
-          {"id":"احتجاج","label":"احتجاج","type":"event","size":12},
-          {"id":"انتفاضة","label":"انتفاضة","type":"event","size":12},
-          {"id":"إصلاح","label":"إصلاح","type":"result","size":12},
-          {"id":"إضراب","label":"إضراب","type":"method","size":12},
-          {"id":"قمع","label":"قمع","type":"actor","size":12},
-          {"id":"سلمية","label":"سلمية","type":"method","size":11},
-          {"id":"عنف","label":"عنف","type":"emotion","size":11},
-          {"id":"تغيير","label":"تغيير","type":"result","size":12},
-          {"id":"شعب","label":"الشعب","type":"actor","size":13},
-          {"id":"قائد","label":"قائد","type":"actor","size":11},
-          {"id":"شبكات_اجتماعية","label":"شبكات اجتماعية","type":"method","size":11},
-          {"id":"مقاومة","label":"مقاومة","type":"emotion","size":11}
-        ],
-        "links":[
-          {"source":"ثورة","target":"شعب","weight":2},
-          {"source":"ثورة","target":"قائد","weight":1},
-          {"source":"شعب","target":"احتجاج","weight":2},
-          {"source":"احتجاج","target":"إضراب","weight":1},
-          {"source":"احتجاج","target":"انتفاضة","weight":2},
-          {"source":"انتفاضة","target":"قمع","weight":2},
-          {"source":"قمع","target":"عنف","weight":2},
-          {"source":"سلمية","target":"احتجاج","weight":1},
-          {"source":"شبكات_اجتماعية","target":"احتجاج","weight":1},
-          {"source":"مقاومة","target":"شعب","weight":1},
-          {"source":"تغيير","target":"إصلاح","weight":1},
-          {"source":"ثورة","target":"تغيير","weight":2},
-          {"source":"قائد","target":"شبكات_اجتماعية","weight":1}
-        ]
-      }
-    ]
-  }
-  </script>
 
   <script src="https://cdn.jsdelivr.net/npm/d3@7/dist/d3.min.js"></script>
 
@@ -105,15 +63,22 @@
       .force('center', d3.forceCenter(width / 2, height / 2))
       .force('collide', d3.forceCollide().radius(d => (d.size || 12) + 6));
 
+    /** تحميل البيانات من /data/hqool/ID.json */
     function loadData() {
-      return fetch('./data/semantic_fields.json')
-        .then(r => { if (!r.ok) throw new Error(); return r.json(); })
-        .catch(() => JSON.parse(document.getElementById('embedded-data').textContent.trim()));
+      const params = new URLSearchParams(window.location.search);
+      const id = params.get("i") || "1"; // قيمة افتراضية لو لا يوجد ID
+      return fetch(`/data/hqool/${id}.json`)
+        .then(r => r.json())
+        .catch(err => {
+          console.error("فشل تحميل البيانات:", err);
+          return { fields: [] };
+        });
     }
 
     loadData().then(json => {
       const field = (json.fields || [])[0];
-      d3.select('.field-name').text(field.title || 'حقل');
+      if (!field) return;
+      d3.select('.field-name').text(field.title || 'حقل دلالي');
       renderGraph(field);
       hookButtons(field);
     });
