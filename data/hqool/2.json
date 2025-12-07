@@ -1,0 +1,59 @@
+{
+  "fields": [
+    {
+      "id": "3",
+      "title": "حقل العلم",
+      "description": "هذا الحقل رقم كذا كذا",
+      "nodes": [
+        {
+          "id": "1",
+          "label": "العلم",
+          "type": "core",
+          "size": 12
+        },
+        {
+          "id": "2",
+          "label": "درس",
+          "type": "event",
+          "size": 12
+        },
+        {
+          "id": "3",
+          "label": "تعليم",
+          "type": "event",
+          "size": 12
+        },
+        {
+          "id": "4",
+          "label": "مدرس",
+          "type": "actor",
+          "size": 12
+        },
+        {
+          "id": "5",
+          "label": "طالب",
+          "type": "actor",
+          "size": 12
+        },
+        {
+          "id": "6",
+          "label": "مدرسة",
+          "type": "actor",
+          "size": 12
+        }
+      ],
+      "links": [
+        {
+          "source": "1",
+          "target": "2",
+          "weight": 1
+        },
+        {
+          "source": "2",
+          "target": "2",
+          "weight": 1
+        }
+      ]
+    }
+  ]
+}
