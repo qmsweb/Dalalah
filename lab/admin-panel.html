@@ -1,0 +1,610 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>إدارة مشروع بين</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
+  <style>
+    * {
+      box-sizing: border-box;
+      font-family: 'Cairo', sans-serif;
+    }
+    
+    body {
+      margin: 0;
+      padding: 20px;
+      background-color: #f5f9f9;
+      color: #004f4f;
+      min-height: 100vh;
+    }
+    
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      background-color: white;
+      border-radius: 15px;
+      padding: 30px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    }
+    
+    h1 {
+      color: #0e6666;
+      text-align: center;
+      margin-bottom: 30px;
+      border-bottom: 2px solid #4fc3c3;
+      padding-bottom: 15px;
+    }
+    
+    .admin-section {
+      margin-bottom: 30px;
+      padding: 20px;
+      border-radius: 10px;
+      background-color: #f0f9f9;
+    }
+    
+    .admin-section h2 {
+      color: #0e6666;
+      margin-top: 0;
+    }
+    
+    .user-info {
+      background-color: #eafafa;
+      padding: 15px;
+      border-radius: 8px;
+      margin-bottom: 20px;
+    }
+    
+    .info-item {
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+    }
+    
+    .info-label {
+      font-weight: bold;
+      min-width: 120px;
+      color: #004f4f;
+    }
+    
+    .info-value {
+      color: #2a7e7e;
+      background-color: white;
+      padding: 5px 10px;
+      border-radius: 5px;
+      border: 1px solid #c0e6e6;
+      flex-grow: 1;
+      font-family: monospace;
+    }
+    
+    button {
+      padding: 12px 25px;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.3s;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      margin: 5px;
+    }
+    
+    .primary-btn {
+      background-color: #0e6666;
+      color: white;
+    }
+    
+    .primary-btn:hover {
+      background-color: #0d5a5a;
+    }
+    
+    .danger-btn {
+      background-color: #e74c3c;
+      color: white;
+    }
+    
+    .danger-btn:hover {
+      background-color: #c0392b;
+    }
+    
+    .secondary-btn {
+      background-color: #4fc3c3;
+      color: white;
+    }
+    
+    .secondary-btn:hover {
+      background-color: #3ca4a4;
+    }
+    
+    .message {
+      padding: 15px;
+      border-radius: 8px;
+      margin: 15px 0;
+      display: none;
+    }
+    
+    .success {
+      background-color: #d4edda;
+      color: #155724;
+      border: 1px solid #c3e6cb;
+      display: block;
+    }
+    
+    .error {
+      background-color: #f8d7da;
+      color: #721c24;
+      border: 1px solid #f5c6cb;
+      display: block;
+    }
+    
+    .info {
+      background-color: #d1ecf1;
+      color: #0c5460;
+      border: 1px solid #bee5eb;
+      display: block;
+    }
+    
+    .admin-list {
+      margin-top: 20px;
+    }
+    
+    .admin-item {
+      background-color: white;
+      padding: 10px 15px;
+      margin-bottom: 10px;
+      border-radius: 8px;
+      border: 1px solid #c0e6e6;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    
+    .admin-email {
+      font-weight: bold;
+      color: #0e6666;
+    }
+    
+    .admin-actions {
+      display: flex;
+      gap: 10px;
+    }
+    
+    .login-form {
+      background-color: #f8fdff;
+      padding: 20px;
+      border-radius: 10px;
+      border: 2px solid #4fc3c3;
+    }
+    
+    .login-form input {
+      width: 100%;
+      padding: 12px;
+      margin-bottom: 15px;
+      border-radius: 8px;
+      border: 2px solid #c0e6e6;
+      font-size: 16px;
+    }
+    
+    .login-form button {
+      width: 100%;
+    }
+    
+    .hidden {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>إدارة مشروع "بين" - لوحة المديرين</h1>
+    
+    <!-- قسم تسجيل الدخول -->
+    <div id="login-section">
+      <div class="admin-section">
+        <h2>تسجيل الدخول</h2>
+        <div class="login-form">
+          <input type="email" id="login-email" placeholder="البريد الإلكتروني">
+          <input type="password" id="login-password" placeholder="كلمة المرور">
+          <button id="login-btn" class="primary-btn">تسجيل الدخول</button>
+        </div>
+        <div id="login-message" class="message"></div>
+      </div>
+    </div>
+    
+    <!-- قسم المعلومات والإدارة -->
+    <div id="admin-section" class="hidden">
+      <div class="admin-section">
+        <h2>معلومات المستخدم</h2>
+        <div class="user-info">
+          <div class="info-item">
+            <span class="info-label">الاسم:</span>
+            <span class="info-value" id="user-name">جار التحميل...</span>
+          </div>
+          <div class="info-item">
+            <span class="info-label">البريد الإلكتروني:</span>
+            <span class="info-value" id="user-email">جار التحميل...</span>
+          </div>
+          <div class="info-item">
+            <span class="info-label">معرف المستخدم (UID):</span>
+            <span class="info-value" id="user-uid">جار التحميل...</span>
+          </div>
+          <div class="info-item">
+            <span class="info-label">صلاحية المدير:</span>
+            <span class="info-value" id="user-admin-status">جار التحميل...</span>
+          </div>
+        </div>
+        
+        <button id="make-admin-btn" class="primary-btn">
+          <i class="fas fa-user-shield"></i> جعل نفسي مديراً
+        </button>
+        <button id="logout-btn" class="secondary-btn">
+          <i class="fas fa-sign-out-alt"></i> تسجيل الخروج
+        </button>
+      </div>
+      
+      <div class="admin-section">
+        <h2>قائمة المديرين</h2>
+        <div id="admin-list" class="admin-list">
+          <p>جار تحميل قائمة المديرين...</p>
+        </div>
+        
+        <div class="info" id="admin-info-message">
+          <p>يحتاج نظام "بين" إلى مديرين يمكنهم إضافة وتعديل البيانات.</p>
+          <p>معرف المستخدم الخاص بك: <strong>qlbzh9g5HUd4zpKXCS4aOIV7awE3</strong></p>
+        </div>
+      </div>
+      
+      <div class="admin-section">
+        <h2>إدارة قاعدة البيانات</h2>
+        <button id="view-data-btn" class="secondary-btn">
+          <i class="fas fa-database"></i> عرض قاعدة البيانات
+        </button>
+        <button id="clear-data-btn" class="danger-btn">
+          <i class="fas fa-trash-alt"></i> مسح قاعدة البيانات
+        </button>
+        <button id="load-sample-btn" class="secondary-btn">
+          <i class="fas fa-magic"></i> تحميل بيانات تجريبية
+        </button>
+      </div>
+    </div>
+    
+    <div id="message-container" class="message"></div>
+  </div>
+
+  <script>
+    // 🔥 إعداد Firebase
+    const firebaseConfig = {
+      apiKey: "AIzaSyDErdK7mjrXUtBYR28U7JIpbFi5RHWM9zM",
+      authDomain: "momentschat.firebaseapp.com",
+      databaseURL: "https://momentschat.firebaseio.com",
+      projectId: "momentschat",
+      storageBucket: "momentschat.appspot.com",
+      messagingSenderId: "866549697398",
+      appId: "1:866549697398:android:024dd3bf3b81d1adf78857"
+    };
+    
+    // تهيئة Firebase
+    firebase.initializeApp(firebaseConfig);
+    const database = firebase.database();
+    const auth = firebase.auth();
+    
+    // المتغيرات
+    const YOUR_UID = 'qlbzh9g5HUd4zpKXCS4aOIV7awE3';
+    const adminsRef = database.ref('admins');
+    const baynRef = database.ref('bayn');
+    
+    // عناصر DOM
+    const loginSection = document.getElementById('login-section');
+    const adminSection = document.getElementById('admin-section');
+    const loginEmail = document.getElementById('login-email');
+    const loginPassword = document.getElementById('login-password');
+    const loginBtn = document.getElementById('login-btn');
+    const loginMessage = document.getElementById('login-message');
+    const userName = document.getElementById('user-name');
+    const userEmail = document.getElementById('user-email');
+    const userUid = document.getElementById('user-uid');
+    const userAdminStatus = document.getElementById('user-admin-status');
+    const makeAdminBtn = document.getElementById('make-admin-btn');
+    const logoutBtn = document.getElementById('logout-btn');
+    const adminList = document.getElementById('admin-list');
+    const messageContainer = document.getElementById('message-container');
+    const viewDataBtn = document.getElementById('view-data-btn');
+    const clearDataBtn = document.getElementById('clear-data-btn');
+    const loadSampleBtn = document.getElementById('load-sample-btn');
+    
+    // عرض رسالة
+    function showMessage(message, type = 'info') {
+      messageContainer.textContent = message;
+      messageContainer.className = `message ${type}`;
+      setTimeout(() => {
+        messageContainer.style.display = 'none';
+      }, 5000);
+    }
+    
+    // عرض رسالة تسجيل الدخول
+    function showLoginMessage(message, type = 'info') {
+      loginMessage.textContent = message;
+      loginMessage.className = `message ${type}`;
+    }
+    
+    // تحميل معلومات المستخدم
+    function loadUserInfo(user) {
+      userName.textContent = user.displayName || 'غير محدد';
+      userEmail.textContent = user.email;
+      userUid.textContent = user.uid;
+      
+      // التحقق من صلاحية المدير
+      adminsRef.child(user.uid).once('value')
+        .then((snapshot) => {
+          if (snapshot.exists()) {
+            userAdminStatus.textContent = '✅ مدير';
+            userAdminStatus.style.color = '#27ae60';
+            makeAdminBtn.style.display = 'none';
+          } else {
+            userAdminStatus.textContent = '❌ غير مدير';
+            userAdminStatus.style.color = '#e74c3c';
+            makeAdminBtn.style.display = 'inline-flex';
+          }
+        })
+        .catch((error) => {
+          console.error('خطأ في التحقق من صلاحية المدير:', error);
+          userAdminStatus.textContent = '❓ غير معروف';
+        });
+    }
+    
+    // تحميل قائمة المديرين
+    function loadAdminsList() {
+      adminsRef.once('value')
+        .then((snapshot) => {
+          const admins = snapshot.val();
+          adminList.innerHTML = '';
+          
+          if (!admins) {
+            adminList.innerHTML = '<p>لا يوجد مديرون بعد</p>';
+            return;
+          }
+          
+          // الحصول على معلومات المستخدمين المديرين
+          const adminPromises = Object.keys(admins).map(uid => {
+            return auth.getUser(uid)
+              .then((userRecord) => {
+                return { uid, email: userRecord.email };
+              })
+              .catch(() => {
+                return { uid, email: 'مستخدم غير معروف' };
+              });
+          });
+          
+          Promise.all(adminPromises)
+            .then((adminUsers) => {
+              adminUsers.forEach(admin => {
+                const adminItem = document.createElement('div');
+                adminItem.className = 'admin-item';
+                adminItem.innerHTML = `
+                  <div>
+                    <div class="admin-email">${admin.email}</div>
+                    <div style="font-size: 12px; color: #666;">UID: ${admin.uid}</div>
+                  </div>
+                  <div class="admin-actions">
+                    ${admin.uid !== YOUR_UID ? 
+                      `<button class="danger-btn remove-admin-btn" data-uid="${admin.uid}" style="padding: 5px 10px; font-size: 14px;">
+                        إزالة
+                      </button>` : 
+                      `<span style="color: #0e6666; font-weight: bold;">(أنت)</span>`
+                    }
+                  </div>
+                `;
+                adminList.appendChild(adminItem);
+              });
+              
+              // إضافة مستمعي الأحداث لأزرار الإزالة
+              document.querySelectorAll('.remove-admin-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                  const uidToRemove = this.getAttribute('data-uid');
+                  removeAdmin(uidToRemove);
+                });
+              });
+            });
+        })
+        .catch((error) => {
+          console.error('خطأ في تحميل المديرين:', error);
+          adminList.innerHTML = '<p>خطأ في تحميل قائمة المديرين</p>';
+        });
+    }
+    
+    // جعل المستخدم مديراً
+    function makeUserAdmin(uid, email) {
+      if (!uid) {
+        showMessage('معرف المستخدم غير صالح', 'error');
+        return;
+      }
+      
+      adminsRef.child(uid).set(true)
+        .then(() => {
+          showMessage(`تم تعيين ${email} كمدير بنجاح!`, 'success');
+          loadUserInfo(auth.currentUser);
+          loadAdminsList();
+        })
+        .catch((error) => {
+          console.error('خطأ في تعيين المدير:', error);
+          showMessage('خطأ في تعيين المدير', 'error');
+        });
+    }
+    
+    // إزالة صلاحية المدير
+    function removeAdmin(uid) {
+      if (!confirm('هل أنت متأكد من إزالة صلاحية المدير؟')) {
+        return;
+      }
+      
+      adminsRef.child(uid).remove()
+        .then(() => {
+          showMessage('تم إزالة صلاحية المدير بنجاح', 'success');
+          loadAdminsList();
+          
+          // إذا كان المستخدم الحالي هو الذي تمت إزالة صلاحيته
+          if (auth.currentUser && auth.currentUser.uid === uid) {
+            loadUserInfo(auth.currentUser);
+          }
+        })
+        .catch((error) => {
+          console.error('خطأ في إزالة المدير:', error);
+          showMessage('خطأ في إزالة صلاحية المدير', 'error');
+        });
+    }
+    
+    // تسجيل الدخول
+    loginBtn.addEventListener('click', () => {
+      const email = loginEmail.value.trim();
+      const password = loginPassword.value.trim();
+      
+      if (!email || !password) {
+        showLoginMessage('يرجى إدخال البريد الإلكتروني وكلمة المرور', 'error');
+        return;
+      }
+      
+      auth.signInWithEmailAndPassword(email, password)
+        .then((userCredential) => {
+          showLoginMessage('تم تسجيل الدخول بنجاح!', 'success');
+        })
+        .catch((error) => {
+          console.error('خطأ في تسجيل الدخول:', error);
+          let errorMessage = 'خطأ في تسجيل الدخول';
+          
+          switch(error.code) {
+            case 'auth/invalid-email':
+              errorMessage = 'البريد الإلكتروني غير صالح';
+              break;
+            case 'auth/user-disabled':
+              errorMessage = 'هذا الحساب معطل';
+              break;
+            case 'auth/user-not-found':
+              errorMessage = 'لم يتم العثور على حساب بهذا البريد';
+              break;
+            case 'auth/wrong-password':
+              errorMessage = 'كلمة المرور غير صحيحة';
+              break;
+          }
+          
+          showLoginMessage(errorMessage, 'error');
+        });
+    });
+    
+    // جعل نفسي مديراً
+    makeAdminBtn.addEventListener('click', () => {
+      if (!auth.currentUser) {
+        showMessage('يجب تسجيل الدخول أولاً', 'error');
+        return;
+      }
+      
+      makeUserAdmin(auth.currentUser.uid, auth.currentUser.email);
+    });
+    
+    // تسجيل الخروج
+    logoutBtn.addEventListener('click', () => {
+      auth.signOut()
+        .then(() => {
+          showMessage('تم تسجيل الخروج', 'success');
+        })
+        .catch((error) => {
+          console.error('خطأ في تسجيل الخروج:', error);
+          showMessage('خطأ في تسجيل الخروج', 'error');
+        });
+    });
+    
+    // عرض قاعدة البيانات
+    viewDataBtn.addEventListener('click', () => {
+      window.open('https://console.firebase.google.com/project/momentschat/database/momentschat/data', '_blank');
+    });
+    
+    // مسح قاعدة البيانات
+    clearDataBtn.addEventListener('click', () => {
+      if (!confirm('⚠️ هل أنت متأكد من مسح قاعدة البيانات بالكامل؟ لا يمكن التراجع عن هذا الإجراء.')) {
+        return;
+      }
+      
+      baynRef.remove()
+        .then(() => {
+          showMessage('تم مسح قاعدة البيانات بنجاح', 'success');
+        })
+        .catch((error) => {
+          console.error('خطأ في مسح البيانات:', error);
+          showMessage('خطأ في مسح قاعدة البيانات', 'error');
+        });
+    });
+    
+    // تحميل بيانات تجريبية
+    loadSampleBtn.addEventListener('click', () => {
+      const sampleData = {
+        semanticData: {
+          "نور": {
+            "synonym": ["ضياء", "إشراق", "سناء", "بريق", "تلألؤ"],
+            "antonym": ["ظلام", "عتمة", "ليل", "دجى", "سواد"]
+          },
+          "سعيد": {
+            "synonym": ["فرح", "مسرور", "بهيج", "مبتهج", "منشرح الصدر"],
+            "antonym": ["حزين", "كئيب", "مهموم", "تعيس", "بائس"]
+          },
+          "كبير": {
+            "synonym": ["عظيم", "ضخم", "واسع", "هائل", "جسيم"],
+            "antonym": ["صغير", "ضئيل", "صغير الحجم", "مصغر", "دقيق"]
+          }
+        }
+      };
+      
+      baynRef.set(sampleData)
+        .then(() => {
+          showMessage('تم تحميل البيانات التجريبية بنجاح', 'success');
+        })
+        .catch((error) => {
+          console.error('خطأ في تحميل البيانات:', error);
+          showMessage('خطأ في تحميل البيانات التجريبية', 'error');
+        });
+    });
+    
+    // مراقبة حالة المصادقة
+    auth.onAuthStateChanged((user) => {
+      if (user) {
+        // مستخدم مسجل الدخول
+        loginSection.classList.add('hidden');
+        adminSection.classList.remove('hidden');
+        loadUserInfo(user);
+        loadAdminsList();
+        
+        // إذا كنت أنت (بمعرفك الخاص)، اجعل نفسك مديراً تلقائياً
+        if (user.uid === YOUR_UID) {
+          adminsRef.child(YOUR_UID).once('value')
+            .then((snapshot) => {
+              if (!snapshot.exists()) {
+                makeUserAdmin(YOUR_UID, user.email);
+              }
+            });
+        }
+      } else {
+        // لا يوجد مستخدم مسجل
+        adminSection.classList.add('hidden');
+        loginSection.classList.remove('hidden');
+      }
+    });
+    
+    // السماح بالدخول باستخدام Enter في حقول تسجيل الدخول
+    loginPassword.addEventListener('keypress', (e) => {
+      if (e.key === 'Enter') {
+        loginBtn.click();
+      }
+    });
+    
+    // التهيئة الأولية
+    console.log('معرف المستخدم الخاص بك:', YOUR_UID);
+    showMessage('لوحة إدارة مشروع "بين". استخدم معرفك: ' + YOUR_UID, 'info');
+  </script>
+  
+  <!-- Font Awesome Icons -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"></script>
+</body>
+</html>
