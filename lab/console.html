@@ -1480,6 +1480,43 @@
       renderAntonymsList();
     }
 
+    // بعد تهيئة Firebase مباشرة
+const adminUid = 'qlbzh9g5HUd4zpKXCS4aOIV7awE3';
+
+// دالة لجعل نفسك مديراً
+function makeSelfAdmin() {
+  if (auth.currentUser && auth.currentUser.uid === adminUid) {
+    const adminsRef = database.ref('admins');
+    
+    adminsRef.child(adminUid).set(true)
+      .then(() => {
+        console.log('تم تعيينك كمدير بنجاح!');
+        showAlert('تم تعيينك كمدير بنجاح!', 'success');
+      })
+      .catch((error) => {
+        console.error('خطأ في تعيين المدير:', error);
+        showAlert('خطأ في تعيين المدير', 'error');
+      });
+  }
+}
+
+// استدعاء الدالة عند تسجيل الدخول
+auth.onAuthStateChanged((user) => {
+  if (user && user.uid === adminUid) {
+    // تحقق أولاً إذا كنت مديراً بالفعل
+    const adminsRef = database.ref('admins');
+    adminsRef.child(adminUid).once('value')
+      .then((snapshot) => {
+        if (!snapshot.exists()) {
+          // إذا لم تكن مديراً، اصنع نفسك مديراً
+          makeSelfAdmin();
+        } else {
+          console.log('أنت بالفعل مدير!');
+        }
+      });
+  }
+});
+
     // بدء تشغيل التطبيق
     document.addEventListener('DOMContentLoaded', initApp);
   </script>
