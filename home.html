@@ -124,7 +124,10 @@
       }
     }
 
-    .main-button {
+    /* تصميم الأزرار كروابط */
+    .main-button-link {
+      display: block;
+      text-decoration: none;
       background-color: #0e6666;
       border: none;
       border-radius: 15px;
@@ -142,15 +145,21 @@
       box-shadow: 0 5px 15px rgba(14, 102, 102, 0.2);
     }
 
-    .main-button:hover {
+    .main-button-link:hover {
       background-color: #4fc3c3;
       transform: translateY(-5px);
       box-shadow: 0 10px 20px rgba(14, 102, 102, 0.3);
+      text-decoration: none;
     }
 
-    .button-icon {
-      font-size: 2.5rem;
+    .button-icon-img {
+      width: 80px;
+      height: 80px;
       margin-bottom: 15px;
+      object-fit: contain;
+      border-radius: 8px;
+      background-color: rgba(255, 255, 255, 0.1);
+      padding: 8px;
     }
 
     .button-desc {
@@ -159,340 +168,6 @@
       margin-top: 10px;
       opacity: 0.9;
       line-height: 1.4;
-    }
-
-    /* أقسام الصفحات */
-    .page-section {
-      display: none;
-      padding: 40px 20px;
-      width: 100%;
-      animation: fadeIn 0.5s ease;
-    }
-
-    @keyframes fadeIn {
-      from { opacity: 0; }
-      to { opacity: 1; }
-    }
-
-    .page-title {
-      color: #0e6666;
-      font-size: 2rem;
-      margin-bottom: 30px;
-      font-weight: 700;
-      padding-bottom: 15px;
-      border-bottom: 2px solid #4fc3c3;
-      width: 100%;
-    }
-
-    .page-content {
-      text-align: right;
-      line-height: 1.8;
-      font-size: 1.1rem;
-      color: #333;
-      max-width: 800px;
-      margin: 0 auto;
-    }
-
-    .back-button {
-      background-color: #3ca4a4;
-      border: none;
-      border-radius: 10px;
-      padding: 12px 25px;
-      color: white;
-      font-size: 1.1rem;
-      font-weight: 600;
-      cursor: pointer;
-      margin-top: 30px;
-      transition: background-color 0.3s;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .back-button:hover {
-      background-color: #4fc3c3;
-    }
-
-    .back-icon {
-      margin-left: 8px;
-      font-size: 1.2rem;
-    }
-
-    /* تصميم أداة البحث (الصفحة 1) */
-    .tool-box {
-      background-color: #0e6666;
-      border-radius: 20px;
-      padding: 25px;
-      width: 80%;
-      max-width: 350px;
-      margin: 20px auto 40px;
-    }
-
-    .tool-box label {
-      display: block;
-      margin-bottom: 8px;
-      font-weight: 700;
-      color: white;
-    }
-
-    input, select {
-      width: 100%;
-      padding: 10px;
-      border-radius: 10px;
-      border: none;
-      font-size: 16px;
-      text-align: center;
-      margin-bottom: 15px;
-    }
-
-    button.analyze-btn {
-      width: 100%;
-      padding: 10px;
-      background-color: #3ca4a4;
-      border: none;
-      border-radius: 10px;
-      font-size: 18px;
-      font-weight: 700;
-      cursor: pointer;
-      color: #fff;
-      transition: background-color 0.3s;
-    }
-
-    button.analyze-btn:hover {
-      background-color: #4fc3c3;
-    }
-
-    button.analyze-btn:disabled {
-      background-color: #cccccc;
-      cursor: not-allowed;
-    }
-
-    .results-section {
-      padding: 20px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 25px;
-      width: 100%;
-    }
-
-    .result-card {
-      width: 85%;
-      max-width: 450px;
-      background-color: #eafafa;
-      border: 2px solid #4fc3c3;
-      border-radius: 15px;
-      padding: 20px;
-      text-align: right;
-      box-shadow: 0 3px 8px rgba(0,0,0,0.1);
-    }
-
-    .main-word {
-      font-size: 22px;
-      font-weight: 700;
-      color: #2a7e7e;
-      margin-bottom: 15px;
-      padding-bottom: 10px;
-      border-bottom: 1px dashed #4fc3c3;
-    }
-
-    .label {
-      display: inline-flex;
-      align-items: center;
-      background-color: #4fc3c3;
-      color: white;
-      border-radius: 10px;
-      padding: 5px 15px;
-      font-size: 18px;
-      margin-bottom: 10px;
-      font-weight: 700;
-    }
-
-    .words {
-      margin: 5px 0 0 0;
-      font-size: 18px;
-      line-height: 1.6;
-      color: #333;
-    }
-
-    .found-as {
-      display: inline-block;
-      background-color: #f9a826;
-      color: white;
-      border-radius: 8px;
-      padding: 3px 10px;
-      font-size: 14px;
-      margin-bottom: 10px;
-      font-weight: 600;
-    }
-
-    .loading {
-      display: inline-block;
-      width: 20px;
-      height: 20px;
-      border: 3px solid rgba(255,255,255,.3);
-      border-radius: 50%;
-      border-top-color: #fff;
-      animation: spin 1s ease-in-out infinite;
-    }
-
-    @keyframes spin {
-      to { transform: rotate(360deg); }
-    }
-
-    /* تصميم صفحة المشروع */
-    .project-info {
-      background-color: #eafafa;
-      border-radius: 15px;
-      padding: 25px;
-      margin: 20px auto;
-      max-width: 800px;
-      text-align: right;
-      border: 2px solid #4fc3c3;
-    }
-
-    .project-info h3 {
-      color: #0e6666;
-      margin-top: 20px;
-      font-size: 1.4rem;
-    }
-
-    .project-info ul {
-      padding-right: 20px;
-    }
-
-    .project-info li {
-      margin-bottom: 10px;
-    }
-
-    /* تصميم صفحة الأدوات الأخرى */
-    .tools-list {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 20px;
-      margin-top: 30px;
-    }
-
-    .tool-item {
-      background-color: #eafafa;
-      border-radius: 15px;
-      padding: 25px;
-      width: 100%;
-      max-width: 350px;
-      text-align: center;
-      border: 2px solid #4fc3c3;
-      transition: transform 0.3s;
-    }
-
-    .tool-item:hover {
-      transform: translateY(-5px);
-    }
-
-    .tool-item h3 {
-      color: #0e6666;
-      margin-bottom: 15px;
-    }
-
-    .tool-link {
-      display: inline-block;
-      background-color: #3ca4a4;
-      color: white;
-      padding: 10px 20px;
-      border-radius: 8px;
-      text-decoration: none;
-      margin-top: 15px;
-      font-weight: 600;
-      transition: background-color 0.3s;
-    }
-
-    .tool-link:hover {
-      background-color: #4fc3c3;
-      text-decoration: none;
-    }
-
-    /* تصميم صفحة الاتصال */
-    .contact-info {
-      background-color: #eafafa;
-      border-radius: 15px;
-      padding: 30px;
-      margin: 20px auto;
-      max-width: 700px;
-      text-align: right;
-      border: 2px solid #4fc3c3;
-    }
-
-    .contact-form {
-      display: flex;
-      flex-direction: column;
-      gap: 20px;
-      margin-top: 30px;
-    }
-
-    .form-group {
-      text-align: right;
-    }
-
-    .form-group label {
-      display: block;
-      margin-bottom: 8px;
-      font-weight: 600;
-      color: #0e6666;
-    }
-
-    .form-group input,
-    .form-group textarea {
-      width: 100%;
-      padding: 12px;
-      border: 1px solid #4fc3c3;
-      border-radius: 10px;
-      font-size: 1rem;
-      background-color: white;
-    }
-
-    .form-group textarea {
-      min-height: 150px;
-      resize: vertical;
-    }
-
-    .submit-btn {
-      background-color: #0e6666;
-      color: white;
-      border: none;
-      border-radius: 10px;
-      padding: 15px;
-      font-size: 1.1rem;
-      font-weight: 600;
-      cursor: pointer;
-      transition: background-color 0.3s;
-    }
-
-    .submit-btn:hover {
-      background-color: #4fc3c3;
-    }
-
-    .contact-details {
-      margin-top: 30px;
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 20px;
-    }
-
-    .contact-item {
-      display: flex;
-      align-items: center;
-      background-color: white;
-      padding: 15px;
-      border-radius: 10px;
-      min-width: 200px;
-      box-shadow: 0 3px 8px rgba(0,0,0,0.1);
-    }
-
-    .contact-icon {
-      font-size: 1.5rem;
-      margin-left: 15px;
-      color: #0e6666;
     }
   </style>
 </head>
@@ -505,413 +180,75 @@
 
   <div class="container">
     <!-- الصفحة الرئيسية -->
-    <div id="home-page" class="home-page">
+    <div class="home-page">
       <h1 class="home-title">بَيْن</h1>
       <p class="home-subtitle">أداة متكاملة لاستكشاف العلاقات الدلالية بين الكلمات العربية: الترادف والتضاد، مع دعم لدراسة الصوامت والأصوات.</p>
       
       <div class="buttons-grid">
-        <button id="tool-btn" class="main-button">
-          <div class="button-icon">🔍</div>
+        <!-- زر الأداة -->
+        <a href="tool.html" class="main-button-link" target="_self">
+          <img src="images/tool-icon.png" alt="أداة الترادفات والتضاد" class="button-icon-img">
           أداة الترادفات والتضاد
           <div class="button-desc">استكشف مرادفات وأضداد الكلمات العربية مع تحليل الصوامت</div>
-        </button>
+        </a>
         
-        <button id="project-btn" class="main-button">
-          <div class="button-icon">📚</div>
+        <!-- زر المشروع -->
+        <a href="project.html" class="main-button-link" target="_self">
+          <img src="images/project-icon.png" alt="عن المشروع" class="button-icon-img">
           عن المشروع
           <div class="button-desc">تعرف على فكرة وأهداف مشروع بين والجهود المبذولة لتطويره</div>
-        </button>
+        </a>
         
-        <button id="tools-btn" class="main-button">
-          <div class="button-icon">⚙️</div>
+        <!-- زر الأدوات الأخرى -->
+        <a href="tools.html" class="main-button-link" target="_self">
+          <img src="images/tools-icon.png" alt="أدوات أخرى" class="button-icon-img">
           أدوات أخرى
           <div class="button-desc">استكشف مجموعة من الأدوات اللغوية والإلكترونية الأخرى المتاحة</div>
-        </button>
+        </a>
         
-        <button id="contact-btn" class="main-button">
-          <div class="button-icon">✉️</div>
+        <!-- زر الاتصال -->
+        <a href="contact.html" class="main-button-link" target="_self">
+          <img src="images/contact-icon.png" alt="اتصل بنا" class="button-icon-img">
           اتصل بنا
           <div class="button-desc">تواصل مع فريق العمل للمساهمة أو الاستفسار عن المشروع</div>
-        </button>
-      </div>
-    </div>
-
-    <!-- صفحة الأداة -->
-    <div id="tool-page" class="page-section">
-      <h2 class="page-title">أداة الترادفات والتضاد</h2>
-      
-      <div class="tool-box">
-        <label for="word-input">أدخل الكلمة:</label>
-        <input type="text" id="word-input" placeholder="مثلاً: نور، ضياء، ظلام...">
-
-        <label for="relation-type">اختر نوع العلاقة:</label>
-        <select id="relation-type">
-          <option value="all">جميع العلاقات</option>
-          <option value="synonym">الترادف (مرادفات)</option>
-          <option value="antonym">التضاد (أضداد)</option>
-        </select>
-
-        <button id="analyze-btn" class="analyze-btn">
-          <span id="btn-text">بحث</span>
-          <span id="btn-loading" class="loading" style="display: none;"></span>
-        </button>
-      </div>
-
-      <div id="results-container" class="results-section"></div>
-      
-      <button class="back-button" id="back-from-tool">
-        <span class="back-icon">←</span> العودة للرئيسية
-      </button>
-    </div>
-
-    <!-- صفحة المشروع -->
-    <div id="project-page" class="page-section">
-      <h2 class="page-title">عن مشروع بين</h2>
-      
-      <div class="project-info">
-        <h3>فكرة المشروع</h3>
-        <p>مشروع "بين" هو أداة لغوية رقمية تهدف إلى خدمة اللغة العربية من خلال توفير وسيلة سهلة للبحث عن العلاقات الدلالية بين الكلمات، مع التركيز على ظاهرتي الترادف والتضاد.</p>
-        
-        <h3>الأهداف</h3>
-        <ul>
-          <li>توفير قاعدة بيانات متكاملة للعلاقات الدلالية بين الكلمات العربية</li>
-          <li>دمج دراسة الصوامت والأصوات مع الدراسة الدلالية للكلمات</li>
-          <li>تقديم واجهة مستخدم بسيطة وسهلة الاستخدام للباحثين والطلاب</li>
-          <li>المساهمة في الحفاظ على اللغة العربية وتعزيز استخدامها الرقمي</li>
-        </ul>
-        
-        <h3>الميزات</h3>
-        <ul>
-          <li>البحث عن مرادفات وأضداد الكلمات العربية</li>
-          <li>تحليل الصوامت للحرف الأول من الكلمة المدخلة</li>
-          <li>تصميم متجاوب يعمل على جميع الأجهزة</li>
-          <li>واجهة مستخدم عربية مريحة للعين</li>
-        </ul>
-        
-        <h3>الفريق</h3>
-        <p>يعمل على تطوير المشروع فريق من المتخصصين في اللغة العربية والحاسوب، بهدف تقديم أداة دقيقة ومفيدة للدارسين والباحثين.</p>
+        </a>
       </div>
       
-      <button class="back-button" id="back-from-project">
-        <span class="back-icon">←</span> العودة للرئيسية
-      </button>
-    </div>
-
-    <!-- صفحة الأدوات الأخرى -->
-    <div id="tools-page" class="page-section">
-      <h2 class="page-title">أدوات أخرى</h2>
-      
-      <div class="page-content">
-        <p>إلى جانب أداة "بين" للترادفات والتضاد، نقدم مجموعة من الأدوات اللغوية والإلكترونية الأخرى التي قد تهمك:</p>
-      </div>
-      
-      <div class="tools-list">
-        <div class="tool-item">
-          <h3>مُعرِّف</h3>
-          <p>أداة للتعريف بالمصطلحات العربية وتوضيح معانيها في مختلف المجالات العلمية والأدبية.</p>
-          <a href="#" class="tool-link">زيارة الأداة</a>
-        </div>
-        
-        <div class="tool-item">
-          <h3>صَوات</h3>
-          <p>منصة متخصصة في دراسة الأصوات العربية وتحليل مخارج الحروف وصفاتها.</p>
-          <a href="#" class="tool-link">زيارة الأداة</a>
-        </div>
-        
-        <div class="tool-item">
-          <h3>نَظم</h3>
-          <p>أداة لتحليل القواعد النحوية والصرفية للنصوص العربية مع تصحيح الأخطاء.</p>
-          <a href="#" class="tool-link">زيارة الأداة</a>
-        </div>
-        
-        <div class="tool-item">
-          <h3>بَصيرة</h3>
-          <p>منصة شاملة للدراسات اللغوية العربية تضم مجموعة من الأدوات البحثية المتخصصة.</p>
-          <a href="#" class="tool-link">زيارة المنصة</a>
-        </div>
-      </div>
-      
-      <button class="back-button" id="back-from-tools">
-        <span class="back-icon">←</span> العودة للرئيسية
-      </button>
-    </div>
-
-    <!-- صفحة الاتصال -->
-    <div id="contact-page" class="page-section">
-      <h2 class="page-title">اتصل بنا</h2>
-      
-      <div class="contact-info">
-        <p>نرحب بآرائكم ومقترحاتكم لتطوير مشروع "بين". يمكنكم التواصل معنا من خلال النموذج التالي أو عبر وسائل التواصل الأخرى:</p>
-        
-        <form class="contact-form">
-          <div class="form-group">
-            <label for="name">الاسم الكامل:</label>
-            <input type="text" id="name" placeholder="أدخل اسمك الكامل">
-          </div>
-          
-          <div class="form-group">
-            <label for="email">البريد الإلكتروني:</label>
-            <input type="email" id="email" placeholder="example@email.com">
-          </div>
-          
-          <div class="form-group">
-            <label for="subject">موضوع الرسالة:</label>
-            <input type="text" id="subject" placeholder="موضوع الرسالة">
-          </div>
-          
-          <div class="form-group">
-            <label for="message">الرسالة:</label>
-            <textarea id="message" placeholder="اكتب رسالتك هنا..."></textarea>
-          </div>
-          
-          <button type="submit" class="submit-btn">إرسال الرسالة</button>
-        </form>
-        
-        <div class="contact-details">
-          <div class="contact-item">
-            <div class="contact-icon">📧</div>
-            <div>
-              <strong>البريد الإلكتروني</strong>
-              <div>info@bayn.basirah.me</div>
-            </div>
-          </div>
-          
-          <div class="contact-item">
-            <div class="contact-icon">🌐</div>
-            <div>
-              <strong>الموقع الإلكتروني</strong>
-              <div>www.bayn.basirah.me</div>
-            </div>
-          </div>
-          
-          <div class="contact-item">
-            <div class="contact-icon">📱</div>
-            <div>
-              <strong>وسائل التواصل الاجتماعي</strong>
-              <div>@bayn_ar</div>
-            </div>
-          </div>
-        </div>
-      </div>
-      
-      <button class="back-button" id="back-from-contact">
-        <span class="back-icon">←</span> العودة للرئيسية
-      </button>
+      <p style="color: #0e6666; margin-top: 40px; font-size: 1.1rem;">
+        اختر إحدى الخدمات أعلاه للانتقال إلى صفحتها
+      </p>
     </div>
   </div>
 
   <!-- ✅ الفوتر -->
   <footer>
-    <a href="#" id="footer-home">الرئيسية</a>
-    <a href="#" id="footer-project">عن المشروع</a>
-    <a href="#" id="footer-tools">أدوات أخرى</a>
-    <a href="#" id="footer-contact">اتصل بنا</a>
+    <a href="index.html">الرئيسية</a>
+    <a href="project.html">عن المشروع</a>
+    <a href="tools.html">أدوات أخرى</a>
+    <a href="contact.html">اتصل بنا</a>
   </footer>
 
   <script>
-    // عناصر الصفحات
-    const homePage = document.getElementById('home-page');
-    const toolPage = document.getElementById('tool-page');
-    const projectPage = document.getElementById('project-page');
-    const toolsPage = document.getElementById('tools-page');
-    const contactPage = document.getElementById('contact-page');
-    
-    // الأزرار الرئيسية
-    const toolBtn = document.getElementById('tool-btn');
-    const projectBtn = document.getElementById('project-btn');
-    const toolsBtn = document.getElementById('tools-btn');
-    const contactBtn = document.getElementById('contact-btn');
-    
-    // أزرار العودة
-    const backFromTool = document.getElementById('back-from-tool');
-    const backFromProject = document.getElementById('back-from-project');
-    const backFromTools = document.getElementById('back-from-tools');
-    const backFromContact = document.getElementById('back-from-contact');
-    
-    // روابط الفوتر
-    const footerHome = document.getElementById('footer-home');
-    const footerProject = document.getElementById('footer-project');
-    const footerTools = document.getElementById('footer-tools');
-    const footerContact = document.getElementById('footer-contact');
-    
-    // دالة لعرض صفحة وإخفاء الأخرى
-    function showPage(pageToShow) {
-      // إخفاء جميع الصفحات
-      const pages = [homePage, toolPage, projectPage, toolsPage, contactPage];
-      pages.forEach(page => page.style.display = 'none');
-      
-      // عرض الصفحة المطلوبة
-      pageToShow.style.display = 'flex';
-    }
-    
-    // استماع لأحداث الأزرار الرئيسية
-    toolBtn.addEventListener('click', () => showPage(toolPage));
-    projectBtn.addEventListener('click', () => showPage(projectPage));
-    toolsBtn.addEventListener('click', () => showPage(toolsPage));
-    contactBtn.addEventListener('click', () => showPage(contactPage));
-    
-    // استماع لأحداث أزرار العودة
-    backFromTool.addEventListener('click', () => showPage(homePage));
-    backFromProject.addEventListener('click', () => showPage(homePage));
-    backFromTools.addEventListener('click', () => showPage(homePage));
-    backFromContact.addEventListener('click', () => showPage(homePage));
-    
-    // استماع لأحداث روابط الفوتر
-    footerHome.addEventListener('click', (e) => {
-      e.preventDefault();
-      showPage(homePage);
-    });
-    
-    footerProject.addEventListener('click', (e) => {
-      e.preventDefault();
-      showPage(projectPage);
-    });
-    
-    footerTools.addEventListener('click', (e) => {
-      e.preventDefault();
-      showPage(toolsPage);
-    });
-    
-    footerContact.addEventListener('click', (e) => {
-      e.preventDefault();
-      showPage(contactPage);
-    });
-    
-    // إظهار الصفحة الرئيسية عند تحميل الموقع
-    showPage(homePage);
-    
-    // كود أداة البحث (من الملف الأصلي)
-    const analyzeBtn = document.getElementById('analyze-btn');
-    const btnText = document.getElementById('btn-text');
-    const btnLoading = document.getElementById('btn-loading');
-    const input = document.getElementById('word-input');
-    const typeSelect = document.getElementById('relation-type');
-    const resultsContainer = document.getElementById('results-container');
-
-    async function fetchSemanticData() {
-      try {
-        const response = await fetch('data/semanticData.json');
-        if (!response.ok) throw new Error('فشل في جلب البيانات الدلالية');
-        return await response.json();
-      } catch {
-        return {
-          "نور": { "synonym": ["ضياء", "إشراق", "سناء"], "antonym": ["ظلام", "عتمة", "ليل"] },
-          "سعيد": { "synonym": ["فرح", "مسرور", "بهِج", "مبتهج", "منشرح الصدر"], "antonym": ["حزين", "كئيب", "مهموم", "تعيس", "بائس"] },
-          "كبير": { "synonym": ["عظيم", "ضخم", "واسع", "هائل", "جسيم"], "antonym": ["صغير", "ضئيل", "صغير الحجم", "مصغر", "دقيق"] }
-        };
-      }
-    }
-
-    async function fetchPhoneticData() {
-      try {
-        const response = await fetch('https://1812.jassim.one/data/sawamet.json');
-        if (!response.ok) throw new Error('فشل في جلب بيانات الصوامت');
-        return await response.json();
-      } catch {
-        return {
-          "ن": { "مخرج": "طرف اللسان مع ما يحاذيه من لثة الأسنان العليا", "صفة": "صفير" },
-          "ض": { "مخرج": "أحد حافتي اللسان مع ما يحاذيه من الأضراس العليا", "صفة": "استعلاء وإطباق" },
-          "ظ": { "مخرج": "طرف اللسان مع أطراف الثنايا العليا", "صفة": "استعلاء وإطباق" }
-        };
-      }
-    }
-
-    function findWordEntries(data, searchWord) {
-      const results = [];
-      for (const [mainWord, relations] of Object.entries(data)) {
-        if (mainWord === searchWord) {
-          results.push({ mainWord, foundAs: "كلمة مفتاحية", relations });
-        } else if (relations.synonym.includes(searchWord)) {
-          results.push({ mainWord, foundAs: "مرادف", relations });
-        } else if (relations.antonym.includes(searchWord)) {
-          results.push({ mainWord, foundAs: "ضد", relations });
-        }
-      }
-      return results;
-    }
-
-    function toggleButtonState(loading) {
-      analyzeBtn.disabled = loading;
-      btnText.style.display = loading ? 'none' : 'inline-block';
-      btnLoading.style.display = loading ? 'inline-block' : 'none';
-    }
-
-    function createPhoneticsSection(word, phoneticData) {
-      if (!word) return '';
-      const firstChar = word.charAt(0);
-      const phonetics = phoneticData[firstChar];
-      if (!phonetics) return '';
-      let html = `
-        <div class="phonetics-section">
-          <div class="label">الصوامت (الحرف الأول: ${firstChar})
-            <img src="https://sawamet.jassim.one/icons/favicon.png" alt="أيقونة الصوامت" class="phonetics-icon" style="width:30px; height:30px; margin-right:8px;">
-          </div>
-          <div class="phonetics-details">
-      `;
-      for (const [key, value] of Object.entries(phonetics)) {
-        html += `<div class="phonetic-item"><span class="phonetic-term">${key}:</span><span class="phonetic-def">${value}</span></div>`;
-      }
-      html += `</div></div>`;
-      return html;
-    }
-
-    analyzeBtn.addEventListener('click', async () => {
-      const word = input.value.trim();
-      const type = typeSelect.value;
-      if (!word) {
-        resultsContainer.innerHTML = `<p style="color:#888;">يرجى إدخال كلمة للبحث 🔍</p>`;
-        return;
-      }
-
-      toggleButtonState(true);
-      resultsContainer.innerHTML = `<p style="color:#888;">جاري البحث...</p>`;
-
-      try {
-        const [semanticData, phoneticData] = await Promise.all([
-          fetchSemanticData(),
-          fetchPhoneticData()
-        ]);
-
-        const entries = findWordEntries(semanticData, word);
-        resultsContainer.innerHTML = "";
-
-        if (entries.length === 0) {
-          resultsContainer.innerHTML = `<p style="color:#888;">الكلمة "${word}" غير موجودة في قاعدة البيانات.</p>`;
-          return;
-        }
-
-        entries.forEach(entry => {
-          const { mainWord, foundAs, relations } = entry;
-          const card = document.createElement('div');
-          card.className = 'result-card';
-          let content = `
-            <div class="main-word">${mainWord}</div>
-            <div class="found-as">تم العثور على "${word}" كـ ${foundAs}</div>
-          `;
-          if (type === "all" || type === "synonym")
-            content += `<div class="label">المرادفات</div><div class="words">${relations.synonym.join('، ')}</div>`;
-          if (type === "all" || type === "antonym")
-            content += `<div class="label">الأضداد</div><div class="words">${relations.antonym.join('، ')}</div>`;
-          content += createPhoneticsSection(word, phoneticData);
-          card.innerHTML = content;
-          resultsContainer.appendChild(card);
-        });
-      } catch {
-        resultsContainer.innerHTML = `<p style="color:#ff6b6b;">حدث خطأ أثناء البحث. يرجى المحاولة لاحقًا.</p>`;
-      } finally {
-        toggleButtonState(false);
-      }
-    });
-    
-    // إرسال نموذج الاتصال
-    const contactForm = document.querySelector('.contact-form');
-    if (contactForm) {
-      contactForm.addEventListener('submit', function(e) {
-        e.preventDefault();
-        alert('شكراً لك على رسالتك! سنقوم بالرد عليك في أقرب وقت ممكن.');
-        contactForm.reset();
+    // إضافة تأثير بسيط عند تحميل الصفحة
+    document.addEventListener('DOMContentLoaded', function() {
+      const buttons = document.querySelectorAll('.main-button-link');
+      buttons.forEach((button, index) => {
+        // تأخير بسيط لظهور الأزرار بشكل متتالي
+        setTimeout(() => {
+          button.style.opacity = '0';
+          button.style.transform = 'translateY(20px)';
+          button.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+          
+          setTimeout(() => {
+            button.style.opacity = '1';
+            button.style.transform = 'translateY(0)';
+          }, 10);
+        }, index * 100);
       });
-    }
+      
+      // رسالة ترحيبية في وحدة التحكم
+      console.log('مرحباً بك في أداة "بَيْن" لاستكشاف العلاقات الدلالية بين الكلمات العربية');
+    });
   </script>
 </body>
 </html>
