@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>بَيْن - الكلمات الدخيلة على العربية</title>
   <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
   <style>
     * {
@@ -19,11 +20,76 @@
       text-align: center;
     }
 
-    /* حاويات التوب بار والفوتر */
-    #topbar-container, #footer-container {
-      width: 100%;
+    /* التوب بار */
+    header {
+      background: linear-gradient(135deg, #4fc3c3, #2a7e7e);
+      color: white;
+      padding: 20px 15px;
+      text-align: center;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
     }
 
+    .header-content {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .logo-container {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      margin-bottom: 10px;
+    }
+
+    .logo {
+      background: white;
+      padding: 12px 24px;
+      border-radius: 50px;
+      font-size: 34px;
+      font-weight: bold;
+      color: #2a7e7e;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
+
+    .site-title {
+      font-size: 28px;
+      margin: 0;
+      text-shadow: 1px 1px 3px rgba(0,0,0,0.2);
+    }
+
+    .site-subtitle {
+      color: #e6f7f7;
+      margin: 0;
+      font-size: 16px;
+      max-width: 600px;
+    }
+
+    .nav-menu {
+      display: flex;
+      gap: 20px;
+      margin-top: 15px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .nav-menu a {
+      color: white;
+      text-decoration: none;
+      font-weight: 600;
+      padding: 8px 16px;
+      border-radius: 25px;
+      transition: all 0.3s;
+    }
+
+    .nav-menu a:hover {
+      background-color: rgba(255,255,255,0.2);
+    }
+
+    /* المحتوى الرئيسي */
     .container {
       min-height: 100vh;
       display: flex;
@@ -39,44 +105,53 @@
       width: 80%;
       max-width: 350px;
       margin: 40px auto;
+      box-shadow: 0 8px 16px rgba(0,0,0,0.1);
     }
 
     .tool-box label {
       display: block;
       margin-bottom: 8px;
       font-weight: 600;
+      color: #2a5f5f;
     }
 
     input, select {
       width: 100%;
-      padding: 10px;
+      padding: 12px;
       border-radius: 10px;
       border: none;
       font-size: 16px;
       text-align: center;
       margin-bottom: 15px;
+      background-color: rgba(255,255,255,0.9);
+      box-shadow: 0 2px 4px rgba(0,0,0,0.05);
     }
 
     button {
       width: 100%;
-      padding: 10px;
+      padding: 12px;
       background-color: #6ef3f3;
       border: none;
       border-radius: 10px;
       font-size: 18px;
       font-weight: 600;
       cursor: pointer;
-      color: #000;
-      transition: background-color 0.3s;
+      color: #2a5f5f;
+      transition: all 0.3s;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
     }
 
     button:hover {
       background-color: #4fc3c3;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 12px rgba(0,0,0,0.15);
     }
 
     button:disabled {
       background-color: #cccccc;
       cursor: not-allowed;
+      transform: none;
+      box-shadow: none;
     }
 
     .results-section {
@@ -97,11 +172,12 @@
       padding: 20px;
       text-align: right;
       box-shadow: 0 3px 8px rgba(0,0,0,0.1);
-      transition: transform 0.2s ease;
+      transition: all 0.3s ease;
     }
 
     .result-card:hover {
-      transform: scale(1.02);
+      transform: translateY(-5px);
+      box-shadow: 0 8px 16px rgba(0,0,0,0.15);
     }
 
     .arabic-word {
@@ -160,14 +236,96 @@
       font-weight: bold;
     }
 
+    .stats {
+      background-color: #f0f9f9;
+      border-radius: 15px;
+      padding: 15px;
+      margin: 20px auto;
+      max-width: 600px;
+      color: #2a7e7e;
+      font-weight: 600;
+    }
+
     @keyframes spin {
       to { transform: rotate(360deg); }
     }
 
+    /* الفوتر */
+    footer {
+      background-color: #2a7e7e;
+      color: white;
+      text-align: center;
+      padding: 30px 15px;
+      margin-top: 40px;
+    }
+
+    .footer-content {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .footer-logo {
+      font-size: 28px;
+      font-weight: bold;
+      color: #a6eaea;
+      margin-bottom: 15px;
+    }
+
+    .footer-text {
+      margin: 0;
+      font-size: 16px;
+    }
+
+    .footer-links {
+      display: flex;
+      justify-content: center;
+      gap: 25px;
+      margin: 20px 0;
+      flex-wrap: wrap;
+    }
+
+    .footer-links a {
+      color: #e6f7f7;
+      text-decoration: none;
+      font-size: 16px;
+      transition: color 0.3s;
+    }
+
+    .footer-links a:hover {
+      color: #6ef3f3;
+      text-decoration: underline;
+    }
+
+    .copyright {
+      margin-top: 20px;
+      padding-top: 20px;
+      border-top: 1px solid rgba(255,255,255,0.1);
+      color: #c2eaea;
+      font-size: 14px;
+    }
+
     /* تحسينات للشاشات الكبيرة */
     @media (min-width: 768px) {
+      .header-content {
+        flex-direction: row;
+        justify-content: space-between;
+        text-align: right;
+      }
+      
+      .logo-container {
+        flex-direction: row;
+        margin-bottom: 0;
+      }
+      
+      .nav-menu {
+        margin-top: 0;
+      }
+      
       .container {
         box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+        margin: 20px auto;
+        border-radius: 15px;
+        overflow: hidden;
       }
       
       .tool-box {
@@ -201,15 +359,33 @@
 </head>
 
 <body>
-  <!-- حاوية التوب بار الخارجي -->
-  <div id="topbar-container"></div>
+  <!-- التوب بار -->
+  <header>
+    <div class="header-content">
+      <div class="logo-container">
+        <div class="logo">بَيْن</div>
+        <div>
+          <h1 class="site-title">الكلمات الدخيلة على العربية</h1>
+          <p class="site-subtitle">منصة متخصصة للبحث في أصول الكلمات الأجنبية التي دخلت اللغة العربية</p>
+        </div>
+      </div>
+      <nav class="nav-menu">
+        <a href="#"><i class="fas fa-home"></i> الرئيسية</a>
+        <a href="#"><i class="fas fa-search"></i> البحث</a>
+        <a href="#"><i class="fas fa-book"></i> المكتبة</a>
+        <a href="#"><i class="fas fa-info-circle"></i> حول المشروع</a>
+        <a href="#"><i class="fas fa-envelope"></i> اتصل بنا</a>
+      </nav>
+    </div>
+  </header>
 
+  <!-- المحتوى الرئيسي -->
   <div class="container">
     <div class="tool-box">
-      <label for="word-input">ابحث عن كلمة:</label>
+      <label for="word-input"><i class="fas fa-search"></i> ابحث عن كلمة:</label>
       <input type="text" id="word-input" placeholder="اكتب الكلمة العربية...">
 
-      <label for="origin-type">اختر الأصل:</label>
+      <label for="origin-type"><i class="fas fa-globe"></i> اختر الأصل:</label>
       <select id="origin-type">
         <option value="all">جميع الأصول</option>
         <option value="إنجليزي">إنجليزي</option>
@@ -225,9 +401,13 @@
       </select>
 
       <button id="search-btn">
-        <span id="btn-text">بحث</span>
+        <span id="btn-text"><i class="fas fa-search"></i> بحث</span>
         <span id="btn-loading" class="loading" style="display: none;"></span>
       </button>
+    </div>
+
+    <div id="stats-container" class="stats">
+      <i class="fas fa-chart-bar"></i> جارٍ تحميل قاعدة البيانات...
     </div>
 
     <div id="results-container" class="results-section">
@@ -235,27 +415,183 @@
     </div>
   </div>
 
-  <!-- حاوية الفوتر الخارجي -->
-  <div id="footer-container"></div>
+  <!-- الفوتر -->
+  <footer>
+    <div class="footer-content">
+      <div class="footer-logo">بَيْن</div>
+      <p class="footer-text">منصة متخصصة في دراسة الكلمات الدخيلة على اللغة العربية</p>
+      
+      <div class="footer-links">
+        <a href="#"><i class="fas fa-home"></i> الرئيسية</a>
+        <a href="#"><i class="fas fa-info-circle"></i> عن المشروع</a>
+        <a href="#"><i class="fas fa-book"></i> المصادر</a>
+        <a href="#"><i class="fas fa-envelope"></i> اتصل بنا</a>
+        <a href="#"><i class="fas fa-question-circle"></i> المساعدة</a>
+      </div>
+      
+      <div class="copyright">
+        <p>© 2024 مشروع "بَيْن" - جميع الحقوق محفوظة</p>
+        <p>تم تصميم هذا الموقع للأغراض التعليمية والبحثية</p>
+      </div>
+    </div>
+  </footer>
 
   <script>
-    // تحميل التوب بار الخارجي
-    fetch("topbar.html")
-      .then(res => res.text())
-      .then(html => {
-        document.getElementById("topbar-container").innerHTML = html;
-      })
-      .catch(err => console.error("فشل تحميل التوب بار:", err));
+    // بيانات افتراضية للكلمات (يمكن استبدالها بملف JSON حقيقي)
+    const defaultWords = [
+      {
+        arabic: "تلفزيون",
+        origin: "إنجليزي",
+        original: "television",
+        meaning: "جهاز لبث واستقبال الصور المتحركة والصوت"
+      },
+      {
+        arabic: "باص",
+        origin: "إنجليزي",
+        original: "bus",
+        meaning: "مركبة لنقل الركاب"
+      },
+      {
+        arabic: "كمبيوتر",
+        origin: "إنجليزي",
+        original: "computer",
+        meaning: "جهاز إلكتروني لمعالجة البيانات"
+      },
+      {
+        arabic: "سوبرماركت",
+        origin: "إنجليزي",
+        original: "supermarket",
+        meaning: "متجر كبير لبيع المواد الغذائية والسلع"
+      },
+      {
+        arabic: "مترو",
+        origin: "فرنسي",
+        original: "métro",
+        meaning: "قطار أنفاق أو نظام نقل سريع تحت الأرض"
+      },
+      {
+        arabic: "راديو",
+        origin: "إنجليزي",
+        original: "radio",
+        meaning: "جهاز لاستقبال البث الإذاعي"
+      },
+      {
+        arabic: "تليفون",
+        origin: "إنجليزي",
+        original: "telephone",
+        meaning: "جهاز لنقل الصوت عن بعد"
+      },
+      {
+        arabic: "انترنت",
+        origin: "إنجليزي",
+        original: "Internet",
+        meaning: "شبكة عالمية تربط أجهزة الحاسوب"
+      },
+      {
+        arabic: "ميكروفون",
+        origin: "إنجليزي",
+        original: "microphone",
+        meaning: "جهاز لتكبير الصوت أو تسجيله"
+      },
+      {
+        arabic: "كاميرا",
+        origin: "إنجليزي",
+        original: "camera",
+        meaning: "جهاز لالتقاط الصور أو تسجيل الفيديو"
+      },
+      {
+        arabic: "مطعم",
+        origin: "تركي",
+        original: "restoran",
+        meaning: "مكان لتقديم الطعام والوجبات"
+      },
+      {
+        arabic: "بنطلون",
+        origin: "فرنسي",
+        original: "pantalon",
+        meaning: "لباس يغطي الساقين"
+      },
+      {
+        arabic: "صابون",
+        origin: "فرنسي",
+        original: "savon",
+        meaning: "مادة تستخدم للتنظيف والغسيل"
+      },
+      {
+        arabic: "سيارة",
+        origin: "فرنسي",
+        original: "voiture",
+        meaning: "مركبة آلية للنقل"
+      },
+      {
+        arabic: "شوكة",
+        origin: "إيطالي",
+        original: "forchetta",
+        meaning: "أداة للأكل ذات أسنان"
+      },
+      {
+        arabic: "بيتزا",
+        origin: "إيطالي",
+        original: "pizza",
+        meaning: "طبق إيطالي مخبوز"
+      },
+      {
+        arabic: "أستاذ",
+        origin: "فارسي",
+        original: "ostād",
+        meaning: "معلم أو مدرس"
+      },
+      {
+        arabic: "دولاب",
+        origin: "فارسي",
+        original: "dolāb",
+        meaning: "خزانة ملابس"
+      },
+      {
+        arabic: "برنامج",
+        origin: "يوناني",
+        original: "programma",
+        meaning: "خطة أو جدول زمني"
+      },
+      {
+        arabic: "فلسفة",
+        origin: "يوناني",
+        original: "philosophia",
+        meaning: "حب الحكمة أو دراسة المعرفة"
+      },
+      {
+        arabic: "ساعة",
+        origin: "فارسي",
+        original: "sā'at",
+        meaning: "أداة لقياس الوقت"
+      },
+      {
+        arabic: "قهوة",
+        origin: "تركي",
+        original: "kahve",
+        meaning: "مشروب من بذور البن المحمصة"
+      },
+      {
+        arabic: "بازار",
+        origin: "فارسي",
+        original: "bāzār",
+        meaning: "سوق أو مكان للتجارة"
+      },
+      {
+        arabic: "يخت",
+        origin: "هولندي",
+        original: "jacht",
+        meaning: "قارب صغير للترفيه"
+      },
+      {
+        arabic: "ليمون",
+        origin: "فارسي",
+        original: "līmūn",
+        meaning: "فاكهة حمضية"
+      }
+    ];
 
-    // تحميل الفوتر الخارجي
-    fetch("footer.html")
-      .then(res => res.text())
-      .then(html => {
-        document.getElementById("footer-container").innerHTML = html;
-      })
-      .catch(err => console.error("فشل تحميل الفوتر:", err));
-
-    // متغير لتخزين الكلمات بعد جلبها
+    // متغير لتخزين الكلمات
     let borrowedWords = [];
 
     // عناصر DOM
@@ -265,6 +601,7 @@
     const input = document.getElementById('word-input');
     const originSelect = document.getElementById('origin-type');
     const resultsContainer = document.getElementById('results-container');
+    const statsContainer = document.getElementById('stats-container');
 
     // دالة لتفعيل/تعطيل زر البحث
     function toggleButtonState(loading) {
@@ -279,17 +616,20 @@
       }
     }
 
-    // دالة لجلب البيانات من ملف JSON
+    // دالة لجلب البيانات (باستخدام البيانات الافتراضية)
     async function loadBorrowedWords() {
       try {
         toggleButtonState(true);
-        const response = await fetch('/data/loan.json');
         
-        if (!response.ok) {
-          throw new Error(`خطأ في جلب البيانات: ${response.status} ${response.statusText}`);
-        }
+        // محاكاة جلب البيانات من خادم (تأخير 1 ثانية)
+        await new Promise(resolve => setTimeout(resolve, 1000));
         
-        borrowedWords = await response.json();
+        // استخدام البيانات الافتراضية
+        borrowedWords = defaultWords;
+        
+        // تحديث الإحصائيات
+        updateStats();
+        
         console.log(`تم تحميل ${borrowedWords.length} كلمة بنجاح`);
         
         // عرض جميع الكلمات بعد تحميلها
@@ -299,12 +639,36 @@
         console.error('خطأ في جلب البيانات:', error);
         resultsContainer.innerHTML = `
           <div class="error-message">
-            <p>❌ حدث خطأ في تحميل البيانات</p>
+            <p><i class="fas fa-exclamation-triangle"></i> حدث خطأ في تحميل البيانات</p>
             <p>${error.message}</p>
-            <p>يرجى التأكد من وجود ملف /data/loan.json</p>
+            <p>جاري استخدام البيانات المحلية...</p>
           </div>
         `;
+        
+        // استخدام البيانات الافتراضية في حالة الخطأ
+        borrowedWords = defaultWords;
+        updateStats();
+        displayWords(borrowedWords);
         toggleButtonState(false);
+      }
+    }
+
+    // دالة لتحديث الإحصائيات
+    function updateStats() {
+      if (borrowedWords.length > 0) {
+        const originsCount = {};
+        borrowedWords.forEach(word => {
+          originsCount[word.origin] = (originsCount[word.origin] || 0) + 1;
+        });
+        
+        const originsList = Object.entries(originsCount)
+          .map(([origin, count]) => `${origin}: ${count}`)
+          .join('، ');
+        
+        statsContainer.innerHTML = `
+          <i class="fas fa-chart-bar"></i> قاعدة البيانات تحتوي على ${borrowedWords.length} كلمة من أصول مختلفة
+          <br><small>التوزيع: ${originsList}</small>
+        `;
       }
     }
 
@@ -313,7 +677,13 @@
       resultsContainer.innerHTML = "";
       
       if (words.length === 0) {
-        resultsContainer.innerHTML = `<p style="color:#888;">لم يتم العثور على نتائج تطابق البحث.</p>`;
+        resultsContainer.innerHTML = `
+          <div style="color:#666; padding:30px; text-align:center;">
+            <i class="fas fa-search" style="font-size:48px; color:#ccc; margin-bottom:15px;"></i>
+            <p style="font-size:18px;">لم يتم العثور على نتائج تطابق بحثك.</p>
+            <p style="font-size:16px; color:#888;">جرب استخدام كلمات بحث أخرى أو اختر أصلًا مختلفًا.</p>
+          </div>
+        `;
         return;
       }
 
@@ -323,9 +693,9 @@
         
         let content = `
           <div class="arabic-word">${word.arabic}</div>
-          <div class="origin-label">الأصل: ${word.origin}</div>
-          ${word.original ? `<div class="origin">الكلمة الأصلية: ${word.original}</div>` : ''}
-          <div class="meaning-label">المعنى أو الاستعمال</div>
+          <div class="origin-label"><i class="fas fa-globe"></i> الأصل: ${word.origin}</div>
+          ${word.original ? `<div class="origin"><i class="fas fa-language"></i> الكلمة الأصلية: <strong>${word.original}</strong></div>` : ''}
+          <div class="meaning-label"><i class="fas fa-book"></i> المعنى أو الاستعمال</div>
           <div class="meaning">${word.meaning}</div>
         `;
         
@@ -342,7 +712,7 @@
       // تفعيل حالة التحميل
       toggleButtonState(true);
       
-      // محاكاة وقت التحميل لتحسين تجربة المستخدم
+      // محاكاة وقت البحث
       setTimeout(() => {
         let filteredWords = borrowedWords;
         
@@ -363,6 +733,17 @@
         // عرض النتائج
         displayWords(filteredWords);
         
+        // تحديث الإحصائيات حسب البحث
+        if (searchTerm || selectedOrigin !== "all") {
+          statsContainer.innerHTML = `
+            <i class="fas fa-chart-bar"></i> تم العثور على ${filteredWords.length} نتيجة
+            ${searchTerm ? `للبحث عن: "${searchTerm}"` : ''}
+            ${selectedOrigin !== "all" ? `من الأصل: ${selectedOrigin}` : ''}
+          `;
+        } else {
+          updateStats();
+        }
+        
         // إلغاء حالة التحميل
         toggleButtonState(false);
       }, 300);
@@ -372,7 +753,11 @@
     searchBtn.addEventListener('click', searchWords);
 
     // البحث أثناء الكتابة
-    input.addEventListener('input', searchWords);
+    let searchTimeout;
+    input.addEventListener('input', () => {
+      clearTimeout(searchTimeout);
+      searchTimeout = setTimeout(searchWords, 500);
+    });
 
     // البحث عند تغيير نوع الأصل
     originSelect.addEventListener('change', searchWords);
@@ -380,6 +765,13 @@
     // تحميل البيانات عند تحميل الصفحة
     window.addEventListener('load', () => {
       loadBorrowedWords();
+    });
+
+    // البحث عند الضغط على زر Enter
+    input.addEventListener('keypress', (e) => {
+      if (e.key === 'Enter') {
+        searchWords();
+      }
     });
   </script>
 </body>
