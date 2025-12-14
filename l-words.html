@@ -17,11 +17,51 @@
       background-color: #fff;
       color: #000;
       text-align: center;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
     }
 
-    /* حاويات التوب بار والفوتر */
-    #topbar-container, #footer-container {
-      width: 100%;
+    /* 🔹 التوب بار */
+    header {
+      background-color: #0e6666;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 25px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+
+    header img {
+      height: 45px;
+      border-radius: 10px;
+    }
+
+    header h1 {
+      font-size: 20px;
+      color: #004f4f;
+      margin: 0;
+      font-weight: 700;
+    }
+
+    /* 🔹 الفوتر */
+    footer {
+      background-color: #eafafa;
+      border-top: 2px solid #4fc3c3;
+      padding: 20px;
+      text-align: center;
+      margin-top: auto;
+    }
+
+    footer a {
+      color: #007b7b;
+      text-decoration: none;
+      margin: 0 10px;
+      font-weight: 600;
+    }
+
+    footer a:hover {
+      text-decoration: underline;
     }
 
     .container {
@@ -201,8 +241,10 @@
 </head>
 
 <body>
-  <!-- حاوية التوب بار الخارجي -->
-  <div id="topbar-container"></div>
+  <!-- ✅ التوب بار الجديد -->
+  <header>
+    <img src="images/logo.PNG">
+  </header>
 
   <div class="container">
     <div class="tool-box">
@@ -235,26 +277,16 @@
     </div>
   </div>
 
-  <!-- حاوية الفوتر الخارجي -->
-  <div id="footer-container"></div>
+  <!-- ✅ الفوتر الجديد -->
+  <footer>
+    <a href="index.html">الرئيسية</a>
+    <a href="project.html">عن المشروع</a>
+    <a href="tools.html">أدوات أخرى</a>
+    <a href="contact.html">اتصل بنا</a>
+  </footer>
 
   <script>
-    // تحميل التوب بار الخارجي
-    fetch("topbar.html")
-      .then(res => res.text())
-      .then(html => {
-        document.getElementById("topbar-container").innerHTML = html;
-      })
-      .catch(err => console.error("فشل تحميل التوب بار:", err));
-
-    // تحميل الفوتر الخارجي
-    fetch("footer.html")
-      .then(res => res.text())
-      .then(html => {
-        document.getElementById("footer-container").innerHTML = html;
-      })
-      .catch(err => console.error("فشل تحميل الفوتر:", err));
-
+    // تحميل البيانات مباشرة دون fetch للتوب بار والفوتر
     // متغير لتخزين الكلمات بعد جلبها
     let borrowedWords = [];
 
