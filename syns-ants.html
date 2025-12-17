@@ -329,7 +329,19 @@
       }
     }
 
-  
+    async function fetchPhoneticData() {
+      try {
+        const response = await fetch('https://1812.jassim.one/data/sawamet.json');
+        if (!response.ok) throw new Error('فشل في جلب بيانات الصوامت');
+        return await response.json();
+      } catch {
+        return {
+          "ن": { "مخرج": "طرف اللسان مع ما يحاذيه من لثة الأسنان العليا", "صفة": "صفير" },
+          "ض": { "مخرج": "أحد حافتي اللسان مع ما يحاذيه من الأضراس العليا", "صفة": "استعلاء وإطباق" },
+          "ظ": { "مخرج": "طرف اللسان مع أطراف الثنايا العليا", "صفة": "استعلاء وإطباق" }
+        };
+      }
+    }
 
     function findWordEntries(data, searchWord) {
       const results = [];
@@ -351,8 +363,24 @@
       btnLoading.style.display = loading ? 'inline-block' : 'none';
     }
 
-    
-      
+    function createPhoneticsSection(word, phoneticData) {
+      if (!word) return '';
+      const firstChar = word.charAt(0);
+      const phonetics = phoneticData[firstChar];
+      if (!phonetics) return '';
+      let html = `
+        <div class="phonetics-section">
+          <div class="label">الصوامت (الحرف الأول: ${firstChar})
+            <img src="https://sawamet.jassim.one/icons/favicon.png" alt="أيقونة الصوامت" class="phonetics-icon">
+          </div>
+          <div class="phonetics-details">
+      `;
+      for (const [key, value] of Object.entries(phonetics)) {
+        html += `<div class="phonetic-item"><span class="phonetic-term">${key}:</span><span class="phonetic-def">${value}</span></div>`;
+      }
+      html += `</div></div>`;
+      return html;
+    }
 
     analyzeBtn.addEventListener('click', async () => {
       const word = input.value.trim();
