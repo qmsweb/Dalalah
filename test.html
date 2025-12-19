@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>بَيْن - الرئيسية</title>
+  <title>بَيْن - أداة الترادفات</title>
   <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700&display=swap" rel="stylesheet">
 
   <meta property="og:title" content="بين- أداة الترادفات والتضاد">
@@ -14,14 +14,14 @@
 
   <style>
     /* =========================================
-       1. التأسيس (نفس الألوان والهوية)
+       1. متغيرات التصميم الحديث (Modern Design)
        ========================================= */
     :root {
       --primary-color: #0e6666;
       --secondary-color: #4fc3c3;
       --bg-light: #f8fbfb;
       --text-dark: #333;
-      --card-shadow: 0 4px 15px rgba(14, 102, 102, 0.05); /* ظل خفيف ثابت */
+      --card-shadow: 0 10px 30px rgba(14, 102, 102, 0.08); /* ظل ناعم */
       --radius: 16px;
     }
 
@@ -32,7 +32,7 @@
 
     body {
       margin: 0;
-      background-color: var(--bg-light);
+      background-color: var(--bg-light); /* خلفية فاتحة عصرية */
       color: var(--text-dark);
       text-align: right;
       min-height: 100vh;
@@ -41,7 +41,7 @@
     }
 
     /* =========================================
-       2. التوب بار (ثابت)
+       2. التوب بار (كما هو - لم يتغير)
        ========================================= */
     header {
       background-color: #0e6666;
@@ -65,7 +65,7 @@
     }
 
     /* =========================================
-       3. منطقة المحتوى (تصميم جديد بنصوص قديمة)
+       3. منطقة المحتوى (تصميم حديث + نصوص قديمة)
        ========================================= */
     .main-wrapper {
       flex: 1;
@@ -78,12 +78,12 @@
       align-items: center;
     }
 
-    /* صندوق الأدوات (Search Box) */
+    /* صندوق البحث - تصميم نظيف أبيض */
     .search-container {
       width: 100%;
-      max-width: 700px;
+      max-width: 800px;
       background: #ffffff;
-      padding: 30px;
+      padding: 35px;
       border-radius: var(--radius);
       box-shadow: var(--card-shadow);
       margin-bottom: 40px;
@@ -97,40 +97,44 @@
 
     label {
       display: block;
-      margin-bottom: 8px;
+      margin-bottom: 10px;
       font-weight: 700; /* كما في القديم */
-      color: var(--text-dark);
+      color: var(--primary-color);
       font-size: 1rem;
     }
 
+    /* حقول الإدخال بتصميم حديث */
     input[type="text"], select {
       width: 100%;
-      padding: 14px 20px;
-      border-radius: 10px; /* كما في القديم تقريباً */
-      border: 1px solid #ddd; /* حدود بسيطة */
+      padding: 15px 20px;
+      border-radius: 12px;
+      border: 2px solid #eef2f2;
       font-size: 16px;
-      background-color: #fff;
+      background-color: #fcfcfc;
+      transition: all 0.3s ease;
       color: var(--text-dark);
-      text-align: center; /* كما في القديم */
+      text-align: center;
     }
 
     input[type="text"]:focus, select:focus {
       border-color: var(--secondary-color);
       outline: none;
+      background-color: #fff;
+      box-shadow: 0 0 0 4px rgba(79, 195, 195, 0.1);
     }
 
     /* زر البحث */
     button#analyze-btn {
       width: 100%;
-      padding: 12px;
-      background-color: #3ca4a4; /* لون الزر القديم */
+      padding: 16px;
+      background-color: var(--secondary-color); /* اللون الفاتح */
       color: #fff;
       border: none;
-      border-radius: 10px;
-      font-size: 18px;
+      border-radius: 12px;
+      font-size: 1.1rem;
       font-weight: 700;
       cursor: pointer;
-      transition: background-color 0.3s;
+      transition: all 0.3s ease;
       margin-top: 10px;
       display: flex;
       justify-content: center;
@@ -138,81 +142,94 @@
     }
 
     button#analyze-btn:hover {
-      background-color: #4fc3c3; /* لون الهوفر القديم */
+      background-color: var(--primary-color); /* اللون الغامق عند الهوفر */
     }
 
     button#analyze-btn:disabled {
-      background-color: #cccccc;
+      background-color: #ccc;
       cursor: not-allowed;
     }
 
     /* =========================================
-       4. عرض النتائج (بدون حركة)
+       4. عرض النتائج (تصميم البطاقات الحديث)
        ========================================= */
     .results-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-      gap: 25px;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 30px;
       width: 100%;
     }
 
     .result-card {
-      background-color: #eafafa; /* لون الخلفية القديم */
-      border: 2px solid #4fc3c3; /* الحدود القديمة */
-      border-radius: 15px;
-      padding: 20px;
-      text-align: right;
-      box-shadow: 0 3px 8px rgba(0,0,0,0.1);
-      /* ⚠️ تم إزالة الحركة والأنيميشن من هنا */
+      background-color: #fff; /* خلفية بيضاء نظيفة */
+      border-radius: var(--radius);
+      padding: 30px;
+      box-shadow: var(--card-shadow);
+      position: relative;
+      overflow: hidden;
+      border: 1px solid rgba(0,0,0,0.03);
+      /* تم إزالة الحركة عند الهوفر */
+    }
+
+    /* شريط جمالي علوي للبطاقة */
+    .result-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      right: 0;
+      left: 0;
+      height: 6px;
+      background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
     }
 
     .main-word {
-      font-size: 22px;
+      font-size: 2rem;
       font-weight: 700;
-      color: #2a7e7e;
-      margin-bottom: 15px;
-      padding-bottom: 10px;
-      border-bottom: 1px dashed #4fc3c3;
+      color: var(--primary-color);
+      margin-bottom: 10px;
+      padding-bottom: 15px;
+      border-bottom: 1px solid #f0f0f0;
     }
 
     /* شارة "تم العثور على" */
     .found-as-badge {
       display: inline-block;
-      background-color: #f9a826; /* اللون البرتقالي القديم */
+      background-color: #f9a826; /* أصفر/برتقالي */
       color: white;
       border-radius: 8px;
-      padding: 3px 10px;
-      font-size: 14px;
-      margin-bottom: 15px;
+      padding: 4px 12px;
+      font-size: 0.9rem;
+      margin-bottom: 20px;
       font-weight: 600;
     }
 
-    /* العناوين الداخلية (المرادفات/الأضداد) */
+    /* عناوين الأقسام داخل البطاقة */
     .section-label {
       display: inline-flex;
       align-items: center;
-      background-color: #4fc3c3; /* الأخضر القديم */
-      color: white;
-      border-radius: 10px;
-      padding: 5px 15px;
-      font-size: 18px;
-      margin-bottom: 10px;
+      color: var(--primary-color);
+      font-size: 1.1rem;
+      margin-bottom: 8px;
       font-weight: 700;
-      margin-top: 10px;
+      margin-top: 15px;
     }
-
+    
+    /* نص الكلمات */
     .words-text {
-      font-size: 18px;
-      line-height: 1.6;
-      color: #333;
-      margin-bottom: 10px;
+      font-size: 1.1rem;
+      line-height: 1.8;
+      color: #555;
+      background-color: #f8fbfb;
+      padding: 12px;
+      border-radius: 8px;
+      border: 1px dashed #d1eaea;
     }
 
     /* حالة التحميل */
     .loading-spinner {
       display: inline-block;
-      width: 20px;
-      height: 20px;
+      width: 24px;
+      height: 24px;
       border: 3px solid rgba(255,255,255,.3);
       border-radius: 50%;
       border-top-color: #fff;
@@ -222,7 +239,7 @@
     @keyframes spin { to { transform: rotate(360deg); } }
 
     /* =========================================
-       5. الفوتر (ثابت)
+       5. الفوتر (كما هو - لم يتغير)
        ========================================= */
     footer {
       background-color: #eafafa;
@@ -243,14 +260,15 @@
       text-decoration: underline;
     }
 
-    /* تنسيق للشاشات الكبيرة */
+    /* تحسينات للشاشات الكبيرة */
     @media (min-width: 768px) {
       .form-row-desktop {
         display: grid;
         grid-template-columns: 1fr 1fr;
-        gap: 20px;
+        gap: 25px;
+        align-items: end;
       }
-      .full-width {
+      .full-width-input {
         grid-column: 1 / -1;
       }
     }
@@ -259,7 +277,7 @@
 
 <body>
   <header>
-    <img src="images/logo.PNG">
+    <img src="images/logo.PNG" alt="شعار بين">
   </header>
 
   <div class="main-wrapper">
@@ -267,12 +285,12 @@
     <div class="search-container">
       
       <div class="form-row-desktop">
-        <div class="form-group full-width">
+        <div class="form-group full-width-input">
           <label for="word-input">أدخل الكلمة:</label>
           <input type="text" id="word-input" placeholder="مثلاً: نور، ضياء، ظلام...">
         </div>
 
-        <div class="form-group full-width">
+        <div class="form-group full-width-input">
           <label for="relation-type">اختر نوع العلاقة:</label>
           <select id="relation-type">
             <option value="all">جميع العلاقات</option>
@@ -280,21 +298,23 @@
             <option value="antonym">التضاد (أضداد)</option>
           </select>
         </div>
+
+        <button id="analyze-btn" class="full-width-input">
+          <span id="btn-text">بحث</span>
+          <span id="btn-loading" class="loading-spinner" style="display: none;"></span>
+        </button>
       </div>
 
-      <button id="analyze-btn">
-        <span id="btn-text">بحث</span>
-        <span id="btn-loading" class="loading-spinner" style="display: none;"></span>
-      </button>
     </div>
 
     <div id="results-container" class="results-grid"></div>
   </div>
 
   <footer>
-    <a href="#">الرئيسية</a>
-    <a href="#">عن المشروع</a>
-    <a href="#">أدوات أخرى</a>
+    <a href="index.html">الرئيسية</a>
+    <a href="project.html">عن المشروع</a>
+    <a href="tools.html">أدوات أخرى</a>
+    <a href="contact.html">اتصل بنا</a>
   </footer>
 
   <script>
@@ -312,9 +332,9 @@
         if (!response.ok) throw new Error('فشل');
         return await response.json();
       } catch {
-        // بيانات تجريبية في حال عدم وجود الملف
+        // بيانات تجريبية
         return {
-          "نور": { "synonym": ["ضياء", "إشراق", "سناء"], "antonym": ["ظلام", "عتمة", "ليل"] },
+          "نور": { "synonym": ["ضياء", "إشراق", "سناء", "بهاء"], "antonym": ["ظلام", "عتمة", "ليل", "دجى"] },
           "سعيد": { "synonym": ["فرح", "مسرور", "بهِج", "مبتهج", "منشرح الصدر"], "antonym": ["حزين", "كئيب", "مهموم", "تعيس", "بائس"] },
           "كبير": { "synonym": ["عظيم", "ضخم", "واسع", "هائل", "جسيم"], "antonym": ["صغير", "ضئيل", "صغير الحجم", "مصغر", "دقيق"] }
         };
@@ -363,7 +383,7 @@
         if (entries.length === 0) {
           resultsContainer.innerHTML = `
             <div style="width:100%; text-align:center; grid-column: 1 / -1;">
-               <p style="color:#888;">الكلمة "${word}" غير موجودة في قاعدة البيانات.</p>
+               <p style="color:#666; font-size:1.1rem;">الكلمة "${word}" غير موجودة في قاعدة البيانات.</p>
             </div>`;
           return;
         }
@@ -374,7 +394,7 @@
           const card = document.createElement('div');
           card.className = 'result-card';
           
-          // استخدام نصوص القديم
+          // استخدام النصوص القديمة
           let content = `
             <div class="main-word">${mainWord}</div>
             <div class="found-as-badge">تم العثور على "${word}" كـ ${foundAs}</div>
@@ -407,7 +427,7 @@
         });
 
       } catch (error) {
-        resultsContainer.innerHTML = `<p style="width:100%; text-align:center; color:#ff6b6b;">حدث خطأ أثناء البحث. يرجى المحاولة لاحقًا.</p>`;
+        resultsContainer.innerHTML = `<p style="width:100%; text-align:center; color:#d9534f;">حدث خطأ أثناء الاتصال بقاعدة البيانات.</p>`;
       } finally {
         toggleButtonState(false);
       }
