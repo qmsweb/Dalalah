@@ -3,25 +3,23 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>بَيْن - أداة الترادفات</title>
+  <title>بَيْن - الرئيسية</title>
   <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700&display=swap" rel="stylesheet">
 
-  <meta property="og:title" content="بين- أداة الترادفات والتضاد">
-  <meta property="og:description" content="الأداة تعنى بظاهرة الترادف والتضاد">
+  <meta property="og:title" content="بين- منصة الترادفات والتضاد">
+  <meta property="og:description" content="المنصة تعنى بظاهرة الترادف والتضاد">
   <meta property="og:image" content="/images/bayn-cover.png">
   <meta property="og:url" content="https://bayn.basirah.me">
   <meta property="og:type" content="website">
 
   <style>
-    /* =========================================
-       1. متغيرات التصميم الحديث (Modern Design)
-       ========================================= */
     :root {
       --primary-color: #0e6666;
       --secondary-color: #4fc3c3;
       --bg-light: #f8fbfb;
       --text-dark: #333;
-      --card-shadow: 0 10px 30px rgba(14, 102, 102, 0.08); /* ظل ناعم */
+      --shadow-sm: 0 4px 6px rgba(14, 102, 102, 0.05);
+      --shadow-md: 0 10px 25px rgba(14, 102, 102, 0.1);
       --radius: 16px;
     }
 
@@ -32,16 +30,15 @@
 
     body {
       margin: 0;
-      background-color: var(--bg-light); /* خلفية فاتحة عصرية */
+      background-color: var(--bg-light);
       color: var(--text-dark);
-      text-align: right;
       min-height: 100vh;
       display: flex;
       flex-direction: column;
     }
 
     /* =========================================
-       2. التوب بار (كما هو - لم يتغير)
+       1. التوب بار (كما هو تماماً)
        ========================================= */
     header {
       background-color: #0e6666;
@@ -50,6 +47,7 @@
       justify-content: space-between;
       padding: 10px 25px;
       box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      z-index: 100;
     }
 
     header img {
@@ -65,181 +63,139 @@
     }
 
     /* =========================================
-       3. منطقة المحتوى (تصميم حديث + نصوص قديمة)
+       2. منطقة المحتوى الرئيسية
        ========================================= */
-    .main-wrapper {
+    .container {
       flex: 1;
+      display: flex;
+      flex-direction: column;
       width: 100%;
       max-width: 1200px;
       margin: 0 auto;
-      padding: 40px 20px;
+      padding: 0 20px;
+    }
+
+    .hero-section {
+      text-align: center;
+      padding: 60px 20px 40px;
+      position: relative;
+    }
+
+    .hero-section::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 200px;
+      height: 200px;
+      background: radial-gradient(circle, rgba(79, 195, 195, 0.1) 0%, rgba(255,255,255,0) 70%);
+      z-index: -1;
+    }
+
+    .home-title {
+      color: var(--primary-color);
+      font-size: 2.8rem;
+      margin: 0 0 15px;
+      font-weight: 800;
+    }
+
+    .home-subtitle {
+      color: #5a8a8a;
+      font-size: 1.25rem;
+      max-width: 600px;
+      margin: 0 auto;
+      line-height: 1.6;
+    }
+
+    /* شبكة البطاقات */
+    .tools-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 30px;
+      padding-bottom: 80px;
+      width: 100%;
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+
+    .tool-card {
+      background: #ffffff;
+      border-radius: var(--radius);
+      padding: 40px 30px;
+      text-decoration: none;
+      text-align: center;
+      transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      border: 1px solid rgba(14, 102, 102, 0.05);
+      box-shadow: var(--shadow-sm);
       display: flex;
       flex-direction: column;
       align-items: center;
-    }
-
-    /* صندوق البحث - تصميم نظيف أبيض */
-    .search-container {
-      width: 100%;
-      max-width: 800px;
-      background: #ffffff;
-      padding: 35px;
-      border-radius: var(--radius);
-      box-shadow: var(--card-shadow);
-      margin-bottom: 40px;
-      border: 1px solid rgba(14, 102, 102, 0.05);
-    }
-
-    .form-group {
-      margin-bottom: 20px;
-      text-align: right;
-    }
-
-    label {
-      display: block;
-      margin-bottom: 10px;
-      font-weight: 700; /* كما في القديم */
-      color: var(--primary-color);
-      font-size: 1rem;
-    }
-
-    /* حقول الإدخال بتصميم حديث */
-    input[type="text"], select {
-      width: 100%;
-      padding: 15px 20px;
-      border-radius: 12px;
-      border: 2px solid #eef2f2;
-      font-size: 16px;
-      background-color: #fcfcfc;
-      transition: all 0.3s ease;
-      color: var(--text-dark);
-      text-align: center;
-    }
-
-    input[type="text"]:focus, select:focus {
-      border-color: var(--secondary-color);
-      outline: none;
-      background-color: #fff;
-      box-shadow: 0 0 0 4px rgba(79, 195, 195, 0.1);
-    }
-
-    /* زر البحث */
-    button#analyze-btn {
-      width: 100%;
-      padding: 16px;
-      background-color: var(--secondary-color); /* اللون الفاتح */
-      color: #fff;
-      border: none;
-      border-radius: 12px;
-      font-size: 1.1rem;
-      font-weight: 700;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      margin-top: 10px;
-      display: flex;
       justify-content: center;
-      align-items: center;
-    }
-
-    button#analyze-btn:hover {
-      background-color: var(--primary-color); /* اللون الغامق عند الهوفر */
-    }
-
-    button#analyze-btn:disabled {
-      background-color: #ccc;
-      cursor: not-allowed;
-    }
-
-    /* =========================================
-       4. عرض النتائج (تصميم البطاقات الحديث)
-       ========================================= */
-    .results-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-      gap: 30px;
-      width: 100%;
-    }
-
-    .result-card {
-      background-color: #fff; /* خلفية بيضاء نظيفة */
-      border-radius: var(--radius);
-      padding: 30px;
-      box-shadow: var(--card-shadow);
       position: relative;
       overflow: hidden;
-      border: 1px solid rgba(0,0,0,0.03);
-      /* تم إزالة الحركة عند الهوفر */
     }
 
-    /* شريط جمالي علوي للبطاقة */
-    .result-card::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      right: 0;
-      left: 0;
-      height: 6px;
-      background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
-    }
-
-    .main-word {
-      font-size: 2rem;
-      font-weight: 700;
-      color: var(--primary-color);
-      margin-bottom: 10px;
-      padding-bottom: 15px;
-      border-bottom: 1px solid #f0f0f0;
-    }
-
-    /* شارة "تم العثور على" */
-    .found-as-badge {
-      display: inline-block;
-      background-color: #f9a826; /* أصفر/برتقالي */
-      color: white;
-      border-radius: 8px;
-      padding: 4px 12px;
-      font-size: 0.9rem;
-      margin-bottom: 20px;
-      font-weight: 600;
-    }
-
-    /* عناوين الأقسام داخل البطاقة */
-    .section-label {
-      display: inline-flex;
-      align-items: center;
-      color: var(--primary-color);
-      font-size: 1.1rem;
-      margin-bottom: 8px;
-      font-weight: 700;
-      margin-top: 15px;
-    }
-    
-    /* نص الكلمات */
-    .words-text {
-      font-size: 1.1rem;
-      line-height: 1.8;
-      color: #555;
-      background-color: #f8fbfb;
-      padding: 12px;
-      border-radius: 8px;
-      border: 1px dashed #d1eaea;
-    }
-
-    /* حالة التحميل */
-    .loading-spinner {
-      display: inline-block;
-      width: 24px;
-      height: 24px;
-      border: 3px solid rgba(255,255,255,.3);
+    /* تنسيق الأيقونات (SVG) */
+    .icon-wrapper {
+      width: 90px;
+      height: 90px;
+      background-color: rgba(14, 102, 102, 0.04);
       border-radius: 50%;
-      border-top-color: #fff;
-      animation: spin 1s ease-in-out infinite;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 20px;
+      transition: transform 0.3s ease, background-color 0.3s ease;
     }
 
-    @keyframes spin { to { transform: rotate(360deg); } }
+    /* خصائص الأيقونة SVG */
+    .tool-card svg {
+      width: 45px;
+      height: 45px;
+      stroke: var(--primary-color); /* لون الأيقونة */
+      stroke-width: 1.5;
+      fill: none;
+      transition: all 0.3s ease;
+    }
+
+    .card-title {
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: var(--primary-color);
+      margin: 0;
+      transition: color 0.3s ease;
+    }
+
+    .card-desc {
+      font-size: 0.95rem;
+      color: #777;
+      margin-top: 10px;
+      font-weight: 400;
+    }
+
+    /* تأثيرات الهوفر */
+    .tool-card:hover {
+      transform: translateY(-8px);
+      box-shadow: var(--shadow-md);
+      border-color: rgba(79, 195, 195, 0.3);
+    }
+
+    .tool-card:hover .icon-wrapper {
+      background-color: rgba(79, 195, 195, 0.15);
+      transform: scale(1.1);
+    }
+
+    .tool-card:hover svg {
+      stroke: #094a4a; /* تغميق لون الأيقونة عند الهوفر */
+    }
+
+    .tool-card:hover .card-title {
+      color: #094a4a;
+    }
 
     /* =========================================
-       5. الفوتر (كما هو - لم يتغير)
+       3. الفوتر (كما هو تماماً)
        ========================================= */
     footer {
       background-color: #eafafa;
@@ -260,17 +216,10 @@
       text-decoration: underline;
     }
 
-    /* تحسينات للشاشات الكبيرة */
-    @media (min-width: 768px) {
-      .form-row-desktop {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 25px;
-        align-items: end;
-      }
-      .full-width-input {
-        grid-column: 1 / -1;
-      }
+    @media (max-width: 600px) {
+      .home-title { font-size: 2rem; }
+      .tools-grid { gap: 20px; }
+      .tool-card { padding: 30px 20px; }
     }
   </style>
 </head>
@@ -280,163 +229,87 @@
     <img src="images/logo.PNG" alt="شعار بين">
   </header>
 
-  <div class="main-wrapper">
+  <div class="container">
     
-    <div class="search-container">
-      
-      <div class="form-row-desktop">
-        <div class="form-group full-width-input">
-          <label for="word-input">أدخل الكلمة:</label>
-          <input type="text" id="word-input" placeholder="مثلاً: نور، ضياء، ظلام...">
-        </div>
-
-        <div class="form-group full-width-input">
-          <label for="relation-type">اختر نوع العلاقة:</label>
-          <select id="relation-type">
-            <option value="all">جميع العلاقات</option>
-            <option value="synonym">الترادف (مرادفات)</option>
-            <option value="antonym">التضاد (أضداد)</option>
-          </select>
-        </div>
-
-        <button id="analyze-btn" class="full-width-input">
-          <span id="btn-text">بحث</span>
-          <span id="btn-loading" class="loading-spinner" style="display: none;"></span>
-        </button>
-      </div>
-
+    <div class="hero-section">
+      <h1 class="home-title" style="display:none">بَيْن</h1>
+      <p class="home-subtitle">منصة رقمية تعنى بدراسة الظواهر الدلالية في اللغة العربية.</p>
     </div>
 
-    <div id="results-container" class="results-grid"></div>
+    <div class="tools-grid">
+      
+      <a href="syns-ants" class="tool-card">
+        <div class="icon-wrapper">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M8 3 4 7l4 4"/>
+            <path d="M4 7h16"/>
+            <path d="m16 21 4-4-4-4"/>
+            <path d="M20 17H4"/>
+          </svg>
+        </div>
+        <h2 class="card-title">الترادف والتضاد</h2>
+        <span class="card-desc">استكشف العلاقات بين الكلمات ومعانيها المتقابلة</span>
+      </a>
+
+      <a href="project.html" class="tool-card">
+        <div class="icon-wrapper">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+            <rect width="7" height="7" x="3" y="3" rx="1"/>
+            <rect width="7" height="7" x="14" y="3" rx="1"/>
+            <rect width="7" height="7" x="14" y="14" rx="1"/>
+            <rect width="7" height="7" x="3" y="14" rx="1"/>
+          </svg>
+        </div>
+        <h2 class="card-title">الحقول الدلالية</h2>
+        <span class="card-desc">تصنيف المفردات ضمن مجالات دلالية مترابطة</span>
+      </a>
+
+      <a href="l-words" class="tool-card">
+        <div class="icon-wrapper">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"/>
+            <path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/>
+            <path d="M2 12h20"/>
+          </svg>
+        </div>
+        <h2 class="card-title">الكلمات الدخيلة</h2>
+        <span class="card-desc">الكلمات المعربة والدخيلة على اللسان العربي</span>
+      </a>
+
+    </div>
   </div>
 
   <footer>
     <a href="index.html">الرئيسية</a>
-    <a href="project.html">عن المشروع</a>
+    <a href="about.html">عن المشروع</a>
     <a href="tools.html">أدوات أخرى</a>
     <a href="contact.html">اتصل بنا</a>
   </footer>
 
   <script>
-    const analyzeBtn = document.getElementById('analyze-btn');
-    const btnText = document.getElementById('btn-text');
-    const btnLoading = document.getElementById('btn-loading');
-    const input = document.getElementById('word-input');
-    const typeSelect = document.getElementById('relation-type');
-    const resultsContainer = document.getElementById('results-container');
-
-    // دالة جلب البيانات
-    async function fetchSemanticData() {
-      try {
-        const response = await fetch('data/semanticData.json');
-        if (!response.ok) throw new Error('فشل');
-        return await response.json();
-      } catch {
-        // بيانات تجريبية
-        return {
-          "نور": { "synonym": ["ضياء", "إشراق", "سناء", "بهاء"], "antonym": ["ظلام", "عتمة", "ليل", "دجى"] },
-          "سعيد": { "synonym": ["فرح", "مسرور", "بهِج", "مبتهج", "منشرح الصدر"], "antonym": ["حزين", "كئيب", "مهموم", "تعيس", "بائس"] },
-          "كبير": { "synonym": ["عظيم", "ضخم", "واسع", "هائل", "جسيم"], "antonym": ["صغير", "ضئيل", "صغير الحجم", "مصغر", "دقيق"] }
-        };
-      }
-    }
-
-    // منطق البحث
-    function findWordEntries(data, searchWord) {
-      const results = [];
-      const cleanSearch = searchWord; 
-
-      for (const [mainWord, relations] of Object.entries(data)) {
-        if (mainWord === cleanSearch) {
-          results.push({ mainWord, foundAs: "كلمة مفتاحية", relations });
-        } else if (relations.synonym.includes(cleanSearch)) {
-          results.push({ mainWord, foundAs: "مرادف", relations });
-        } else if (relations.antonym.includes(cleanSearch)) {
-          results.push({ mainWord, foundAs: "ضد", relations });
-        }
-      }
-      return results;
-    }
-
-    function toggleButtonState(loading) {
-      analyzeBtn.disabled = loading;
-      btnText.style.display = loading ? 'none' : 'inline-block';
-      btnLoading.style.display = loading ? 'inline-block' : 'none';
-    }
-
-    analyzeBtn.addEventListener('click', async () => {
-      const word = input.value.trim();
-      const type = typeSelect.value;
+    document.addEventListener('DOMContentLoaded', function() {
+      const cards = document.querySelectorAll('.tool-card');
+      const hero = document.querySelector('.hero-section');
       
-      if (!word) {
-        resultsContainer.innerHTML = `<p style="width:100%; text-align:center; color:#888;">يرجى إدخال كلمة للبحث 🔍</p>`;
-        return;
-      }
+      hero.style.opacity = '0';
+      hero.style.transform = 'translateY(20px)';
+      hero.style.transition = 'all 0.8s ease';
+      
+      setTimeout(() => {
+        hero.style.opacity = '1';
+        hero.style.transform = 'translateY(0)';
+      }, 100);
 
-      toggleButtonState(true);
-      resultsContainer.innerHTML = ''; 
-
-      try {
-        const semanticData = await fetchSemanticData();
-        const entries = findWordEntries(semanticData, word);
-
-        if (entries.length === 0) {
-          resultsContainer.innerHTML = `
-            <div style="width:100%; text-align:center; grid-column: 1 / -1;">
-               <p style="color:#666; font-size:1.1rem;">الكلمة "${word}" غير موجودة في قاعدة البيانات.</p>
-            </div>`;
-          return;
-        }
-
-        entries.forEach(entry => {
-          const { mainWord, foundAs, relations } = entry;
-          
-          const card = document.createElement('div');
-          card.className = 'result-card';
-          
-          // استخدام النصوص القديمة
-          let content = `
-            <div class="main-word">${mainWord}</div>
-            <div class="found-as-badge">تم العثور على "${word}" كـ ${foundAs}</div>
-          `;
-
-          if (type === "all" || type === "synonym") {
-            if (relations.synonym && relations.synonym.length > 0) {
-              content += `
-                <div>
-                  <div class="section-label">المرادفات</div>
-                  <div class="words-text">${relations.synonym.join('، ')}</div>
-                </div>
-              `;
-            }
-          }
-
-          if (type === "all" || type === "antonym") {
-             if (relations.antonym && relations.antonym.length > 0) {
-              content += `
-                <div>
-                  <div class="section-label">الأضداد</div>
-                  <div class="words-text">${relations.antonym.join('، ')}</div>
-                </div>
-              `;
-            }
-          }
-
-          card.innerHTML = content;
-          resultsContainer.appendChild(card);
-        });
-
-      } catch (error) {
-        resultsContainer.innerHTML = `<p style="width:100%; text-align:center; color:#d9534f;">حدث خطأ أثناء الاتصال بقاعدة البيانات.</p>`;
-      } finally {
-        toggleButtonState(false);
-      }
-    });
-
-    input.addEventListener('keypress', function (e) {
-      if (e.key === 'Enter') {
-        analyzeBtn.click();
-      }
+      cards.forEach((card, index) => {
+        card.style.opacity = '0';
+        card.style.transform = 'translateY(30px)';
+        card.style.transition = `all 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) ${0.2 + (index * 0.1)}s`;
+        
+        setTimeout(() => {
+          card.style.opacity = '1';
+          card.style.transform = 'translateY(0)';
+        }, 100);
+      });
     });
   </script>
 </body>
