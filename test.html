@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>بَيْن - أداة الترادفات</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+  <meta property="og:title" content="بين- أداة الترادفات والتضاد">
+  <meta property="og:description" content="الأداة تعنى بظاهرة الترادف والتضاد">
+  <meta property="og:image" content="/images/bayn-cover.png">
+  <meta property="og:url" content="https://bayn.basirah.me">
+  <meta property="og:type" content="website">
+
+  <style>
+    /* =========================================
+       1. متغيرات الألوان والتأسيس
+       ========================================= */
+    :root {
+      --primary-color: #0e6666;
+      --secondary-color: #4fc3c3;
+      --bg-light: #f8fbfb;
+      --text-dark: #333;
+      --text-grey: #666;
+      --card-shadow: 0 10px 30px rgba(14, 102, 102, 0.08);
+      --hover-shadow: 0 15px 35px rgba(14, 102, 102, 0.12);
+      --radius: 16px;
+    }
+
+    * {
+      box-sizing: border-box;
+      font-family: 'Cairo', sans-serif;
+    }
+
+    body {
+      margin: 0;
+      background-color: var(--bg-light);
+      color: var(--text-dark);
+      text-align: right; /* تغيير الاتجاه العام لليمين ليتناسب مع المحتوى */
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* =========================================
+       2. التوب بار (كما هو تماماً - لم يتم التغيير)
+       ========================================= */
+    header {
+      background-color: #0e6666;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 25px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+
+    header img {
+      height: 45px;
+      border-radius: 10px;
+    }
+
+    header h1 {
+      font-size: 20px;
+      color: #004f4f;
+      margin: 0;
+      font-weight: 700;
+    }
+
+    /* =========================================
+       3. منطقة المحتوى (تصميم جديد)
+       ========================================= */
+    .main-wrapper {
+      flex: 1;
+      width: 100%;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 40px 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    /* قسم البحث */
+    .search-container {
+      width: 100%;
+      max-width: 700px;
+      background: #ffffff;
+      padding: 30px;
+      border-radius: var(--radius);
+      box-shadow: var(--card-shadow);
+      margin-bottom: 40px;
+      border: 1px solid rgba(14, 102, 102, 0.05);
+      text-align: center;
+    }
+
+    .search-title {
+      font-size: 1.5rem;
+      color: var(--primary-color);
+      margin: 0 0 20px 0;
+      font-weight: 700;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+      text-align: right;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 600;
+      color: var(--text-dark);
+      font-size: 0.95rem;
+    }
+
+    /* تحسين حقول الإدخال */
+    .input-wrapper {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
+
+    input[type="text"], select {
+      width: 100%;
+      padding: 14px 20px;
+      border-radius: 12px;
+      border: 2px solid #eef2f2;
+      font-size: 16px;
+      background-color: #fcfcfc;
+      transition: all 0.3s ease;
+      color: var(--text-dark);
+    }
+
+    input[type="text"]:focus, select:focus {
+      border-color: var(--secondary-color);
+      outline: none;
+      background-color: #fff;
+      box-shadow: 0 0 0 4px rgba(79, 195, 195, 0.1);
+    }
+
+    /* زر البحث */
+    button#analyze-btn {
+      width: 100%;
+      padding: 16px;
+      background-color: var(--primary-color);
+      color: #fff;
+      border: none;
+      border-radius: 12px;
+      font-size: 1.1rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      margin-top: 10px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    button#analyze-btn:hover {
+      background-color: #094a4a;
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(14, 102, 102, 0.2);
+    }
+
+    button#analyze-btn:disabled {
+      background-color: #ccc;
+      cursor: not-allowed;
+      transform: none;
+      box-shadow: none;
+    }
+
+    /* =========================================
+       4. عرض النتائج (Cards Grid)
+       ========================================= */
+    .results-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 25px;
+      width: 100%;
+    }
+
+    .result-card {
+      background-color: #fff;
+      border-radius: var(--radius);
+      padding: 25px;
+      box-shadow: var(--card-shadow);
+      border: 1px solid rgba(0,0,0,0.03);
+      transition: transform 0.3s ease;
+      position: relative;
+      overflow: hidden;
+      animation: fadeIn 0.5s ease-out;
+    }
+
+    .result-card:hover {
+      transform: translateY(-5px);
+      box-shadow: var(--hover-shadow);
+    }
+
+    /* شريط ملون علوي للبطاقة */
+    .result-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      right: 0;
+      left: 0;
+      height: 6px;
+      background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+    }
+
+    .card-header {
+      border-bottom: 1px solid #f0f0f0;
+      padding-bottom: 15px;
+      margin-bottom: 15px;
+    }
+
+    .main-word {
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: var(--primary-color);
+      margin: 0;
+    }
+
+    .found-as-badge {
+      display: inline-block;
+      background-color: #fff3cd; /* أصفر فاتح */
+      color: #856404;
+      font-size: 0.85rem;
+      padding: 4px 12px;
+      border-radius: 20px;
+      margin-top: 8px;
+      font-weight: 600;
+    }
+
+    /* أقسام الترادف والتضاد */
+    .relation-section {
+      margin-bottom: 15px;
+    }
+
+    .relation-title {
+      font-size: 0.9rem;
+      color: #888;
+      margin-bottom: 8px;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .relation-title.syn-title { color: var(--primary-color); }
+    .relation-title.ant-title { color: #d9534f; }
+
+    .words-list {
+      font-size: 1.1rem;
+      line-height: 1.6;
+      color: #444;
+      background-color: #fcfcfc;
+      padding: 10px;
+      border-radius: 8px;
+      border: 1px dashed #e0e0e0;
+    }
+
+    /* حالة التحميل */
+    .loading-spinner {
+      display: inline-block;
+      width: 24px;
+      height: 24px;
+      border: 3px solid rgba(255,255,255,.3);
+      border-radius: 50%;
+      border-top-color: #fff;
+      animation: spin 1s ease-in-out infinite;
+    }
+
+    @keyframes spin { to { transform: rotate(360deg); } }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+    /* =========================================
+       5. الفوتر (كما هو تماماً - لم يتم التغيير)
+       ========================================= */
+    footer {
+      background-color: #eafafa;
+      border-top: 2px solid #4fc3c3;
+      padding: 20px;
+      text-align: center;
+      margin-top: auto;
+    }
+
+    footer a {
+      color: #007b7b;
+      text-decoration: none;
+      margin: 0 10px;
+      font-weight: 600;
+    }
+
+    footer a:hover {
+      text-decoration: underline;
+    }
+
+    /* Responsive Adjustments */
+    @media (min-width: 768px) {
+      .input-wrapper {
+        display: grid;
+        grid-template-columns: 2fr 1fr;
+        gap: 15px;
+        align-items: end; /* محاذاة العناصر للأسفل */
+      }
+      
+      .input-wrapper .full-width-btn {
+        grid-column: 1 / -1;
+      }
+
+      /* إذا أردنا الزر بجانبهم */
+      .form-row-desktop {
+        display: grid;
+        grid-template-columns: 2fr 1.5fr 1fr;
+        gap: 15px;
+        align-items: end;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <img src="images/logo.PNG" alt="شعار بين">
+  </header>
+
+  <div class="main-wrapper">
+    
+    <div class="search-container">
+      <h2 class="search-title">ابحث عن علاقات الكلمات</h2>
+      
+      <div class="form-row-desktop">
+        <div class="form-group" style="margin-bottom:0;">
+          <label for="word-input">الكلمة</label>
+          <input type="text" id="word-input" placeholder="مثلاً: نور، علم، سماء...">
+        </div>
+
+        <div class="form-group" style="margin-bottom:0;">
+          <label for="relation-type">نوع العلاقة</label>
+          <select id="relation-type">
+            <option value="all">الكل (ترادف وتضاد)</option>
+            <option value="synonym">الترادف فقط</option>
+            <option value="antonym">التضاد فقط</option>
+          </select>
+        </div>
+
+        <button id="analyze-btn">
+          <span id="btn-text">بحث</span>
+          <span id="btn-loading" class="loading-spinner" style="display: none;"></span>
+        </button>
+      </div>
+    </div>
+
+    <div id="results-container" class="results-grid"></div>
+  </div>
+
+  <footer>
+    <a href="index.html">الرئيسية</a>
+    <a href="project.html">عن المشروع</a>
+    <a href="tools.html">أدوات أخرى</a>
+    <a href="contact.html">اتصل بنا</a>
+  </footer>
+
+  <script>
+    const analyzeBtn = document.getElementById('analyze-btn');
+    const btnText = document.getElementById('btn-text');
+    const btnLoading = document.getElementById('btn-loading');
+    const input = document.getElementById('word-input');
+    const typeSelect = document.getElementById('relation-type');
+    const resultsContainer = document.getElementById('results-container');
+
+    // دالة جلب البيانات الدلالية فقط
+    async function fetchSemanticData() {
+      try {
+        const response = await fetch('data/semanticData.json');
+        if (!response.ok) throw new Error('فشل في جلب البيانات الدلالية');
+        return await response.json();
+      } catch {
+        // بيانات احتياطية للتجربة في حال عدم وجود الملف
+        return {
+          "نور": { "synonym": ["ضياء", "إشراق", "سناء", "بهاء"], "antonym": ["ظلام", "عتمة", "ليل", "سواد"] },
+          "سعيد": { "synonym": ["فرح", "مسرور", "بهِج", "مبتهج", "منشرح"], "antonym": ["حزين", "كئيب", "مهموم", "تعيس"] },
+          "كبير": { "synonym": ["عظيم", "ضخم", "واسع", "هائل", "جسيم"], "antonym": ["صغير", "ضئيل", "قزم", "دقيق"] },
+          "علم": { "synonym": ["معرفة", "دراية", "إدراك", "فقه"], "antonym": ["جهل", "أمية", "غباوة"] }
+        };
+      }
+    }
+
+    // منطق البحث
+    function findWordEntries(data, searchWord) {
+      const results = [];
+      // تنظيف الكلمة (اختياري: إزالة التشكيل البسيط إذا لزم الأمر)
+      const cleanSearch = searchWord; 
+
+      for (const [mainWord, relations] of Object.entries(data)) {
+        if (mainWord === cleanSearch) {
+          results.push({ mainWord, foundAs: "الكلمة الأصلية", relations });
+        } else if (relations.synonym.includes(cleanSearch)) {
+          results.push({ mainWord, foundAs: "مرادف لكلمة", relations });
+        } else if (relations.antonym.includes(cleanSearch)) {
+          results.push({ mainWord, foundAs: "ضد لكلمة", relations });
+        }
+      }
+      return results;
+    }
+
+    // تبديل حالة الزر
+    function toggleButtonState(loading) {
+      analyzeBtn.disabled = loading;
+      btnText.style.display = loading ? 'none' : 'inline-block';
+      btnLoading.style.display = loading ? 'inline-block' : 'none';
+    }
+
+    // الاستماع لحدث النقر
+    analyzeBtn.addEventListener('click', async () => {
+      const word = input.value.trim();
+      const type = typeSelect.value;
+      
+      if (!word) {
+        resultsContainer.innerHTML = `<p style="width:100%; text-align:center; color:#888; font-size:1.1rem;">يرجى إدخال كلمة للبحث 🔍</p>`;
+        return;
+      }
+
+      toggleButtonState(true);
+      resultsContainer.innerHTML = ''; // مسح النتائج السابقة
+
+      try {
+        // جلب البيانات الدلالية فقط (تم حذف الصوامت)
+        const semanticData = await fetchSemanticData();
+        const entries = findWordEntries(semanticData, word);
+
+        if (entries.length === 0) {
+          resultsContainer.innerHTML = `
+            <div style="width:100%; text-align:center; grid-column: 1 / -1;">
+               <p style="color:#666; font-size:1.2rem;">لم يتم العثور على نتائج للكلمة: <b>"${word}"</b></p>
+               <p style="color:#999; font-size:0.9rem;">حاول بكلمة أخرى مثل: نور، سعيد، كبير...</p>
+            </div>`;
+          return;
+        }
+
+        // بناء بطاقات النتائج
+        entries.forEach(entry => {
+          const { mainWord, foundAs, relations } = entry;
+          
+          const card = document.createElement('div');
+          card.className = 'result-card';
+          
+          let content = `
+            <div class="card-header">
+              <h3 class="main-word">${mainWord}</h3>
+              <span class="found-as-badge">${foundAs}: ${word}</span>
+            </div>
+          `;
+
+          // عرض المرادفات
+          if (type === "all" || type === "synonym") {
+            if (relations.synonym && relations.synonym.length > 0) {
+              content += `
+                <div class="relation-section">
+                  <div class="relation-title syn-title">🔹 المرادفات</div>
+                  <div class="words-list">${relations.synonym.join('، ')}</div>
+                </div>
+              `;
+            }
+          }
+
+          // عرض الأضداد
+          if (type === "all" || type === "antonym") {
+             if (relations.antonym && relations.antonym.length > 0) {
+              content += `
+                <div class="relation-section">
+                  <div class="relation-title ant-title">🔸 الأضداد</div>
+                  <div class="words-list">${relations.antonym.join('، ')}</div>
+                </div>
+              `;
+            }
+          }
+
+          card.innerHTML = content;
+          resultsContainer.appendChild(card);
+        });
+
+      } catch (error) {
+        console.error(error);
+        resultsContainer.innerHTML = `<p style="width:100%; text-align:center; color:#d9534f;">حدث خطأ أثناء الاتصال بقاعدة البيانات.</p>`;
+      } finally {
+        toggleButtonState(false);
+      }
+    });
+
+    // تفعيل البحث عند الضغط على Enter
+    input.addEventListener('keypress', function (e) {
+      if (e.key === 'Enter') {
+        analyzeBtn.click();
+      }
+    });
+  </script>
+</body>
+</html>
