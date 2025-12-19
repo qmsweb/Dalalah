@@ -12,11 +12,6 @@
   <meta property="og:url" content="https://bayn.basirah.me">
   <meta property="og:type" content="website">
 
-  <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="بين- أداة الترادفات والتضاد">
-  <meta name="twitter:description" content="المنصة تعنى بظاهرة الترادف والتضاد">
-  <meta name="twitter:image" content="https://bayn.basirah.me/images/bayn-cover.png">
-  
   <style>
     :root {
       --primary-color: #0e6666;
@@ -35,7 +30,7 @@
 
     body {
       margin: 0;
-      background-color: var(--bg-light); /* خلفية فاتحة جداً لراحة العين */
+      background-color: var(--bg-light);
       color: var(--text-dark);
       min-height: 100vh;
       display: flex;
@@ -68,7 +63,7 @@
     }
 
     /* =========================================
-       2. منطقة المحتوى الرئيسية (تصميم جديد)
+       2. منطقة المحتوى الرئيسية
        ========================================= */
     .container {
       flex: 1;
@@ -80,14 +75,12 @@
       padding: 0 20px;
     }
 
-    /* قسم العنوان (Hero Section) */
     .hero-section {
       text-align: center;
       padding: 60px 20px 40px;
       position: relative;
     }
 
-    /* زخرفة خلفية بسيطة */
     .hero-section::before {
       content: '';
       position: absolute;
@@ -126,7 +119,7 @@
       margin: 0 auto;
     }
 
-    /* تصميم البطاقة الجديد */
+    /* البطاقات */
     .tool-card {
       background: #ffffff;
       border-radius: var(--radius);
@@ -142,9 +135,22 @@
       justify-content: center;
       position: relative;
       overflow: hidden;
+      cursor: pointer; /* افتراضي للروابط */
     }
 
-    /* أيقونة البطاقة */
+    /* تنسيق خاص للبطاقات غير الفعالة (بدون رابط) */
+    .tool-card.disabled {
+      cursor: default;
+      opacity: 0.9;
+    }
+    
+    .tool-card.disabled:hover {
+      transform: none; /* إلغاء حركة الرفع */
+      box-shadow: var(--shadow-sm); /* إلغاء ظل الهوفر */
+      border-color: rgba(14, 102, 102, 0.05);
+    }
+
+    /* تنسيق الأيقونات (SVG) */
     .icon-wrapper {
       width: 90px;
       height: 90px;
@@ -157,13 +163,15 @@
       transition: transform 0.3s ease, background-color 0.3s ease;
     }
 
-    .tool-card img {
-      width: 50px;
-      height: 50px;
-      object-fit: contain;
+    .tool-card svg {
+      width: 45px;
+      height: 45px;
+      stroke: var(--primary-color);
+      stroke-width: 1.5;
+      fill: none;
+      transition: all 0.3s ease;
     }
 
-    /* عنوان البطاقة */
     .card-title {
       font-size: 1.4rem;
       font-weight: 700;
@@ -179,19 +187,35 @@
       font-weight: 400;
     }
 
-    /* تأثيرات الهوفر (Hover Effects) */
-    .tool-card:hover {
+    /* شارة "قريباً" */
+    .coming-soon-badge {
+      background-color: #f9a826;
+      color: white;
+      font-size: 0.8rem;
+      padding: 4px 12px;
+      border-radius: 12px;
+      margin-bottom: 10px;
+      font-weight: 700;
+      display: inline-block;
+    }
+
+    /* تأثيرات الهوفر (فقط للبطاقات الفعالة) */
+    .tool-card:not(.disabled):hover {
       transform: translateY(-8px);
       box-shadow: var(--shadow-md);
       border-color: rgba(79, 195, 195, 0.3);
     }
 
-    .tool-card:hover .icon-wrapper {
+    .tool-card:not(.disabled):hover .icon-wrapper {
       background-color: rgba(79, 195, 195, 0.15);
       transform: scale(1.1);
     }
 
-    .tool-card:hover .card-title {
+    .tool-card:not(.disabled):hover svg {
+      stroke: #094a4a;
+    }
+
+    .tool-card:not(.disabled):hover .card-title {
       color: #094a4a;
     }
 
@@ -217,7 +241,6 @@
       text-decoration: underline;
     }
 
-    /* تحسينات للشاشات الصغيرة */
     @media (max-width: 600px) {
       .home-title { font-size: 2rem; }
       .tools-grid { gap: 20px; }
@@ -234,34 +257,53 @@
   <div class="container">
     
     <div class="hero-section">
-      <h1 class="home-title" style="display:none">بَيْن</h1> <p class="home-subtitle">منصة رقمية تعنى بدراسة الظواهر الدلالية في اللغة العربية. </p>
+      <h1 class="home-title" style="display:none">بَيْن</h1>
+      <p class="home-subtitle">منصة رقمية تعنى بدراسة الظواهر الدلالية في اللغة العربية.</p>
     </div>
 
     <div class="tools-grid">
       
       <a href="syns-ants" class="tool-card">
         <div class="icon-wrapper">
-          <img src="images/tradof.png" alt="أيقونة الترادف">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M8 3 4 7l4 4"/>
+            <path d="M4 7h16"/>
+            <path d="m16 21 4-4-4-4"/>
+            <path d="M20 17H4"/>
+          </svg>
         </div>
         <h2 class="card-title">الترادف والتضاد</h2>
         <span class="card-desc">استكشف العلاقات بين الكلمات ومعانيها المتقابلة</span>
       </a>
 
-      <a href="project.html" class="tool-card">
-        <div class="icon-wrapper">
-          <img src="images/hqool.png" alt="أيقونة الحقول">
-        </div>
-        <h2 class="card-title">الحقول الدلالية</h2>
-        <span class="card-desc">تصنيف المفردات ضمن مجالات دلالية مترابطة</span>
-      </a>
-
       <a href="l-words" class="tool-card">
         <div class="icon-wrapper">
-          <img src="images/dakila.png" alt="أيقونة الكلمات الدخيلة">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"/>
+            <path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/>
+            <path d="M2 12h20"/>
+          </svg>
         </div>
         <h2 class="card-title">الكلمات الدخيلة</h2>
         <span class="card-desc">الكلمات المعربة والدخيلة على اللسان العربي</span>
       </a>
+
+      <div class="tool-card disabled">
+        <div class="coming-soon-badge">قريباً</div>
+        <div class="icon-wrapper">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="3"/>
+            <path d="M12 9V5"/>
+            <circle cx="12" cy="3" r="2"/>
+            <path d="M10 14 6 18"/>
+            <circle cx="4" cy="20" r="2"/>
+            <path d="M14 14 18 18"/>
+            <circle cx="20" cy="20" r="2"/>
+          </svg>
+        </div>
+        <h2 class="card-title">الحقول الدلالية</h2>
+        <span class="card-desc">تصنيف المفردات ضمن مجالات دلالية مترابطة</span>
+      </div>
 
     </div>
   </div>
@@ -274,12 +316,10 @@
   </footer>
 
   <script>
-    // أنيميشن بسيط لظهور العناصر عند التحميل
     document.addEventListener('DOMContentLoaded', function() {
       const cards = document.querySelectorAll('.tool-card');
       const hero = document.querySelector('.hero-section');
       
-      // تحريك العنوان
       hero.style.opacity = '0';
       hero.style.transform = 'translateY(20px)';
       hero.style.transition = 'all 0.8s ease';
@@ -289,19 +329,16 @@
         hero.style.transform = 'translateY(0)';
       }, 100);
 
-      // تحريك البطاقات
       cards.forEach((card, index) => {
         card.style.opacity = '0';
         card.style.transform = 'translateY(30px)';
-        card.style.transition = `all 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) ${0.2 + (index * 0.1)}s`; // Staggered delay via CSS transition property directly here for simplicity in JS logic or cleaner separate classes.
+        card.style.transition = `all 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) ${0.2 + (index * 0.1)}s`;
         
-        // Applying the actual state change to trigger transition
         setTimeout(() => {
           card.style.opacity = '1';
           card.style.transform = 'translateY(0)';
         }, 100);
       });
-      
     });
   </script>
 </body>
