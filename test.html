@@ -19,7 +19,7 @@
       --bg-light: #f8fbfb;
       --text-dark: #333;
       --shadow-sm: 0 4px 6px rgba(14, 102, 102, 0.05);
-      --shadow-md: 0 15px 35px rgba(14, 102, 102, 0.15); /* ظل أقوى عند التكبير */
+      --shadow-md: 0 10px 25px rgba(14, 102, 102, 0.1);
       --radius: 16px;
     }
 
@@ -35,7 +35,6 @@
       min-height: 100vh;
       display: flex;
       flex-direction: column;
-      overflow-x: hidden; /* لمنع ظهور شريط تمرير عرضي بسبب الدوران */
     }
 
     /* =========================================
@@ -64,7 +63,7 @@
     }
 
     /* =========================================
-       2. منطقة المحتوى
+       2. منطقة المحتوى الرئيسية
        ========================================= */
     .container {
       flex: 1;
@@ -113,11 +112,18 @@
     .tools-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 40px; /* زيادة المسافة قليلاً لاستيعاب الميلان */
-      padding: 20px 20px 80px;
+      gap: 30px;
+      padding-bottom: 80px;
       width: 100%;
       max-width: 1000px;
       margin: 0 auto;
+    }
+
+    /* تعريف حركة الـ Blur */
+    @keyframes blob-bounce {
+      0% { transform: translate(-20%, -20%) scale(0.9); }
+      50% { transform: translate(20%, 10%) scale(1.1); }
+      100% { transform: translate(-10%, 30%) scale(1); }
     }
 
     /* البطاقات */
@@ -127,7 +133,7 @@
       padding: 40px 30px;
       text-decoration: none;
       text-align: center;
-      transition: all 0.5s cubic-bezier(0.25, 0.8, 0.25, 1); /* حركة أنعم */
+      transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
       border: 1px solid rgba(14, 102, 102, 0.05);
       box-shadow: var(--shadow-sm);
       display: flex;
@@ -135,54 +141,41 @@
       align-items: center;
       justify-content: center;
       position: relative;
+      overflow: hidden; /* مهم جداً لإبقاء التأثير داخل حدود البطاقة */
       cursor: pointer;
+      z-index: 1; /* لضمان ظهور المحتوى فوق الخلفية */
     }
 
-    /* -------------------------------------------
-       جديد: منطق الميلان (Tilt Logic)
-       ------------------------------------------- */
-    
-    /* البطاقات الفردية (الأولى، الثالثة...) - تميل لليمين */
-    /* بما أن الصفحة RTL، العنصر الأول هو الأيمن */
-    .tool-card:nth-child(odd) {
-      transform: rotate(2deg);
+    /* إضافة تأثير الـ Blur المتحرك */
+    .tool-card::before {
+      content: '';
+      position: absolute;
+      width: 250px;
+      height: 250px;
+      background-color: #0e6666; /* اللون المطلوب */
+      filter: blur(70px); /* درجة التغبيش */
+      opacity: 0.12; /* شفافية خفيفة لكي لا يطغى اللون */
+      border-radius: 50%;
+      top: -50px;
+      left: -50px;
+      z-index: -1; /* خلف المحتوى */
+      animation: blob-bounce 8s infinite alternate ease-in-out;
+      pointer-events: none;
     }
 
-    /* البطاقات الزوجية (الثانية، الرابعة...) - تميل لليسار */
-    .tool-card:nth-child(even) {
-      transform: rotate(-2deg);
-      margin-top: 15px; /* لمسة جمالية: تنزل قليلاً للأسفل لكسر الروتين */
-    }
-
-    /* -------------------------------------------
-       جديد: تأثير التكبير عند الوقوف (Hover Zoom)
-       ------------------------------------------- */
-    
-    .tool-card:not(.disabled):hover {
-      transform: scale(1.08) rotate(0deg) !important; /* تكبير + استقامة البطاقة */
-      box-shadow: var(--shadow-md);
-      z-index: 10; /* جعل البطاقة فوق الجميع عند التكبير */
-      border-color: rgba(79, 195, 195, 0.3);
-    }
-
-    /* البطاقات المعطلة */
+    /* تنسيق خاص للبطاقات غير الفعالة (بدون رابط) */
     .tool-card.disabled {
       cursor: default;
       opacity: 0.9;
     }
     
     .tool-card.disabled:hover {
-      transform: rotate(-2deg); /* تحافظ على ميلانها ولا تكبر */
-      /* ملاحظة: إذا كانت فردية ستحتاج لقاعدة أخرى، لكن للتنويع يكفي هذا */
+      transform: none;
       box-shadow: var(--shadow-sm);
       border-color: rgba(14, 102, 102, 0.05);
     }
-    /* تصحيح ميلان المعطلة إذا كانت فردية/زوجية لتبقى كما هي */
-    .tool-card.disabled:nth-child(odd):hover { transform: rotate(2deg); }
-    .tool-card.disabled:nth-child(even):hover { transform: rotate(-2deg); }
 
-
-    /* الأيقونات */
+    /* تنسيق الأيقونات (SVG) */
     .icon-wrapper {
       width: 90px;
       height: 90px;
@@ -193,6 +186,8 @@
       justify-content: center;
       margin-bottom: 20px;
       transition: transform 0.3s ease, background-color 0.3s ease;
+      position: relative;
+      z-index: 2; /* فوق تأثير الخلفية */
     }
 
     .tool-card svg {
@@ -210,6 +205,8 @@
       color: var(--primary-color);
       margin: 0;
       transition: color 0.3s ease;
+      position: relative;
+      z-index: 2;
     }
 
     .card-desc {
@@ -217,8 +214,11 @@
       color: #777;
       margin-top: 10px;
       font-weight: 400;
+      position: relative;
+      z-index: 2;
     }
 
+    /* شارة "قريباً" */
     .coming-soon-badge {
       background-color: #f9a826;
       color: white;
@@ -228,9 +228,23 @@
       margin-bottom: 10px;
       font-weight: 700;
       display: inline-block;
+      position: relative;
+      z-index: 2;
     }
 
-    /* تأثيرات الهوفر الداخلية للعناصر */
+    /* تأثيرات الهوفر (فقط للبطاقات الفعالة) */
+    .tool-card:not(.disabled):hover {
+      transform: translateY(-8px);
+      box-shadow: var(--shadow-md);
+      border-color: rgba(79, 195, 195, 0.3);
+    }
+
+    /* زيادة وضوح التأثير عند الهوفر */
+    .tool-card:not(.disabled):hover::before {
+      opacity: 0.2;
+      filter: blur(60px);
+    }
+
     .tool-card:not(.disabled):hover .icon-wrapper {
       background-color: rgba(79, 195, 195, 0.15);
       transform: scale(1.1);
@@ -345,7 +359,6 @@
       const cards = document.querySelectorAll('.tool-card');
       const hero = document.querySelector('.hero-section');
       
-      // أنيميشن العنوان
       hero.style.opacity = '0';
       hero.style.transform = 'translateY(20px)';
       hero.style.transition = 'all 0.8s ease';
@@ -355,21 +368,14 @@
         hero.style.transform = 'translateY(0)';
       }, 100);
 
-      // أنيميشن البطاقات
       cards.forEach((card, index) => {
-        // الحالة الابتدائية قبل الظهور
         card.style.opacity = '0';
-        card.style.transform = 'translateY(50px)'; // تبدأ من الأسفل
+        card.style.transform = 'translateY(30px)';
+        card.style.transition = `all 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) ${0.2 + (index * 0.1)}s`;
         
-        // توقيت الانتقال
-        card.style.transition = `opacity 0.6s ease, transform 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275)`;
-        card.style.transitionDelay = `${0.2 + (index * 0.15)}s`;
-        
-        // تنفيذ الظهور
         setTimeout(() => {
           card.style.opacity = '1';
-          // هام جداً: نحذف الـ transform المباشر لنسمح للـ CSS بالتحكم في الميلان (rotate)
-          card.style.transform = ''; 
+          card.style.transform = 'translateY(0)';
         }, 100);
       });
     });
