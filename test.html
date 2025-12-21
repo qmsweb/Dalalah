@@ -19,7 +19,7 @@
       --bg-light: #f8fbfb;
       --text-dark: #333;
       --shadow-sm: 0 4px 6px rgba(14, 102, 102, 0.05);
-      --shadow-md: 0 10px 25px rgba(14, 102, 102, 0.1);
+      --shadow-md: 0 15px 35px rgba(14, 102, 102, 0.15); /* ظل أقوى عند التكبير */
       --radius: 16px;
     }
 
@@ -35,10 +35,11 @@
       min-height: 100vh;
       display: flex;
       flex-direction: column;
+      overflow-x: hidden; /* لمنع ظهور شريط تمرير عرضي بسبب الدوران */
     }
 
     /* =========================================
-       1. التوب بار (كما هو تماماً)
+       1. التوب بار
        ========================================= */
     header {
       background-color: #0e6666;
@@ -63,7 +64,7 @@
     }
 
     /* =========================================
-       2. منطقة المحتوى الرئيسية
+       2. منطقة المحتوى
        ========================================= */
     .container {
       flex: 1;
@@ -112,8 +113,8 @@
     .tools-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 30px;
-      padding-bottom: 80px;
+      gap: 40px; /* زيادة المسافة قليلاً لاستيعاب الميلان */
+      padding: 20px 20px 80px;
       width: 100%;
       max-width: 1000px;
       margin: 0 auto;
@@ -126,7 +127,7 @@
       padding: 40px 30px;
       text-decoration: none;
       text-align: center;
-      transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      transition: all 0.5s cubic-bezier(0.25, 0.8, 0.25, 1); /* حركة أنعم */
       border: 1px solid rgba(14, 102, 102, 0.05);
       box-shadow: var(--shadow-sm);
       display: flex;
@@ -134,23 +135,54 @@
       align-items: center;
       justify-content: center;
       position: relative;
-      overflow: hidden;
-      cursor: pointer; /* افتراضي للروابط */
+      cursor: pointer;
     }
 
-    /* تنسيق خاص للبطاقات غير الفعالة (بدون رابط) */
+    /* -------------------------------------------
+       جديد: منطق الميلان (Tilt Logic)
+       ------------------------------------------- */
+    
+    /* البطاقات الفردية (الأولى، الثالثة...) - تميل لليمين */
+    /* بما أن الصفحة RTL، العنصر الأول هو الأيمن */
+    .tool-card:nth-child(odd) {
+      transform: rotate(2deg);
+    }
+
+    /* البطاقات الزوجية (الثانية، الرابعة...) - تميل لليسار */
+    .tool-card:nth-child(even) {
+      transform: rotate(-2deg);
+      margin-top: 15px; /* لمسة جمالية: تنزل قليلاً للأسفل لكسر الروتين */
+    }
+
+    /* -------------------------------------------
+       جديد: تأثير التكبير عند الوقوف (Hover Zoom)
+       ------------------------------------------- */
+    
+    .tool-card:not(.disabled):hover {
+      transform: scale(1.08) rotate(0deg) !important; /* تكبير + استقامة البطاقة */
+      box-shadow: var(--shadow-md);
+      z-index: 10; /* جعل البطاقة فوق الجميع عند التكبير */
+      border-color: rgba(79, 195, 195, 0.3);
+    }
+
+    /* البطاقات المعطلة */
     .tool-card.disabled {
       cursor: default;
       opacity: 0.9;
     }
     
     .tool-card.disabled:hover {
-      transform: none; /* إلغاء حركة الرفع */
-      box-shadow: var(--shadow-sm); /* إلغاء ظل الهوفر */
+      transform: rotate(-2deg); /* تحافظ على ميلانها ولا تكبر */
+      /* ملاحظة: إذا كانت فردية ستحتاج لقاعدة أخرى، لكن للتنويع يكفي هذا */
+      box-shadow: var(--shadow-sm);
       border-color: rgba(14, 102, 102, 0.05);
     }
+    /* تصحيح ميلان المعطلة إذا كانت فردية/زوجية لتبقى كما هي */
+    .tool-card.disabled:nth-child(odd):hover { transform: rotate(2deg); }
+    .tool-card.disabled:nth-child(even):hover { transform: rotate(-2deg); }
 
-    /* تنسيق الأيقونات (SVG) */
+
+    /* الأيقونات */
     .icon-wrapper {
       width: 90px;
       height: 90px;
@@ -187,7 +219,6 @@
       font-weight: 400;
     }
 
-    /* شارة "قريباً" */
     .coming-soon-badge {
       background-color: #f9a826;
       color: white;
@@ -199,13 +230,7 @@
       display: inline-block;
     }
 
-    /* تأثيرات الهوفر (فقط للبطاقات الفعالة) */
-    .tool-card:not(.disabled):hover {
-      transform: translateY(-8px);
-      box-shadow: var(--shadow-md);
-      border-color: rgba(79, 195, 195, 0.3);
-    }
-
+    /* تأثيرات الهوفر الداخلية للعناصر */
     .tool-card:not(.disabled):hover .icon-wrapper {
       background-color: rgba(79, 195, 195, 0.15);
       transform: scale(1.1);
@@ -220,7 +245,7 @@
     }
 
     /* =========================================
-       3. الفوتر (كما هو تماماً)
+       3. الفوتر
        ========================================= */
     footer {
       background-color: #eafafa;
@@ -258,7 +283,7 @@
     
     <div class="hero-section">
       <h1 class="home-title" style="display:none">بَيْن</h1>
-      <p class="home-subtitle">منصة رقمية تعنى بدراسة الظواهر الدلالية في اللغة العربية.</p>
+      <p class="home-subtitle">منصة تعنى بدراسة الظواهر الدلالية في اللغة العربية.</p>
     </div>
 
     <div class="tools-grid">
@@ -320,6 +345,7 @@
       const cards = document.querySelectorAll('.tool-card');
       const hero = document.querySelector('.hero-section');
       
+      // أنيميشن العنوان
       hero.style.opacity = '0';
       hero.style.transform = 'translateY(20px)';
       hero.style.transition = 'all 0.8s ease';
@@ -329,14 +355,21 @@
         hero.style.transform = 'translateY(0)';
       }, 100);
 
+      // أنيميشن البطاقات
       cards.forEach((card, index) => {
+        // الحالة الابتدائية قبل الظهور
         card.style.opacity = '0';
-        card.style.transform = 'translateY(30px)';
-        card.style.transition = `all 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) ${0.2 + (index * 0.1)}s`;
+        card.style.transform = 'translateY(50px)'; // تبدأ من الأسفل
         
+        // توقيت الانتقال
+        card.style.transition = `opacity 0.6s ease, transform 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275)`;
+        card.style.transitionDelay = `${0.2 + (index * 0.15)}s`;
+        
+        // تنفيذ الظهور
         setTimeout(() => {
           card.style.opacity = '1';
-          card.style.transform = 'translateY(0)';
+          // هام جداً: نحذف الـ transform المباشر لنسمح للـ CSS بالتحكم في الميلان (rotate)
+          card.style.transform = ''; 
         }, 100);
       });
     });
